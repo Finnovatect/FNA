@@ -72,7 +72,20 @@ This is a Jekyll-based GitHub Pages website for "Financial Needs Analysis" - a f
 - Modify Jekyll theme settings in `_config.yml`
 - Financial calculations and charts in `index.html`
 
+## Security Requirements
+
+### Email Obfuscation
+- **CRITICAL**: Admin email (dana@dje.ca) must NEVER appear in plain text in any code files
+- Always use Base64 obfuscation: `const ADMIN_EMAIL = atob('ZGFuYUBkamUuY2E=')`
+- Check all files for plain text email exposure before commits
+- Test files should also use obfuscated email, never plain text
+
+### EmailJS Configuration
+- reCAPTCHA keys use environment detection (localhost vs production)
+- EmailJS templates use multiple parameter name formats for compatibility
+- Dual email system: visitor gets brochure, admin gets contact data
+
 ## Content Management
 - Both HTML files contain embedded CSS and JavaScript
-- No external asset dependencies except CDN libraries (Chart.js, reCAPTCHA)
+- No external asset dependencies except CDN libraries (Chart.js, reCAPTCHA, EmailJS)
 - Self-contained pages for reliability and performance

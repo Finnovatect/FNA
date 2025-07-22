@@ -23,6 +23,9 @@
         const EMAILJS_TEMPLATE_ID_VISITOR = 'template_check';
         const EMAILJS_PUBLIC_KEY = 'Rqgd3ar53ZPk9z4Nf';
         
+        // Obfuscated admin email for security - NEVER show plain text in code
+        const ADMIN_EMAIL = atob('ZGFuYUBkamUuY2E=');
+        
         // Initialize EmailJS
         emailjs.init(EMAILJS_PUBLIC_KEY);
         
@@ -39,9 +42,9 @@
                 });
 
                 const testParams = {
-                    to_email: 'dana@dje.ca',
-                    email: 'dana@dje.ca',        // Multiple parameter names
-                    user_email: 'dana@dje.ca',   // Common alternative
+                    to_email: ADMIN_EMAIL,       // Obfuscated email
+                    email: ADMIN_EMAIL,          // Multiple parameter names
+                    user_email: ADMIN_EMAIL,     // Common alternative
                     to_name: 'Test User',
                     name: 'Test User',           // Alternative
                     user_name: 'Test User',      // Alternative
@@ -76,9 +79,9 @@
                     EMAILJS_SERVICE_ID, 
                     EMAILJS_TEMPLATE_ID_VISITOR, 
                     {
-                        to_email: 'dana@dje.ca',
-                        email: 'dana@dje.ca',
-                        user_email: 'dana@dje.ca',
+                        to_email: ADMIN_EMAIL,      // Obfuscated email
+                        email: ADMIN_EMAIL,         // Multiple parameter names
+                        user_email: ADMIN_EMAIL,    // Common alternative
                         to_name: 'Test',
                         name: 'Test',
                         user_name: 'Test'
