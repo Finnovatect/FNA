@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Your Free Brochure</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -62,7 +64,7 @@
         .logo {
             width: 80px;
             height: 80px;
-            background-image: url('YOUR_HEADSHOT_URL_HERE');
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23c9a96e"/><text x="50" y="60" text-anchor="middle" fill="%23000" font-size="40" font-family="Arial">👤</text></svg>');
             background-size: cover;
             background-position: center;
             border-radius: 50%;
@@ -367,7 +369,7 @@
                 
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                    <input type="tel" id="phone" name="phone" placeholder="(403) 555-1234" maxlength="14">
                 </div>
                 
                 <div class="form-group">
@@ -376,7 +378,7 @@
                 </div>
                 
                 <div class="captcha-container">
-                    <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY_HERE"></div>
+                    <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
                 </div>
                 
                 <button type="submit" class="btn">Get My Financial Checklist</button>
@@ -387,38 +389,16 @@
 
         <!-- Success Screen -->
         <div id="successScreen" class="success-screen">
-            <div class="success-icon">✓</div>
+            <div class="success-icon">📧</div>
             <h1>Thank You!</h1>
-            <p class="subtitle">Your brochure is ready for download.</p>
+            <p class="subtitle">Your Financial House Checklist has been sent to your email address. Check your inbox (and spam folder) for the download link.</p>
             
-            <button id="downloadBtn" class="btn download-btn">📋 Download Checklist</button>
-            
-            <!-- Contact Data for iOS -->
-            <div class="data-section">
-                <div class="data-title">iOS Contact (vCard):</div>
-                <div id="vcardData" class="data-content"></div>
-                <button onclick="copyToClipboard('vcardData')" class="btn copy-btn">Copy vCard</button>
-            </div>
-            
-            <!-- Contact Data for Notion -->
-            <div class="data-section">
-                <div class="data-title">Notion CRM Data (JSON):</div>
-                <div id="notionData" class="data-content"></div>
-                <button onclick="copyToClipboard('notionData')" class="btn copy-btn">Copy JSON</button>
-            </div>
-            
-            <p class="privacy">Save the data above to add this contact to your systems.</p>
+            <p class="privacy" style="margin-top: 20px; color: #c9a96e; font-weight: 500;">
+                You'll be redirected to our website in <span id="countdown" class="countdown">5</span> seconds.
+            </p>
         </div>
     </div>
 
-    <!-- Popup for brochure delivery -->
-    <div id="popupOverlay" class="popup-overlay">
-        <div class="popup">
-            <div class="popup-icon">📧</div>
-            <h2>Checklist on the Way!</h2>
-            <p>Your Financial House Checklist is being prepared and will be available for download shortly. You'll be redirected to our website in <span id="countdown" class="countdown">5</span> seconds.</p>
-        </div>
-    </div>
 
     <script>
         // =====================================
@@ -431,13 +411,49 @@
         // Replace with your website URL
         const REDIRECT_URL = 'https://linktr.ee/danaellison';
         
-        // Replace with your reCAPTCHA site key (get from Google reCAPTCHA console)
-        const RECAPTCHA_SITE_KEY = '6LeoG4srAAAAALReejXcWRXHHAqsKSCKj3vJ-ICa';
+        // reCAPTCHA site keys - use test key for localhost
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const RECAPTCHA_SITE_KEY = isLocalhost 
+            ? '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' // Google's test key for localhost
+            : '6LeoG4srAAAAALReejXcWRXHHAqsKSCKj3vJ-ICa'; // Production key
         
         // Replace with your headshot image URL
         const HEADSHOT_URL = 'https://drive.google.com/open?id=10RNlG16hhAme0C-JWTjJ6jH54i6Vgc4p&usp=drive_fs';
         
+        // EmailJS Configuration - Replace with your actual service details
+        const EMAILJS_SERVICE_ID = 'buscard_service';
+        const EMAILJS_TEMPLATE_ID_VISITOR = 'template_check'; // Template for brochure to visitor
+        const EMAILJS_TEMPLATE_ID_ADMIN = 'template_lead';     // Template for contact data to you
+        const EMAILJS_PUBLIC_KEY = 'Rqgd3ar53ZPk9z4Nf';
+        
+        // Obfuscated admin email - decodes to dana@dje.ca
+        const ADMIN_EMAIL = atob('ZGFuYUBkamUuY2E=');
+        
         // =====================================
+        // Phone number formatting
+        function formatPhoneNumber(input) {
+            // Remove all non-digits
+            let phoneNumber = input.replace(/\D/g, '');
+            
+            // Limit to 10 digits
+            if (phoneNumber.length > 10) {
+                phoneNumber = phoneNumber.substring(0, 10);
+            }
+            
+            // Format as (403)-921-6700
+            if (phoneNumber.length >= 6) {
+                return `(${phoneNumber.substring(0, 3)})-${phoneNumber.substring(3, 6)}-${phoneNumber.substring(6)}`;
+            } else if (phoneNumber.length >= 3) {
+                return `(${phoneNumber.substring(0, 3)})-${phoneNumber.substring(3)}`;
+            } else if (phoneNumber.length > 0) {
+                return `(${phoneNumber}`;
+            }
+            return phoneNumber;
+        }
+
+        // Initialize EmailJS
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+
         // Form submission handler
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -460,19 +476,76 @@
                 source: 'QR Code Landing Page'
             };
             
-            // Generate vCard for iOS
-            const vcard = generateVCard(formData);
-            document.getElementById('vcardData').textContent = vcard;
+            // Send emails if EmailJS is configured
+            if (EMAILJS_SERVICE_ID !== 'YOUR_EMAILJS_SERVICE_ID') {
+                sendDualEmails(formData);
+            }
             
-            // Generate JSON for Notion
-            const notionData = generateNotionData(formData);
-            document.getElementById('notionData').textContent = JSON.stringify(notionData, null, 2);
-            
-            // Switch to success screen
+            // Switch to success screen (clean version)
             document.getElementById('formScreen').style.display = 'none';
             document.getElementById('successScreen').style.display = 'block';
             document.getElementById('successScreen').classList.add('fade-in');
+            
+            // Start countdown to redirect
+            startRedirectCountdown();
         });
+
+        // Send dual emails: brochure to visitor, contact data to admin
+        async function sendDualEmails(formData) {
+            try {
+                // Email 1: Send brochure to visitor
+                const visitorEmailParams = {
+                    to_email: formData.email,
+                    to_name: `${formData.firstName} ${formData.lastName}`,
+                    brochure_url: BROCHURE_URL,
+                    subject: 'Your Financial House Checklist is Ready!'
+                };
+
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_VISITOR, visitorEmailParams);
+                console.log('Brochure email sent successfully');
+
+                // Email 2: Send contact data to admin
+                const vcard = generateVCard(formData);
+                const notionData = generateNotionData(formData);
+                
+                const adminEmailParams = {
+                    to_email: ADMIN_EMAIL,
+                    contact_name: `${formData.firstName} ${formData.lastName}`,
+                    contact_email: formData.email,
+                    contact_phone: formData.phone,
+                    contact_company: formData.company || 'Not provided',
+                    vcard_data: vcard,
+                    notion_data: JSON.stringify(notionData, null, 2),
+                    source: formData.source,
+                    timestamp: formData.timestamp,
+                    subject: `New Lead: ${formData.firstName} ${formData.lastName}`
+                };
+
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_ADMIN, adminEmailParams);
+                console.log('Admin notification email sent successfully');
+
+            } catch (error) {
+                console.error('Email sending failed:', error);
+                // Continue with the process even if emails fail
+            }
+        }
+
+        // Start countdown and redirect to website
+        function startRedirectCountdown() {
+            let countdown = 5;
+            const countdownElement = document.getElementById('countdown');
+            if (!countdownElement) return;
+            
+            const countdownTimer = setInterval(() => {
+                countdown--;
+                countdownElement.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownTimer);
+                    window.location.href = REDIRECT_URL;
+                }
+            }, 1000);
+        }
 
         // Generate vCard format for iOS
         function generateVCard(data) {
@@ -508,52 +581,7 @@
             };
         }
 
-        // Copy to clipboard function
-        function copyToClipboard(elementId) {
-            const element = document.getElementById(elementId);
-            const text = element.textContent;
-            
-            navigator.clipboard.writeText(text).then(function() {
-                // Show temporary feedback
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = 'Copied!';
-                btn.style.background = '#00b894';
-                
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.background = '#6c757d';
-                }, 2000);
-            });
-        }
 
-        // Download brochure from Google Drive
-        document.getElementById('downloadBtn').addEventListener('click', function() {
-            // Show popup
-            document.getElementById('popupOverlay').style.display = 'flex';
-            
-            // Start countdown
-            let countdown = 5;
-            const countdownElement = document.getElementById('countdown');
-            
-            const countdownTimer = setInterval(() => {
-                countdown--;
-                countdownElement.textContent = countdown;
-                
-                if (countdown <= 0) {
-                    clearInterval(countdownTimer);
-                    
-                    // Convert Google Drive sharing URL to direct download URL
-                    const directDownloadUrl = convertGoogleDriveUrl(BROCHURE_URL);
-                    
-                    // Open brochure in new tab
-                    window.open(directDownloadUrl, '_blank');
-                    
-                    // Redirect to main website
-                    window.location.href = REDIRECT_URL;
-                }
-            }, 1000);
-        });
 
         // Convert Google Drive sharing URL to direct download/view URL
         function convertGoogleDriveUrl(shareUrl) {
@@ -580,6 +608,15 @@
             const logoElement = document.querySelector('.logo');
             if (logoElement && HEADSHOT_URL !== 'YOUR_HEADSHOT_URL_HERE') {
                 logoElement.style.backgroundImage = `url('${HEADSHOT_URL}')`;
+            }
+            
+            // Add phone number formatting
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    const formatted = formatPhoneNumber(e.target.value);
+                    e.target.value = formatted;
+                });
             }
         };
     </script>
