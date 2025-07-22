@@ -40,7 +40,11 @@
 
                 const testParams = {
                     to_email: 'dana@dje.ca',
+                    email: 'dana@dje.ca',        // Multiple parameter names
+                    user_email: 'dana@dje.ca',   // Common alternative
                     to_name: 'Test User',
+                    name: 'Test User',           // Alternative
+                    user_name: 'Test User',      // Alternative
                     brochure_url: 'https://drive.google.com/test',
                     subject: 'EmailJS Test Email'
                 };
@@ -73,7 +77,11 @@
                     EMAILJS_TEMPLATE_ID_VISITOR, 
                     {
                         to_email: 'dana@dje.ca',
-                        to_name: 'Test'
+                        email: 'dana@dje.ca',
+                        user_email: 'dana@dje.ca',
+                        to_name: 'Test',
+                        name: 'Test',
+                        user_name: 'Test'
                     }
                 );
                 

@@ -496,7 +496,11 @@
                 // Email 1: Send brochure to visitor
                 const visitorEmailParams = {
                     to_email: formData.email,
+                    email: formData.email,        // Try multiple parameter names
+                    user_email: formData.email,   // Common alternative
                     to_name: `${formData.firstName} ${formData.lastName}`,
+                    name: `${formData.firstName} ${formData.lastName}`,  // Alternative
+                    user_name: `${formData.firstName} ${formData.lastName}`, // Alternative  
                     brochure_url: BROCHURE_URL,
                     subject: 'Your Financial House Checklist is Ready!'
                 };
@@ -510,6 +514,8 @@
                 
                 const adminEmailParams = {
                     to_email: ADMIN_EMAIL,
+                    email: ADMIN_EMAIL,           // Try multiple parameter names  
+                    user_email: ADMIN_EMAIL,     // Common alternative
                     contact_name: `${formData.firstName} ${formData.lastName}`,
                     contact_email: formData.email,
                     contact_phone: formData.phone,
