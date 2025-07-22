@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Your Free Brochure</title>
+    <title>Financial Freedom Guide</title>
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
     <script id="recaptcha-script" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -588,7 +588,8 @@
                     name: `${formData.firstName} ${formData.lastName}`,  // Alternative
                     user_name: `${formData.firstName} ${formData.lastName}`, // Alternative  
                     brochure_url: BROCHURE_URL,
-                    subject: 'Your Financial Freedom Guide is Ready!'
+                    calendly_url: 'https://calendly.com/danaellison',
+                    subject: 'Your Core Financial Concepts Guide is Ready!'
                 };
 
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_VISITOR, visitorEmailParams);
