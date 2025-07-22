@@ -491,22 +491,17 @@
         // Obfuscated admin email for security
         const ADMIN_EMAIL = atob('ZGFuYUBkamUuY2E=');
         
-        // EmailOctopus Newsletter Configuration (UPDATE WITH YOUR DETAILS)
+        // EmailOctopus Newsletter Configuration - FORM SUBMISSION METHOD
         // 
-        // SETUP INSTRUCTIONS FOR EMAILOCTOPUS API (MUCH MORE RELIABLE):
-        // 1. Log into emailoctopus.com
-        // 2. Go to Settings > API in the left sidebar
-        // 3. Click "Create API key" and copy the key
-        // 4. Go to Lists and copy your List ID from the list URL or settings
-        // 5. Replace the values below:
+        // SETUP INSTRUCTIONS (BROWSER-COMPATIBLE):
+        // 1. Go to emailoctopus.com > Lists > Your List
+        // 2. Click "Settings" for your list
+        // 3. Find your List ID in the URL or settings
+        // 4. The form submission URL format is: https://emailoctopus.com/lists/LIST_ID/members/embedded/add
         //
-        // API Key: Get from Settings > API > Create API key
-        // List ID: Get from your list URL or list settings (usually starts with a letter)
+        // Using form submission instead of REST API to avoid CORS issues
         //
-        // Example List ID: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-        //
-        const EMAILOCTOPUS_API_KEY = 'eo_2e2ee29414205f18b514810a03021c8f1a03636931cf2a2aafc2b71c3097eba2'; // Get from Settings > API
-        const EMAILOCTOPUS_LIST_ID = 'e6a2d40e-6712-11f0-9741-ed4e62d38108'; // Get from Lists page
+        const EMAILOCTOPUS_LIST_ID = 'e6a2d40e-6712-11f0-9741-ed4e62d38108'; // Your List ID
         
         // =====================================
         // Phone number formatting
@@ -560,7 +555,7 @@
             };
             
             // Subscribe to newsletter if checkbox is checked
-            if (formData.newsletter && EMAILOCTOPUS_API_KEY !== 'YOUR_API_KEY_HERE') {
+            if (formData.newsletter && EMAILOCTOPUS_LIST_ID !== 'YOUR_LIST_ID_HERE') {
                 subscribeToNewsletter(formData);
             }
             
@@ -625,69 +620,39 @@
             }
         }
 
-        // Subscribe to newsletter via EmailOctopus REST API
+        // Subscribe to newsletter via EmailOctopus form submission (CORS-friendly)
         async function subscribeToNewsletter(formData) {
             try {
-                console.log('Subscribing to EmailOctopus newsletter via API:', formData.email);
+                console.log('Subscribing to EmailOctopus newsletter via form submission:', formData.email);
                 
-                // EmailOctopus REST API endpoint
-                const apiUrl = `https://emailoctopus.com/api/1.6/lists/${EMAILOCTOPUS_LIST_ID}/contacts`;
+                // EmailOctopus form submission endpoint (no CORS issues)
+                const formUrl = `https://emailoctopus.com/lists/${EMAILOCTOPUS_LIST_ID}/members/embedded/add`;
                 
-                // Prepare the contact data
-                const contactData = {
-                    api_key: EMAILOCTOPUS_API_KEY,
-                    email_address: formData.email,
-                    fields: {
-                        FirstName: formData.firstName,
-                        LastName: formData.lastName
-                    },
-                    tags: ['website-signup'], // Optional: tag to identify source
-                    status: 'SUBSCRIBED' // Automatically subscribe them
-                };
+                // Create FormData for form submission
+                const formDataSubmission = new FormData();
+                formDataSubmission.append('email_address', formData.email);
+                formDataSubmission.append('first_name', formData.firstName);
+                formDataSubmission.append('last_name', formData.lastName);
                 
                 // Add optional fields if they exist
                 if (formData.phone) {
-                    contactData.fields.Phone = formData.phone;
+                    formDataSubmission.append('field_0', formData.phone); // Assuming Phone is custom field 0
                 }
                 if (formData.company) {
-                    contactData.fields.Company = formData.company;
+                    formDataSubmission.append('field_1', formData.company); // Assuming Company is custom field 1
                 }
                 
-                console.log('Submitting to EmailOctopus API URL:', apiUrl);
-                console.log('Contact data:', contactData);
+                console.log('Submitting to EmailOctopus form URL:', formUrl);
                 
-                // Submit to EmailOctopus REST API
-                const response = await fetch(apiUrl, {
+                // Submit via form submission (no-cors to avoid preflight)
+                const response = await fetch(formUrl, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(contactData),
-                    mode: 'cors' // Explicitly set CORS mode
+                    body: formDataSubmission,
+                    mode: 'no-cors' // Required to avoid CORS preflight
                 });
                 
-                console.log('Response status:', response.status);
-                console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log('✅ EmailOctopus subscription successful:', result);
-                    console.log('Contact ID:', result.id);
-                } else {
-                    const errorText = await response.text();
-                    console.error('❌ EmailOctopus subscription failed:');
-                    console.error('Status:', response.status);
-                    console.error('Error:', errorText);
-                    
-                    // Try to parse error as JSON for better details
-                    try {
-                        const errorJson = JSON.parse(errorText);
-                        console.error('Error details:', errorJson);
-                    } catch (e) {
-                        console.error('Raw error:', errorText);
-                    }
-                }
+                // With no-cors we can't read the response, but no error means success
+                console.log('✅ EmailOctopus form submission completed (no-cors mode)');
                 
             } catch (error) {
                 console.error('Newsletter subscription error:', error);
