@@ -240,6 +240,63 @@
             line-height: 1.4;
         }
 
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            font-size: 14px;
+            color: #cccccc;
+            line-height: 1.5;
+            margin-bottom: 0;
+            text-align: left;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            height: 18px;
+            width: 18px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #c9a96e;
+            border-radius: 3px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-container:hover input ~ .checkmark {
+            background-color: rgba(201, 169, 110, 0.1);
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background: linear-gradient(135deg, #c9a96e, #d4b876);
+            border-color: #c9a96e;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 4px;
+            height: 9px;
+            border: solid #1a1a1a;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
         .captcha-container {
             margin: 20px 0;
             display: flex;
@@ -349,7 +406,7 @@
         <div id="formScreen">
             <div class="logo"></div>
             <h1>Create Financial Freedom on Your Terms</h1>
-            <p class="subtitle">Discover core financial principles that build wealth AND learn about a professional opportunity that offers schedule flexibility, comprehensive training, and the potential for significant additional income.</p>
+            <p class="subtitle">Download core financial principles that build wealth AND learn about a professional opportunity that offers schedule flexibility, comprehensive training, and the potential for significant additional income.</p>
             
             <form id="contactForm">
                 <div class="form-group">
@@ -378,7 +435,15 @@
                 </div>
                 
                 
-                <button type="submit" class="btn">Get Your Financial Freedom Guide</button>
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="newsletter" name="newsletter" checked>
+                        <span class="checkmark"></span>
+                        Add me to your email newsletter for financial tips and opportunities
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn">Download Your Financial Freedom Guide</button>
             </form>
             
             <p class="privacy">Your information is secure and will never be shared with third parties.</p>
@@ -426,6 +491,21 @@
         // Obfuscated admin email for security
         const ADMIN_EMAIL = atob('ZGFuYUBkamUuY2E=');
         
+        // EmailOctopus Newsletter Configuration (UPDATE WITH YOUR DETAILS)
+        // 
+        // SETUP INSTRUCTIONS FOR EMAILOCTOPUS (FREE UP TO 2,500 SUBSCRIBERS):
+        // 1. Create free account at emailoctopus.com
+        // 2. Create a new list (Lists > Create list)
+        // 3. Go to "Forms & landing pages" > Create form
+        // 4. After creating form, you'll get JavaScript embed code like:
+        //    <script async src="https://eocampaign1.com/form/8d4a5b74-6713-11f0-a50d-2902e37e50e3.js" data-form="8d4a5b74-6713-11f0-a50d-2902e37e50e3"></script>
+        // 5. Extract the FORM_ID from the script (the long ID after /form/ and in data-form)
+        // 6. Replace YOUR_FORM_ID_HERE below with that ID
+        //
+        // Example: If your script has "8d4a5b74-6713-11f0-a50d-2902e37e50e3", use that as FORM_ID
+        //
+        const EMAILOCTOPUS_FORM_ID = '8d4a5b74-6713-11f0-a50d-2902e37e50e3'; // Your EmailOctopus form ID
+        
         // =====================================
         // Phone number formatting
         function formatPhoneNumber(input) {
@@ -472,9 +552,15 @@
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
                 company: document.getElementById('company').value,
+                newsletter: document.getElementById('newsletter').checked,
                 timestamp: new Date().toISOString(),
                 source: 'QR Code Landing Page'
             };
+            
+            // Subscribe to newsletter if checkbox is checked
+            if (formData.newsletter && EMAILOCTOPUS_FORM_ID !== 'YOUR_FORM_ID_HERE') {
+                subscribeToNewsletter(formData);
+            }
             
             // Send emails if EmailJS is configured
             if (EMAILJS_SERVICE_ID !== 'YOUR_EMAILJS_SERVICE_ID') {
@@ -520,6 +606,7 @@
                     contact_email: formData.email,
                     contact_phone: formData.phone,
                     contact_company: formData.company || 'Not provided',
+                    newsletter_subscription: formData.newsletter ? 'Yes' : 'No',
                     vcard_data: vcard,
                     notion_data: JSON.stringify(notionData, null, 2),
                     source: formData.source,
@@ -533,6 +620,36 @@
             } catch (error) {
                 console.error('Email sending failed:', error);
                 // Continue with the process even if emails fail
+            }
+        }
+
+        // Subscribe to newsletter via EmailOctopus
+        async function subscribeToNewsletter(formData) {
+            try {
+                console.log('Subscribing to EmailOctopus newsletter:', formData.email);
+                
+                // EmailOctopus API endpoint
+                const apiUrl = `https://eocampaign1.com/form/${EMAILOCTOPUS_FORM_ID}`;
+                
+                // Create form data for EmailOctopus
+                const emailOctopusData = new FormData();
+                emailOctopusData.append('email_address', formData.email);
+                emailOctopusData.append('first_name', formData.firstName);
+                emailOctopusData.append('last_name', formData.lastName);
+                if (formData.phone) emailOctopusData.append('phone', formData.phone);
+                if (formData.company) emailOctopusData.append('company', formData.company);
+                
+                // Submit to EmailOctopus API
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    body: emailOctopusData,
+                    mode: 'no-cors' // Required for EmailOctopus
+                });
+                
+                console.log('EmailOctopus newsletter subscription submitted successfully');
+            } catch (error) {
+                console.error('Newsletter subscription failed:', error);
+                // Don't stop the form process if newsletter fails
             }
         }
 
@@ -580,6 +697,7 @@
                 "Email": data.email,
                 "Phone": data.phone || "",
                 "Company": data.company || "",
+                "Newsletter": data.newsletter ? "Yes" : "No",
                 "Source": data.source,
                 "Date Added": data.timestamp.split('T')[0],
                 "Status": "New Lead",
