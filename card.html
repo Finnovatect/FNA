@@ -348,8 +348,8 @@
         <!-- Form Screen -->
         <div id="formScreen">
             <div class="logo"></div>
-            <h1>Financial House Checklist</h1>
-            <p class="subtitle">Get your comprehensive financial planning checklist to maximize cash flow, eliminate debt, protect your family, and build lasting wealth. Includes strategies for education savings, retirement planning, tax reduction, and legacy building.</p>
+            <h1>Create Financial Freedom on Your Terms</h1>
+            <p class="subtitle">Discover core financial principles that build wealth AND learn about a professional opportunity that offers schedule flexibility, comprehensive training, and the potential for significant additional income.</p>
             
             <form id="contactForm">
                 <div class="form-group">
@@ -378,7 +378,7 @@
                 </div>
                 
                 
-                <button type="submit" class="btn">Get My Financial Checklist</button>
+                <button type="submit" class="btn">Get Your Financial Freedom Guide</button>
             </form>
             
             <p class="privacy">Your information is secure and will never be shared with third parties.</p>
@@ -388,7 +388,7 @@
         <div id="successScreen" class="success-screen">
             <div class="success-icon">📧</div>
             <h1>Thank You!</h1>
-            <p class="subtitle">Your Financial House Checklist has been sent to your email address. Check your inbox (and spam folder) for the download link.</p>
+            <p class="subtitle">Your Financial Freedom Guide has been sent to your email address. Check your inbox (and spam folder) for the download link.</p>
             
             <p class="privacy" style="margin-top: 20px; color: #c9a96e; font-weight: 500;">
                 <strong>DEBUG MODE:</strong> Redirect temporarily disabled. Check console for EmailJS errors.
@@ -502,7 +502,7 @@
                     name: `${formData.firstName} ${formData.lastName}`,  // Alternative
                     user_name: `${formData.firstName} ${formData.lastName}`, // Alternative  
                     brochure_url: BROCHURE_URL,
-                    subject: 'Your Financial House Checklist is Ready!'
+                    subject: 'Your Financial Freedom Guide is Ready!'
                 };
 
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_VISITOR, visitorEmailParams);
