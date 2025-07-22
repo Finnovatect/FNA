@@ -494,14 +494,13 @@
         // EmailOctopus Newsletter Configuration - FORM SUBMISSION METHOD
         // 
         // SETUP INSTRUCTIONS (BROWSER-COMPATIBLE):
-        // 1. Go to emailoctopus.com > Lists > Your List
-        // 2. Click "Settings" for your list
-        // 3. Find your List ID in the URL or settings
-        // 4. The form submission URL format is: https://emailoctopus.com/lists/LIST_ID/members/embedded/add
+        // Use the FORM ID from your EmailOctopus embedded form script, not the List ID
+        // From your script: 8d4a5b74-6713-11f0-a50d-2902e37e50e3
+        // Form submission URL: https://emailoctopus.com/forms/FORM_ID
         //
         // Using form submission instead of REST API to avoid CORS issues
         //
-        const EMAILOCTOPUS_LIST_ID = 'e6a2d40e-6712-11f0-9741-ed4e62d38108'; // Your List ID
+        const EMAILOCTOPUS_FORM_ID = '8d4a5b74-6713-11f0-a50d-2902e37e50e3'; // From your embedded form script
         
         // =====================================
         // Phone number formatting
@@ -555,7 +554,7 @@
             };
             
             // Subscribe to newsletter if checkbox is checked
-            if (formData.newsletter && EMAILOCTOPUS_LIST_ID !== 'YOUR_LIST_ID_HERE') {
+            if (formData.newsletter && EMAILOCTOPUS_FORM_ID !== 'YOUR_FORM_ID_HERE') {
                 subscribeToNewsletter(formData);
             }
             
@@ -625,8 +624,8 @@
             try {
                 console.log('Subscribing to EmailOctopus newsletter via form submission:', formData.email);
                 
-                // EmailOctopus form submission endpoint (no CORS issues)
-                const formUrl = `https://emailoctopus.com/lists/${EMAILOCTOPUS_LIST_ID}/members/embedded/add`;
+                // EmailOctopus form submission endpoint (matches the embed script domain)
+                const formUrl = `https://eocampaign1.com/form/${EMAILOCTOPUS_FORM_ID}`;
                 
                 // Create FormData for form submission
                 const formDataSubmission = new FormData();
