@@ -456,7 +456,7 @@
             <p class="subtitle">Your Financial Freedom Guide has been sent to your email address. Check your inbox (and spam folder) for the download link.</p>
             
             <p class="privacy" style="margin-top: 20px; color: #c9a96e; font-weight: 500;">
-                <strong>DEBUG MODE:</strong> Redirect temporarily disabled. Check console for EmailJS errors.
+                Redirecting to my website in <span id="countdown" class="countdown">5</span> seconds...
             </p>
         </div>
     </div>
@@ -572,8 +572,8 @@
             document.getElementById('successScreen').style.display = 'block';
             document.getElementById('successScreen').classList.add('fade-in');
             
-            // Start countdown to redirect - TEMPORARILY DISABLED FOR DEBUGGING
-            // startRedirectCountdown();
+            // Start countdown to redirect to Linktree
+            startRedirectCountdown();
         });
 
         // Send dual emails: brochure to visitor, contact data to admin
