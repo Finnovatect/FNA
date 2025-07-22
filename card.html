@@ -627,18 +627,26 @@
                 // EmailOctopus form submission endpoint (matches the embed script domain)
                 const formUrl = `https://eocampaign1.com/form/${EMAILOCTOPUS_FORM_ID}`;
                 
-                // Create FormData for form submission
+                // Create FormData using exact field names from EmailOctopus
                 const formDataSubmission = new FormData();
-                formDataSubmission.append('email_address', formData.email);
-                formDataSubmission.append('first_name', formData.firstName);
-                formDataSubmission.append('last_name', formData.lastName);
+                
+                // Use exact field names from your EmailOctopus setup (from screenshot)
+                formDataSubmission.append('EmailAddress', formData.email);
+                formDataSubmission.append('FirstName', formData.firstName);
+                formDataSubmission.append('LastName', formData.lastName);
                 
                 // Add optional fields if they exist
                 if (formData.phone) {
-                    formDataSubmission.append('field_0', formData.phone); // Assuming Phone is custom field 0
+                    formDataSubmission.append('Phone', formData.phone);
                 }
                 if (formData.company) {
-                    formDataSubmission.append('field_1', formData.company); // Assuming Company is custom field 1
+                    formDataSubmission.append('Company', formData.company);
+                }
+                
+                // Debug: log what we're sending
+                console.log('Form data being sent:');
+                for (let [key, value] of formDataSubmission.entries()) {
+                    console.log(`${key}: ${value}`);
                 }
                 
                 console.log('Submitting to EmailOctopus form URL:', formUrl);
