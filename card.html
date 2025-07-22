@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Your Free Brochure</title>
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script id="recaptcha-script" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         * {
@@ -377,9 +377,6 @@
                     <input type="text" id="company" name="company">
                 </div>
                 
-                <div class="captcha-container">
-                    <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
-                </div>
                 
                 <button type="submit" class="btn">Get My Financial Checklist</button>
             </form>
@@ -415,7 +412,7 @@
         const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         const RECAPTCHA_SITE_KEY = isLocalhost 
             ? '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' // Google's test key for localhost
-            : '6LeoG4srAAAAALReejXcWRXHHAqsKSCKj3vJ-ICa'; // Production key
+            : '6LeoG4srAAAAALReejXcWRXHHAqsKSCKj3vJ-ICa'; // UPDATE THIS with your GitHub Pages key
         
         // Replace with your headshot image URL
         const HEADSHOT_URL = 'https://drive.google.com/open?id=10RNlG16hhAme0C-JWTjJ6jH54i6Vgc4p&usp=drive_fs';
@@ -455,13 +452,16 @@
         emailjs.init(EMAILJS_PUBLIC_KEY);
 
         // Form submission handler
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Check reCAPTCHA
-            const recaptchaResponse = grecaptcha.getResponse();
-            if (!recaptchaResponse) {
-                alert('Please complete the reCAPTCHA verification.');
+            // Execute reCAPTCHA v3
+            try {
+                const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'submit'});
+                console.log('reCAPTCHA v3 token:', token);
+            } catch (error) {
+                console.error('reCAPTCHA failed:', error);
+                alert('reCAPTCHA verification failed. Please try again.');
                 return;
             }
             
@@ -598,11 +598,21 @@
 
         // Initialize page elements when loaded
         window.onload = function() {
-            // Update the data-sitekey attribute
-            const recaptchaElement = document.querySelector('.g-recaptcha');
-            if (recaptchaElement) {
-                recaptchaElement.setAttribute('data-sitekey', RECAPTCHA_SITE_KEY);
-            }
+            // Load reCAPTCHA v3 script dynamically
+            const recaptchaScript = document.getElementById('recaptcha-script');
+            const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const recaptchaKey = isLocalhost 
+                ? '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' // Google's test key for localhost
+                : '6LeoG4srAAAAALReejXcWRXHHAqsKSCKj3vJ-ICa'; // Your production key
+            
+            recaptchaScript.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaKey}`;
+            
+            // Wait for reCAPTCHA to load
+            recaptchaScript.onload = function() {
+                grecaptcha.ready(function() {
+                    console.log('reCAPTCHA v3 ready');
+                });
+            };
             
             // Set headshot image
             const logoElement = document.querySelector('.logo');
