@@ -391,7 +391,7 @@
             <p class="subtitle">Your Financial House Checklist has been sent to your email address. Check your inbox (and spam folder) for the download link.</p>
             
             <p class="privacy" style="margin-top: 20px; color: #c9a96e; font-weight: 500;">
-                You'll be redirected to our website in <span id="countdown" class="countdown">5</span> seconds.
+                <strong>DEBUG MODE:</strong> Redirect temporarily disabled. Check console for EmailJS errors.
             </p>
         </div>
     </div>
@@ -486,8 +486,8 @@
             document.getElementById('successScreen').style.display = 'block';
             document.getElementById('successScreen').classList.add('fade-in');
             
-            // Start countdown to redirect
-            startRedirectCountdown();
+            // Start countdown to redirect - TEMPORARILY DISABLED FOR DEBUGGING
+            // startRedirectCountdown();
         });
 
         // Send dual emails: brochure to visitor, contact data to admin
