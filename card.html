@@ -414,8 +414,8 @@
             ? '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' // Google's test key for localhost
             : '6LeoG4srAAAAALReejXcWRXHHAqsKSCKj3vJ-ICa'; // UPDATE THIS with your GitHub Pages key
         
-        // Replace with your headshot image URL
-        const HEADSHOT_URL = 'https://drive.google.com/open?id=10RNlG16hhAme0C-JWTjJ6jH54i6Vgc4p&usp=drive_fs';
+        // Replace with your headshot image URL (direct Google Drive content URL)
+        const HEADSHOT_URL = 'https://drive.usercontent.google.com/download?id=10RNlG16hhAme0C-JWTjJ6jH54i6Vgc4p&export=view';
         
         // EmailJS Configuration - Replace with your actual service details
         const EMAILJS_SERVICE_ID = 'buscard_service';
@@ -623,7 +623,20 @@
             // Set headshot image
             const logoElement = document.querySelector('.logo');
             if (logoElement && HEADSHOT_URL !== 'YOUR_HEADSHOT_URL_HERE') {
+                console.log('Loading headshot from:', HEADSHOT_URL);
                 logoElement.style.backgroundImage = `url('${HEADSHOT_URL}')`;
+                
+                // Add error handling for image load
+                const testImg = new Image();
+                testImg.onload = function() {
+                    console.log('Headshot loaded successfully');
+                };
+                testImg.onerror = function() {
+                    console.error('Failed to load headshot image');
+                    // Fallback to user icon if image fails
+                    logoElement.style.backgroundImage = `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23c9a96e"/><text x="50" y="60" text-anchor="middle" fill="%23000" font-size="40" font-family="Arial">👤</text></svg>')`;
+                };
+                testImg.src = HEADSHOT_URL;
             }
             
             // Add phone number formatting
