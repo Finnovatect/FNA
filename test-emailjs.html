@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EmailJS Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+    <h1>EmailJS Test Page</h1>
+    <button onclick="testEmail()">Test Email</button>
+    <div id="result"></div>
+
+    <script>
+        // Your EmailJS configuration
+        const EMAILJS_SERVICE_ID = 'buscard_service';
+        const EMAILJS_TEMPLATE_ID_VISITOR = 'template_check';
+        const EMAILJS_PUBLIC_KEY = 'Rqgd3ar53ZPk9z4Nf';
+        
+        // Initialize EmailJS
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+        
+        async function testEmail() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Sending test email...';
+            
+            try {
+                const testParams = {
+                    to_email: 'dana@dje.ca', // Send test to yourself
+                    to_name: 'Test User',
+                    brochure_url: 'https://drive.google.com/test',
+                    subject: 'EmailJS Test Email'
+                };
+
+                const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_VISITOR, testParams);
+                resultDiv.innerHTML = `✅ SUCCESS: Email sent! Response: ${JSON.stringify(response)}`;
+                console.log('Email sent successfully:', response);
+            } catch (error) {
+                resultDiv.innerHTML = `❌ ERROR: ${error.message || error}`;
+                console.error('Email failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>
