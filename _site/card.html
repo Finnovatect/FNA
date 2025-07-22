@@ -634,11 +634,11 @@
                 
                 // Create form data for EmailOctopus
                 const emailOctopusData = new FormData();
-                emailOctopusData.append('email_address', formData.email);
-                emailOctopusData.append('first_name', formData.firstName);
-                emailOctopusData.append('last_name', formData.lastName);
-                if (formData.phone) emailOctopusData.append('phone', formData.phone);
-                if (formData.company) emailOctopusData.append('company', formData.company);
+                emailOctopusData.append('EmailAddress', formData.email);
+                emailOctopusData.append('FirstName', formData.firstName);
+                emailOctopusData.append('LastName', formData.lastName);
+                if (formData.phone) emailOctopusData.append('Phone', formData.phone);
+                if (formData.company) emailOctopusData.append('Company', formData.company);
                 
                 // Submit to EmailOctopus API
                 const response = await fetch(apiUrl, {
