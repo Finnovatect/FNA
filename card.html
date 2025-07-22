@@ -645,36 +645,25 @@
                 }
                 console.log('🌐 [MAILCHIMP] Target URL:', cleanUrl);
                 
-                // Create FormData using Mailchimp standard field names
+                // Create FormData using ONLY standard Mailchimp field names
                 const mailchimpData = new FormData();
                 
-                // Mailchimp standard field names - try multiple variations
+                // Exact Mailchimp fields from your form HTML
                 mailchimpData.append('EMAIL', formData.email);
-                mailchimpData.append('email', formData.email);
-                mailchimpData.append('email_address', formData.email);
-                
                 mailchimpData.append('FNAME', formData.firstName);
-                mailchimpData.append('fname', formData.firstName);
-                mailchimpData.append('first_name', formData.firstName);
-                
                 mailchimpData.append('LNAME', formData.lastName);
-                mailchimpData.append('lname', formData.lastName);
-                mailchimpData.append('last_name', formData.lastName);
+                mailchimpData.append('PHONE', formData.phone || ''); // Always include, even if empty
                 
-                // Add optional fields if they exist
-                if (formData.phone) {
-                    mailchimpData.append('PHONE', formData.phone);
-                    mailchimpData.append('phone', formData.phone);
-                    console.log('📞 [MAILCHIMP] Phone:', formData.phone);
-                }
+                // Anti-spam honeypot (exact field name from your form)
+                mailchimpData.append('b_3e6ba3a42fbf295e7959c8475_218aff697b', '');
+                
+                // Submit button (exact name and value from your form)
+                mailchimpData.append('subscribe', 'Subscribe');
+                
+                console.log('📞 [MAILCHIMP] Phone:', formData.phone || 'empty');
                 if (formData.company) {
-                    mailchimpData.append('COMPANY', formData.company);
-                    mailchimpData.append('company', formData.company);
-                    console.log('🏢 [MAILCHIMP] Company:', formData.company);
+                    console.log('🏢 [MAILCHIMP] Company:', formData.company, '(NOTE: Not sent - not in Mailchimp form)');
                 }
-                
-                // Add Mailchimp required fields
-                mailchimpData.append('b_3e6ba3a42fbf295e7959c8475_218aff697b', ''); // Anti-spam honeypot
                 
                 // Debug: log everything we're sending
                 console.log('📝 [MAILCHIMP] Complete form data being sent:');
