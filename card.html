@@ -626,47 +626,99 @@
         // Subscribe to newsletter via Mailchimp form submission
         async function subscribeToNewsletter(formData) {
             try {
-                console.log('Subscribing to Mailchimp newsletter:', formData.email);
+                console.log('🚀 [MAILCHIMP] Starting newsletter subscription process at', new Date().toISOString());
+                console.log('📧 [MAILCHIMP] Email:', formData.email);
+                console.log('👤 [MAILCHIMP] Name:', formData.firstName, formData.lastName);
+                
+                // Validate email before proceeding
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(formData.email)) {
+                    console.error('❌ [MAILCHIMP] Invalid email format:', formData.email);
+                    return;
+                }
+                
+                // Check and clean the Mailchimp URL
+                let cleanUrl = MAILCHIMP_ACTION_URL;
+                if (cleanUrl.includes('&amp;')) {
+                    cleanUrl = cleanUrl.replace(/&amp;/g, '&');
+                    console.log('🔧 [MAILCHIMP] Cleaned HTML entities from URL');
+                }
+                console.log('🌐 [MAILCHIMP] Target URL:', cleanUrl);
                 
                 // Create FormData using Mailchimp standard field names
                 const mailchimpData = new FormData();
                 
-                // Mailchimp standard field names
+                // Mailchimp standard field names - try multiple variations
                 mailchimpData.append('EMAIL', formData.email);
+                mailchimpData.append('email', formData.email);
+                mailchimpData.append('email_address', formData.email);
+                
                 mailchimpData.append('FNAME', formData.firstName);
+                mailchimpData.append('fname', formData.firstName);
+                mailchimpData.append('first_name', formData.firstName);
+                
                 mailchimpData.append('LNAME', formData.lastName);
+                mailchimpData.append('lname', formData.lastName);
+                mailchimpData.append('last_name', formData.lastName);
                 
                 // Add optional fields if they exist
                 if (formData.phone) {
                     mailchimpData.append('PHONE', formData.phone);
+                    mailchimpData.append('phone', formData.phone);
+                    console.log('📞 [MAILCHIMP] Phone:', formData.phone);
                 }
                 if (formData.company) {
                     mailchimpData.append('COMPANY', formData.company);
+                    mailchimpData.append('company', formData.company);
+                    console.log('🏢 [MAILCHIMP] Company:', formData.company);
                 }
                 
-                // Add source tracking
-                mailchimpData.append('SOURCE', 'Website Newsletter Signup');
+                // Add Mailchimp required fields
+                mailchimpData.append('b_3e6ba3a42fbf295e7959c8475_218aff697b', ''); // Anti-spam honeypot
                 
-                // Debug: log what we're sending
-                console.log('Mailchimp form data being sent:');
+                // Debug: log everything we're sending
+                console.log('📝 [MAILCHIMP] Complete form data being sent:');
+                let fieldCount = 0;
                 for (let [key, value] of mailchimpData.entries()) {
-                    console.log(`${key}: ${value}`);
+                    console.log(`   ${++fieldCount}. ${key}: "${value}"`);
                 }
                 
-                console.log('Submitting to Mailchimp URL:', MAILCHIMP_ACTION_URL);
+                console.log('⏳ [MAILCHIMP] Submitting request...');
+                const startTime = Date.now();
                 
-                // Submit to Mailchimp (no-cors to avoid CORS issues)
-                const response = await fetch(MAILCHIMP_ACTION_URL, {
+                // Submit to Mailchimp with detailed logging
+                const response = await fetch(cleanUrl, {
                     method: 'POST',
                     body: mailchimpData,
-                    mode: 'no-cors' // Required for Mailchimp
+                    mode: 'no-cors', // Required for Mailchimp
+                    credentials: 'omit'
                 });
                 
-                console.log('✅ Mailchimp newsletter subscription submitted successfully');
+                const endTime = Date.now();
+                console.log(`⚡ [MAILCHIMP] Request completed in ${endTime - startTime}ms`);
+                console.log('📊 [MAILCHIMP] Response type:', response.type);
+                console.log('📊 [MAILCHIMP] Response status:', response.status || 'unknown (no-cors)');
+                console.log('📊 [MAILCHIMP] Response URL:', response.url || 'unknown (no-cors)');
+                
+                // With no-cors mode, we can't read the response body, but we can check if it threw an error
+                console.log('✅ [MAILCHIMP] Form submission completed without errors');
+                console.log('📋 [MAILCHIMP] Check your Mailchimp audience for new subscriber');
+                console.log('🔍 [MAILCHIMP] If subscriber not found, the field names or URL might be incorrect');
                 
             } catch (error) {
-                console.error('Newsletter subscription failed:', error);
-                // Don't stop the form process if newsletter fails
+                console.error('❌ [MAILCHIMP] Subscription failed with error:');
+                console.error('❌ [MAILCHIMP] Error type:', error.constructor.name);
+                console.error('❌ [MAILCHIMP] Error message:', error.message);
+                console.error('❌ [MAILCHIMP] Full error object:', error);
+                console.error('❌ [MAILCHIMP] Stack trace:', error.stack);
+                
+                // Try to provide helpful debugging info
+                if (error.message.includes('fetch')) {
+                    console.error('💡 [MAILCHIMP] This might be a network or CORS issue');
+                }
+                if (error.message.includes('URL')) {
+                    console.error('💡 [MAILCHIMP] Check if the Mailchimp action URL is correct');
+                }
             }
         }
 
