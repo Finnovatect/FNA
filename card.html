@@ -491,16 +491,20 @@
         // Obfuscated admin email for security
         const ADMIN_EMAIL = atob('ZGFuYUBkamUuY2E=');
         
-        // EmailOctopus Newsletter Configuration - FORM SUBMISSION METHOD
+        // Mailchimp Newsletter Configuration
         // 
-        // SETUP INSTRUCTIONS (BROWSER-COMPATIBLE):
-        // Use the FORM ID from your EmailOctopus embedded form script, not the List ID
-        // From your script: 8d4a5b74-6713-11f0-a50d-2902e37e50e3
-        // Form submission URL: https://emailoctopus.com/forms/FORM_ID
+        // SETUP INSTRUCTIONS FOR MAILCHIMP:
+        // 1. Log into mailchimp.com
+        // 2. Go to Audience > All contacts (your main audience)
+        // 3. Click "Signup forms" > "Embedded forms"
+        // 4. Choose "Classic" form (not the modern popup)
+        // 5. In the generated HTML, find the form action URL like:
+        //    <form action="https://YOURCOMPANY.us1.list-manage.com/subscribe/post?u=XXXXX&id=YYYYY" method="post">
+        // 6. Copy ONLY the URL from the action="" part and paste below
         //
-        // Using form submission instead of REST API to avoid CORS issues
+        // Example: https://mycompany.us1.list-manage.com/subscribe/post?u=abc123def456&id=ghi789jkl012
         //
-        const EMAILOCTOPUS_FORM_ID = '8d4a5b74-6713-11f0-a50d-2902e37e50e3'; // From your embedded form script
+        const MAILCHIMP_ACTION_URL = 'YOUR_MAILCHIMP_ACTION_URL_HERE'; // Get from embedded form action=""
         
         // =====================================
         // Phone number formatting
@@ -554,7 +558,7 @@
             };
             
             // Subscribe to newsletter if checkbox is checked
-            if (formData.newsletter && EMAILOCTOPUS_FORM_ID !== 'YOUR_FORM_ID_HERE') {
+            if (formData.newsletter && MAILCHIMP_ACTION_URL !== 'YOUR_MAILCHIMP_ACTION_URL_HERE') {
                 subscribeToNewsletter(formData);
             }
             
@@ -619,50 +623,49 @@
             }
         }
 
-        // Subscribe to newsletter via EmailOctopus form submission (CORS-friendly)
+        // Subscribe to newsletter via Mailchimp form submission
         async function subscribeToNewsletter(formData) {
             try {
-                console.log('Subscribing to EmailOctopus newsletter via form submission:', formData.email);
+                console.log('Subscribing to Mailchimp newsletter:', formData.email);
                 
-                // EmailOctopus form submission endpoint (matches the embed script domain)
-                const formUrl = `https://eocampaign1.com/form/${EMAILOCTOPUS_FORM_ID}`;
+                // Create FormData using Mailchimp standard field names
+                const mailchimpData = new FormData();
                 
-                // Create FormData using exact field names from EmailOctopus
-                const formDataSubmission = new FormData();
-                
-                // Use exact field names from your EmailOctopus setup (from screenshot)
-                formDataSubmission.append('EmailAddress', formData.email);
-                formDataSubmission.append('FirstName', formData.firstName);
-                formDataSubmission.append('LastName', formData.lastName);
+                // Mailchimp standard field names
+                mailchimpData.append('EMAIL', formData.email);
+                mailchimpData.append('FNAME', formData.firstName);
+                mailchimpData.append('LNAME', formData.lastName);
                 
                 // Add optional fields if they exist
                 if (formData.phone) {
-                    formDataSubmission.append('Phone', formData.phone);
+                    mailchimpData.append('PHONE', formData.phone);
                 }
                 if (formData.company) {
-                    formDataSubmission.append('Company', formData.company);
+                    mailchimpData.append('COMPANY', formData.company);
                 }
                 
+                // Add source tracking
+                mailchimpData.append('SOURCE', 'Website Newsletter Signup');
+                
                 // Debug: log what we're sending
-                console.log('Form data being sent:');
-                for (let [key, value] of formDataSubmission.entries()) {
+                console.log('Mailchimp form data being sent:');
+                for (let [key, value] of mailchimpData.entries()) {
                     console.log(`${key}: ${value}`);
                 }
                 
-                console.log('Submitting to EmailOctopus form URL:', formUrl);
+                console.log('Submitting to Mailchimp URL:', MAILCHIMP_ACTION_URL);
                 
-                // Submit via form submission (no-cors to avoid preflight)
-                const response = await fetch(formUrl, {
+                // Submit to Mailchimp (no-cors to avoid CORS issues)
+                const response = await fetch(MAILCHIMP_ACTION_URL, {
                     method: 'POST',
-                    body: formDataSubmission,
-                    mode: 'no-cors' // Required to avoid CORS preflight
+                    body: mailchimpData,
+                    mode: 'no-cors' // Required for Mailchimp
                 });
                 
-                // With no-cors we can't read the response, but no error means success
-                console.log('✅ EmailOctopus form submission completed (no-cors mode)');
+                console.log('✅ Mailchimp newsletter subscription submitted successfully');
                 
             } catch (error) {
-                console.error('Newsletter subscription error:', error);
+                console.error('Newsletter subscription failed:', error);
                 // Don't stop the form process if newsletter fails
             }
         }
