@@ -493,19 +493,20 @@
         
         // EmailOctopus Newsletter Configuration (UPDATE WITH YOUR DETAILS)
         // 
-        // SETUP INSTRUCTIONS FOR EMAILOCTOPUS (FREE UP TO 2,500 SUBSCRIBERS):
-        // 1. Create free account at emailoctopus.com
-        // 2. Create a new list (Lists > Create list)
-        // 3. Go to "Forms & landing pages" > Create form
-        // 4. After creating form, you'll get JavaScript embed code like:
-        //    <script async src="https://eocampaign1.com/form/8d4a5b74-6713-11f0-a50d-2902e37e50e3.js" data-form="8d4a5b74-6713-11f0-a50d-2902e37e50e3">
-        // *< /script > *//
-        // 5. Extract the FORM_ID from the script (the long ID after /form/ and in data-form)
-        // 6. Replace YOUR_FORM_ID_HERE below with that ID
+        // SETUP INSTRUCTIONS FOR EMAILOCTOPUS API (MUCH MORE RELIABLE):
+        // 1. Log into emailoctopus.com
+        // 2. Go to Settings > API in the left sidebar
+        // 3. Click "Create API key" and copy the key
+        // 4. Go to Lists and copy your List ID from the list URL or settings
+        // 5. Replace the values below:
         //
-        // Example: If your script has "8d4a5b74-6713-11f0-a50d-2902e37e50e3", use that as FORM_ID
+        // API Key: Get from Settings > API > Create API key
+        // List ID: Get from your list URL or list settings (usually starts with a letter)
         //
-        const EMAILOCTOPUS_FORM_ID = '8d4a5b74-6713-11f0-a50d-2902e37e50e3'; // Your EmailOctopus form ID
+        // Example List ID: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        //
+        const EMAILOCTOPUS_API_KEY = 'eo_2e2ee29414205f18b514810a03021c8f1a03636931cf2a2aafc2b71c3097eba2'; // Get from Settings > API
+        const EMAILOCTOPUS_LIST_ID = 'e6a2d40e-6712-11f0-9741-ed4e62d38108'; // Get from Lists page
         
         // =====================================
         // Phone number formatting
@@ -559,7 +560,7 @@
             };
             
             // Subscribe to newsletter if checkbox is checked
-            if (formData.newsletter && EMAILOCTOPUS_FORM_ID !== 'YOUR_FORM_ID_HERE') {
+            if (formData.newsletter && EMAILOCTOPUS_API_KEY !== 'YOUR_API_KEY_HERE') {
                 subscribeToNewsletter(formData);
             }
             
@@ -624,32 +625,56 @@
             }
         }
 
-        // Subscribe to newsletter via EmailOctopus
+        // Subscribe to newsletter via EmailOctopus REST API
         async function subscribeToNewsletter(formData) {
             try {
-                console.log('Subscribing to EmailOctopus newsletter:', formData.email);
+                console.log('Subscribing to EmailOctopus newsletter via API:', formData.email);
                 
-                // EmailOctopus API endpoint
-                const apiUrl = `https://eocampaign1.com/form/${EMAILOCTOPUS_FORM_ID}`;
+                // EmailOctopus REST API endpoint
+                const apiUrl = `https://emailoctopus.com/api/1.6/lists/${EMAILOCTOPUS_LIST_ID}/contacts`;
                 
-                // Create form data for EmailOctopus
-                const emailOctopusData = new FormData();
-                emailOctopusData.append('EmailAddress', formData.email);
-                emailOctopusData.append('FirstName', formData.firstName);
-                emailOctopusData.append('LastName', formData.lastName);
-                if (formData.phone) emailOctopusData.append('Phone', formData.phone);
-                if (formData.company) emailOctopusData.append('Company', formData.company);
+                // Prepare the contact data
+                const contactData = {
+                    api_key: EMAILOCTOPUS_API_KEY,
+                    email_address: formData.email,
+                    fields: {
+                        FirstName: formData.firstName,
+                        LastName: formData.lastName
+                    },
+                    tags: ['website-signup'], // Optional: tag to identify source
+                    status: 'SUBSCRIBED' // Automatically subscribe them
+                };
                 
-                // Submit to EmailOctopus API
+                // Add optional fields if they exist
+                if (formData.phone) {
+                    contactData.fields.Phone = formData.phone;
+                }
+                if (formData.company) {
+                    contactData.fields.Company = formData.company;
+                }
+                
+                console.log('Submitting to EmailOctopus API URL:', apiUrl);
+                console.log('Contact data:', contactData);
+                
+                // Submit to EmailOctopus REST API
                 const response = await fetch(apiUrl, {
                     method: 'POST',
-                    body: emailOctopusData,
-                    mode: 'no-cors' // Required for EmailOctopus
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(contactData)
                 });
                 
-                console.log('EmailOctopus newsletter subscription submitted successfully');
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('✅ EmailOctopus subscription successful:', result);
+                } else {
+                    const error = await response.text();
+                    console.error('❌ EmailOctopus subscription failed:', response.status, error);
+                }
+                
             } catch (error) {
-                console.error('Newsletter subscription failed:', error);
+                console.error('Newsletter subscription error:', error);
                 // Don't stop the form process if newsletter fails
             }
         }
