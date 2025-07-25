@@ -473,7 +473,36 @@
         .hidden {
             display: none;
         }
-        \n        /* Percentage symbol styling */\n        .percentage-symbol {\n            font-weight: bold;\n            color: #b19777;\n            margin-left: 5px;\n            font-size: 1.1em;\n        }\n        \n        /* Specific layout for liability items with smaller interest rate field */\n        .liability-item {\n            grid-template-columns: 1fr 1fr 0.6fr 1fr !important;\n        }\n        \n        /* Income item styling */\n        .income-item input, .income-item select {\n            background: #444 !important;\n            color: #ffffff !important;\n            border: 1px solid #666 !important;\n        }\n        \n        .income-item input:focus, .income-item select:focus {\n            background: #555 !important;\n            border-color: #b19777 !important;\n        }\n        \n        /* Remove button styling */\n        .remove-btn {\n            background: linear-gradient(135deg, #b19777, #c9a96e) !important;\n            color: #1a1a1a !important;\n            border: none !important;\n            padding: 5px 10px !important;\n            border-radius: 4px !important;\n            cursor: pointer !important;\n            font-size: 0.8em !important;\n            font-weight: 500 !important;\n        }\n        \n        .remove-btn:hover {\n            background: linear-gradient(135deg, #c9a96e, #d4b876) !important;\n            transform: translateY(-1px) !important;\n        }\n        \n        /* Goal item styling */\n        .goal-item input, .goal-item select {\n            background: #444 !important;\n            color: #ffffff !important;\n            border: 1px solid #666 !important;\n            padding: 12px 15px !important;\n            border-radius: 8px !important;\n            font-size: 14px !important;\n        }\n        \n        .goal-item input:focus, .goal-item select:focus {\n            background: #555 !important;\n            border-color: #b19777 !important;\n            box-shadow: 0 0 0 3px rgba(177, 151, 119, 0.2) !important;\n        }
+        
+        /* Percentage symbol styling */
+        .percentage-symbol {
+            font-weight: bold;
+            color: #b19777;
+            margin-left: 5px;
+            font-size: 1.1em;
+        }
+        
+        /* Specific layout for liability items with smaller interest rate field */
+        .liability-item {
+            grid-template-columns: 1fr 1fr 0.6fr 1fr !important;
+        }
+        
+        /* Remove button styling */
+        .remove-btn {
+            background: linear-gradient(135deg, #b19777, #c9a96e) !important;
+            color: #1a1a1a !important;
+            border: none !important;
+            padding: 5px 10px !important;
+            border-radius: 4px !important;
+            cursor: pointer !important;
+            font-size: 0.8em !important;
+            font-weight: 500 !important;
+        }
+        
+        .remove-btn:hover {
+            background: linear-gradient(135deg, #c9a96e, #d4b876) !important;
+            transform: translateY(-1px) !important;
+        }
         
         /* Priority goal checkboxes styling */
         .priority-goal[type="checkbox"] {
@@ -562,6 +591,51 @@
             background: #555 !important;
             border-color: #b19777 !important;
             box-shadow: 0 0 0 3px rgba(177, 151, 119, 0.2) !important;
+        }
+        
+        /* Comprehensive styling for all form elements */
+        .income-item input, .income-item select,
+        .goal-item input, .goal-item select,
+        .asset-item input, .asset-item select {
+            background: #444 !important;
+            color: #ffffff !important;
+            border: 1px solid #666 !important;
+            padding: 12px 15px !important;
+            border-radius: 8px !important;
+            font-size: 14px !important;
+        }
+        
+        .income-item input:focus, .income-item select:focus,
+        .goal-item input:focus, .goal-item select:focus,
+        .asset-item input:focus, .asset-item select:focus {
+            background: #555 !important;
+            border-color: #b19777 !important;
+            box-shadow: 0 0 0 3px rgba(177, 151, 119, 0.2) !important;
+        }
+        
+        
+        /* Layout adjustments for debt sections - 1 element per line */
+        .secured-debt, .unsecured-debt {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #555;
+            border-radius: 8px;
+        }
+        
+        .secured-debt select, .secured-debt input,
+        .unsecured-debt select, .unsecured-debt input {
+            width: 100% !important;
+            margin-bottom: 0 !important;
+        }
+        
+        /* Ensure percentage symbol stays inline with input */
+        .secured-debt .liability-rate, .unsecured-debt .liability-rate {
+            display: inline-block !important;
+            width: calc(100% - 30px) !important;
         }\n    </style>
 </head>
 <body>
