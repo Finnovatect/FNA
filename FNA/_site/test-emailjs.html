@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EmailJS Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+    <h1>EmailJS Test Page</h1>
+    <button onclick="testEmail()">Test Email</button>
+    <button onclick="testSimpleEmail()">Test Simple Email</button>
+    <div id="result"></div>
+    
+    <h3>Debug Info:</h3>
+    <div id="debug">
+        <p><strong>Service ID:</strong> buscard_service</p>
+        <p><strong>Template ID:</strong> template_check</p>
+        <p><strong>Public Key:</strong> Rqgd3ar53ZPk9z4Nf</p>
+    </div>
+
+    <script>
+        // Your EmailJS configuration
+        const EMAILJS_SERVICE_ID = 'buscard_service';
+        const EMAILJS_TEMPLATE_ID_VISITOR = 'template_check';
+        const EMAILJS_PUBLIC_KEY = 'Rqgd3ar53ZPk9z4Nf';
+        
+        // Obfuscated admin email for security - NEVER show plain text in code
+        const ADMIN_EMAIL = atob('ZGFuYUBkamUuY2E=');
+        
+        // Initialize EmailJS
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+        
+        async function testEmail() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Sending test email...';
+            
+            try {
+                // More detailed error logging
+                console.log('Testing EmailJS with config:', {
+                    serviceId: EMAILJS_SERVICE_ID,
+                    templateId: EMAILJS_TEMPLATE_ID_VISITOR,
+                    publicKey: EMAILJS_PUBLIC_KEY
+                });
+
+                const testParams = {
+                    to_email: ADMIN_EMAIL,       // Obfuscated email
+                    email: ADMIN_EMAIL,          // Multiple parameter names
+                    user_email: ADMIN_EMAIL,     // Common alternative
+                    to_name: 'Test User',
+                    name: 'Test User',           // Alternative
+                    user_name: 'Test User',      // Alternative
+                    brochure_url: 'https://drive.google.com/test',
+                    subject: 'EmailJS Test Email'
+                };
+
+                console.log('Sending with params:', testParams);
+                const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_VISITOR, testParams);
+                
+                resultDiv.innerHTML = `✅ SUCCESS: Email sent! Status: ${response.status}, Text: ${response.text}`;
+                console.log('Email sent successfully:', response);
+            } catch (error) {
+                resultDiv.innerHTML = `❌ ERROR: ${error.text || error.message || JSON.stringify(error)}`;
+                console.error('Full error object:', error);
+                console.error('Error details:', {
+                    status: error.status,
+                    text: error.text,
+                    message: error.message
+                });
+            }
+        }
+
+        // Simple test with minimal parameters
+        async function testSimpleEmail() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing simple email...';
+            
+            try {
+                // Test with just the essential parameters
+                const response = await emailjs.send(
+                    EMAILJS_SERVICE_ID, 
+                    EMAILJS_TEMPLATE_ID_VISITOR, 
+                    {
+                        to_email: ADMIN_EMAIL,      // Obfuscated email
+                        email: ADMIN_EMAIL,         // Multiple parameter names
+                        user_email: ADMIN_EMAIL,    // Common alternative
+                        to_name: 'Test',
+                        name: 'Test',
+                        user_name: 'Test'
+                    }
+                );
+                
+                resultDiv.innerHTML = `✅ SIMPLE SUCCESS: ${response.status} - ${response.text}`;
+            } catch (error) {
+                resultDiv.innerHTML = `❌ SIMPLE ERROR: ${error.text || error.message}`;
+                console.error('Simple test failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+127.0.0.1 - - [24/Jul/2025 21:28:31] "HEAD / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jul/2025 21:28:42] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jul/2025 21:28:42] code 404, message File not found
+127.0.0.1 - - [24/Jul/2025 21:28:42] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [24/Jul/2025 21:41:30] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jul/2025 21:58:33] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jul/2025 22:18:00] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jul/2025 22:18:30] code 404, message File not found
+127.0.0.1 - - [24/Jul/2025 22:18:30] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+127.0.0.1 - - [24/Jul/2025 22:19:05] "GET /index.html HTTP/1.1" 304 -
+127.0.0.1 - - [24/Jul/2025 22:19:05] code 404, message File not found
+127.0.0.1 - - [24/Jul/2025 22:19:05] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+127.0.0.1 - - [24/Jul/2025 22:19:15] "GET /index.html HTTP/1.1" 304 -
+127.0.0.1 - - [24/Jul/2025 22:19:15] code 404, message File not found
+127.0.0.1 - - [24/Jul/2025 22:19:15] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+127.0.0.1 - - [24/Jul/2025 22:30:35] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jul/2025 22:30:35] code 404, message File not found
+127.0.0.1 - - [24/Jul/2025 22:30:35] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+127.0.0.1 - - [24/Jul/2025 22:32:56] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [24/Jul/2025 22:32:57] code 404, message File not found
+127.0.0.1 - - [24/Jul/2025 22:32:57] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -

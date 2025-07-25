@@ -1,0 +1,2963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Impact Financial Needs Analysis (FNA)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* Replace this placeholder with actual logo */
+        .logo-placeholder {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        .header-text {
+            flex: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .file-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .file-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        .file-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .tab-container {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #495057;
+            position: relative;
+            user-select: none;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+        
+        .tab:hover {
+            background: #e9ecef;
+            color: #2c3e50;
+        }
+        
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e9ecef;
+        }
+        
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .partner-section {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .partner-section h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .goal-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .income-item {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 2fr 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .liability-item, .asset-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .add-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .add-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .results-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .fin-display {
+            text-align: center;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .fin-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .scenario-tabs {
+            display: flex;
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 5px;
+        }
+        
+        .scenario-tab {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .scenario-tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            height: 400px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .summary-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+        
+        .summary-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .summary-card .label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .print-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 20px 0;
+        }
+        
+        .print-btn:hover {
+            background: #218838;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-summary, .print-summary * {
+                visibility: visible;
+            }
+            .print-summary {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .tab-container {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1;
+                min-width: 120px;
+                font-size: 0.9em;
+                padding: 12px 15px;
+            }
+            
+            .form-row, .form-row-3, .form-row-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            .goal-item, .income-item, .liability-item, .asset-item {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-section">
+                <!-- Replace this div with actual logo image -->
+                <!-- Recommended logo dimensions: 60px x 60px or proportional -->
+                <div class="logo-placeholder">FNA</div>
+                <div class="header-text">
+                    <h1>Financial Needs Analysis</h1>
+                    <p>Comprehensive Financial Planning Tool</p>
+                </div>
+            </div>
+            <div class="file-controls">
+                <button class="file-btn" onclick="saveData()">💾 Save</button>
+                <input type="file" id="fileInput" accept=".json" style="display: none;"><!-- Removed inline onchange to avoid reference error - event listener added in JavaScript -->
+                <button class="file-btn" onclick="document.getElementById('fileInput').click()">📁 Load</button>
+            </div>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab active" onclick="switchTab('family')">👨‍👩‍👧‍👦 Family</div>
+            <div class="tab" onclick="switchTab('income')">💰 Income</div>
+            <div class="tab" onclick="switchTab('assumptions')">📊 Assumptions</div>
+            <div class="tab" onclick="switchTab('goals')">🎯 Goals</div>
+            <div class="tab" onclick="switchTab('assets')">📈 Assets</div>
+            <div class="tab" onclick="switchTab('liabilities')">💳 Liabilities</div>
+            <div class="tab" onclick="switchTab('insurance')">🛡️ Insurance</div>
+            <div class="tab" onclick="switchTab('results')">📋 Results</div>
+        </div>
+        
+        <!-- Family Tab -->
+        <div id="family" class="tab-content active">
+            <div class="form-section">
+                <h3>👨‍👩‍👧‍👦 Family Information</h3>
+                
+                <div class="form-row">
+                    <!-- Partner 1 Section -->
+                    <div class="partner-section">
+                        <h4 id="partner1Header">👤 Partner 1</h4>
+                        <div class="form-group">
+                            <label for="spouse1Name">Full Name:</label>
+                            <input type="text" id="spouse1Name" placeholder="Full Name" onchange="updatePartnerNames()">
+                        </div>
+                        <div class="form-group">
+                            <label for="spouse1DOB">Date of Birth:</label>
+                            <input type="date" id="spouse1DOB">
+                        </div>
+                        <div class="form-group">
+                            <label for="spouse1Gender">Gender:</label>
+                            <select id="spouse1Gender">
+                                <option value="">Select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="spouse1RetireAge">Retirement Age:</label>
+                            <input type="number" id="spouse1RetireAge" min="50" max="80" value="65">
+                        </div>
+                        <div class="form-group">
+                            <label for="spouse1LifeExpectancy">Life Expectancy:</label>
+                            <input type="number" id="spouse1LifeExpectancy" min="65" max="110" value="85">
+                        </div>
+                    </div>
+                    
+                    <!-- Partner 2 Section -->
+                    <div class="partner-section">
+                        <h4 id="partner2Header">👤 Partner 2</h4>
+                        <div class="form-group">
+                            <label for="spouse2Name">Full Name:</label>
+                            <input type="text" id="spouse2Name" placeholder="Full Name" onchange="updatePartnerNames()">
+                        </div>
+                        <div class="form-group">
+                            <label for="spouse2DOB">Date of Birth:</label>
+                            <input type="date" id="spouse2DOB">
+                        </div>
+                        <div class="form-group">
+                            <label for="spouse2Gender">Gender:</label>
+                            <select id="spouse2Gender">
+                                <option value="">Select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="spouse2RetireAge">Retirement Age:</label>
+                            <input type="number" id="spouse2RetireAge" min="50" max="80" value="65">
+                        </div>
+                        <div class="form-group">
+                            <label for="spouse2LifeExpectancy">Life Expectancy:</label>
+                            <input type="number" id="spouse2LifeExpectancy" min="65" max="110" value="85">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>👶 Dependents</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">
+                    <strong>Note:</strong> Current average cost of university in Canada (living at home): 
+                    <strong>$12,000-$15,000/year</strong> including tuition, books, and minimal living expenses.
+                </p>
+                <div id="dependentsList">
+                    <div class="form-row-4" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
+                        <div class="form-group">
+                            <label>Child Name:</label>
+                            <input type="text" class="dependent-name" placeholder="Child's Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Date of Birth:</label>
+                            <input type="date" class="dependent-dob">
+                        </div>
+                        <div class="form-group">
+                            <label>Post-Secondary Start Age:</label>
+                            <input type="number" class="dependent-edu-age" value="18" min="16" max="25">
+                        </div>
+                        <div class="form-group">
+                            <label>Years of Study:</label>
+                            <input type="number" class="dependent-study-years" value="4" min="1" max="8">
+                        </div>
+                        <div class="form-group">
+                            <label>Annual Education Cost:</label>
+                            <input type="number" class="dependent-edu-cost" value="12000" step="1000">
+                        </div>
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addDependent()">+ Add Dependent</button>
+            </div>
+        </div>
+        
+        <!-- Income Tab -->
+        <div id="income" class="tab-content">
+            <div class="form-section">
+                <h3 id="partner1IncomeTitle">💰 Partner 1 Income - $0 per year</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Enter net "take-home" amounts after taxes and deductions</p>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="income1Rate">Net Take-Home Pay Rate ($):</label>
+                        <input type="number" id="income1Rate" step="0.01" placeholder="Amount" onchange="updateIncomeDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label for="income1Frequency">Frequency:</label>
+                        <select id="income1Frequency" onchange="updateIncomeDisplay()">
+                            <option value="hourly">Hourly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="biweekly">Bi-weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly" selected>Yearly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="income1Hours">Hours/Week (if hourly):</label>
+                        <input type="number" id="income1Hours" value="40" min="1" max="80" onchange="updateIncomeDisplay()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="income1Rental">Net Rental Income (Monthly $):</label>
+                        <input type="number" id="income1Rental" step="100" placeholder="$0" onchange="updateIncomeDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label for="income1Business">Net Business Income (Monthly $):</label>
+                        <input type="number" id="income1Business" step="100" placeholder="$0" onchange="updateIncomeDisplay()">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 id="partner2IncomeTitle">💰 Partner 2 Income - $0 per year</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Enter net "take-home" amounts after taxes and deductions</p>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="income2Rate">Net Take-Home Pay Rate ($):</label>
+                        <input type="number" id="income2Rate" step="0.01" placeholder="Amount" onchange="updateIncomeDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label for="income2Frequency">Frequency:</label>
+                        <select id="income2Frequency" onchange="updateIncomeDisplay()">
+                            <option value="hourly">Hourly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="biweekly">Bi-weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly" selected>Yearly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="income2Hours">Hours/Week (if hourly):</label>
+                        <input type="number" id="income2Hours" value="40" min="1" max="80" onchange="updateIncomeDisplay()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="income2Rental">Net Rental Income (Monthly $):</label>
+                        <input type="number" id="income2Rental" step="100" placeholder="$0" onchange="updateIncomeDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label for="income2Business">Net Business Income (Monthly $):</label>
+                        <input type="number" id="income2Business" step="100" placeholder="$0" onchange="updateIncomeDisplay()">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>💼 Other Income Sources</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Add additional income sources beyond employment income</p>
+                <div id="otherIncomeList">
+                    <div class="income-item">
+                        <select class="income-type" onchange="updateIncomeDisplay()">
+                            <option value="rental">Rental Income</option>
+                            <option value="investment">Investment Income</option>
+                            <option value="vacation-rental">Vacation Rental</option>
+                            <option value="royalties">Royalties</option>
+                            <option value="pension">Pension Income</option>
+                            <option value="social-benefits">Social Benefits</option>
+                            <option value="freelance">Freelance/Contract</option>
+                            <option value="side-business">Side Business</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <input type="number" class="income-amount" placeholder="Monthly Amount ($)" step="100" onchange="updateIncomeDisplay()">
+                        <input type="text" class="income-description" placeholder="Description (optional)">
+                        <button type="button" class="remove-btn" onclick="removeIncomeSource(this)" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Remove</button>
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addIncomeSource()">+ Add Income Source</button>
+            </div>
+        </div>
+        
+        <!-- Assumptions Tab -->
+        <div id="assumptions" class="tab-content">
+            <div class="form-section">
+                <h3>📊 Financial Assumptions</h3>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="inflationRate">Inflation Rate (%):</label>
+                        <input type="number" id="inflationRate" step="0.01" value="2.80" min="0" max="10">
+                        <small style="color: #666;">Canadian historical average: 2.8%</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="preRetireRate">Pre-Retirement Investment Rate (%):</label>
+                        <input type="number" id="preRetireRate" step="0.01" value="6.50" min="0" max="20">
+                    </div>
+                    <div class="form-group">
+                        <label for="postRetireRate">Post-Retirement Investment Rate (%):</label>
+                        <input type="number" id="postRetireRate" step="0.01" value="4.00" min="0" max="15">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="retirementIncomePercent">Retirement Income Needed (% of pre-retirement):</label>
+                        <input type="number" id="retirementIncomePercent" step="0.01" value="70.00" min="50" max="100">
+                        <small style="color: #666;">In Canada approximately 70% of pre-retirement income is needed for retired partners</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="widowReduction">Reduction for Widow(er) (%):</label>
+                        <input type="number" id="widowReduction" step="0.01" value="70.00" min="0" max="100">
+                        <small style="color: #666;">Reduced living expenses if one partner passes</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>🏠 Housing Assumptions</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="currentHousing">Current Housing:</label>
+                        <select id="currentHousing">
+                            <option value="own">Own</option>
+                            <option value="rent">Rent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="retirementHousing">Retirement Housing:</label>
+                        <select id="retirementHousing" onchange="toggleRentField()">
+                            <option value="own">Own</option>
+                            <option value="rent">Rent</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="downsizeIntent">Downsize at Retirement:</label>
+                        <select id="downsizeIntent" onchange="toggleDownsizeField()">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                    <!-- Conditional downsize value field - hidden by default -->
+                    <div class="form-group" id="downsizeValueGroup" style="display: none;">
+                        <label for="downsizeValue">Downsize Value in Today's Dollars ($):</label>
+                        <input type="number" id="downsizeValue" step="10000" placeholder="Expected proceeds from downsizing">
+                        <small style="color: #666;">Net proceeds after selling current home and buying smaller one</small>
+                    </div>
+                    <!-- Conditional rent field - only show if retirement housing is rent -->
+                    <div class="form-group" id="retirementRentGroup" style="display: none;">
+                        <label for="retirementRent">Expected Monthly Rent in Retirement ($):</label>
+                        <input type="number" id="retirementRent" value="2200" step="100">
+                        <small style="color: #666;">Calgary, AB average: $2,200</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>🏛️ CPP/OAS Estimates</h3>
+                <div class="form-row-4">
+                    <div class="form-group">
+                        <label for="cpp1Monthly" id="cpp1Label">Partner 1 CPP Monthly ($):</label>
+                        <input type="number" id="cpp1Monthly" value="758" step="10">
+                        <small style="color: #666;">2024 average: $758</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="oas1Monthly" id="oas1Label">Partner 1 OAS Monthly ($):</label>
+                        <input type="number" id="oas1Monthly" value="713" step="10">
+                        <small style="color: #666;">2024 maximum: $713</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="cpp2Monthly" id="cpp2Label">Partner 2 CPP Monthly ($):</label>
+                        <input type="number" id="cpp2Monthly" value="758" step="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="oas2Monthly" id="oas2Label">Partner 2 OAS Monthly ($):</label>
+                        <input type="number" id="oas2Monthly" value="713" step="10">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Goals Tab -->
+        <div id="goals" class="tab-content">
+            <div class="form-section">
+                <h3>🎯 Financial Goals</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Enter goals with amounts to include them in calculations automatically</p>
+                <div id="goalsList">
+                    <div class="goal-item">
+                        <select class="goal-type">
+                            <option value="home">Home Purchase</option>
+                            <option value="mortgage">Pay Off Mortgage</option>
+                            <option value="education">Education Funding</option>
+                            <option value="business">Start Business</option>
+                            <option value="travel">Travel</option>
+                            <option value="debt">Pay Off Debts</option>
+                            <option value="parents">Aging Parents Support</option>
+                            <option value="emergency">Emergency Fund</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <input type="number" class="goal-years" placeholder="Years Away" min="0" max="50">
+                        <input type="number" class="goal-amount" placeholder="Amount ($)" step="1000">
+                        <select class="goal-frequency">
+                            <option value="one-time">One-time</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addGoal()">+ Add Goal</button>
+            </div>
+            
+            <div class="form-section">
+                <h3>🌟 Life & Financial Priorities</h3>
+                <p style="color: #666; margin-bottom: 20px;">Select the priorities that are important to you and your family:</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="goal-travel-more" class="priority-goal">
+                        <label for="goal-travel-more" style="margin-bottom: 0;">Travel More</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="goal-inflation" class="priority-goal">
+                        <label for="goal-inflation" style="margin-bottom: 0;">Keep ahead of inflation</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="goal-invest" class="priority-goal">
+                        <label for="goal-invest" style="margin-bottom: 0;">Learn to invest wisely</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="goal-estate" class="priority-goal">
+                        <label for="goal-estate" style="margin-bottom: 0;">Leave an estate for my family</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="goal-coach" class="priority-goal">
+                        <label for="goal-coach" style="margin-bottom: 0;">Acquire a financial coach</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="goal-retirement-plan" class="priority-goal">
+                        <label for="goal-retirement-plan" style="margin-bottom: 0;">Create a solid plan for retirement</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="goal-family" class="priority-goal">
+                        <label for="goal-family" style="margin-bottom: 0;">Start a family</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="goal-funeral" class="priority-goal">
+                        <label for="goal-funeral" style="margin-bottom: 0;">Funeral planning & concierge</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="goal-insurance" class="priority-goal">
+                        <label for="goal-insurance" style="margin-bottom: 0;">Save money on home/auto/pet insurance</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Income Tab -->
+        <div id="income" class="tab-content">
+            <div class="form-section">
+                <h3 id="partner1IncomeTitle">💰 Partner 1 Income - $0 per year</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Enter net "take-home" amounts after taxes and deductions</p>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="income1Rate">Net Take-Home Pay Rate ($):</label>
+                        <input type="number" id="income1Rate" step="0.01" placeholder="Amount" onchange="updateIncomeDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label for="income1Frequency">Frequency:</label>
+                        <select id="income1Frequency" onchange="updateIncomeDisplay()">
+                            <option value="hourly">Hourly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="biweekly">Bi-weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly" selected>Yearly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="income1Hours">Hours/Week (if hourly):</label>
+                        <input type="number" id="income1Hours" value="40" min="1" max="80" onchange="updateIncomeDisplay()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="income1Rental">Net Rental Income (Monthly $):</label>
+                        <input type="number" id="income1Rental" step="100" placeholder="$0" onchange="updateIncomeDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label for="income1Business">Net Business Income (Monthly $):</label>
+                        <input type="number" id="income1Business" step="100" placeholder="$0" onchange="updateIncomeDisplay()">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 id="partner2IncomeTitle">💰 Partner 2 Income - $0 per year</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Enter net "take-home" amounts after taxes and deductions</p>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="income2Rate">Net Take-Home Pay Rate ($):</label>
+                        <input type="number" id="income2Rate" step="0.01" placeholder="Amount" onchange="updateIncomeDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label for="income2Frequency">Frequency:</label>
+                        <select id="income2Frequency" onchange="updateIncomeDisplay()">
+                            <option value="hourly">Hourly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="biweekly">Bi-weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly" selected>Yearly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="income2Hours">Hours/Week (if hourly):</label>
+                        <input type="number" id="income2Hours" value="40" min="1" max="80" onchange="updateIncomeDisplay()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="income2Rental">Net Rental Income (Monthly $):</label>
+                        <input type="number" id="income2Rental" step="100" placeholder="$0" onchange="updateIncomeDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label for="income2Business">Net Business Income (Monthly $):</label>
+                        <input type="number" id="income2Business" step="100" placeholder="$0" onchange="updateIncomeDisplay()">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Assets Tab -->
+        <div id="assets" class="tab-content">
+            <div class="form-section">
+                <h3>📈 Assets</h3>
+                <!-- Column Headers -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 10px; padding: 10px 15px; background: #f8f9fa; border-radius: 6px; font-weight: 600; color: #2c3e50;">
+                    <div>Asset Type</div>
+                    <div>Current Value ($)</div>
+                    <div>Rate of Return (%)</div>
+                    <div>Institution and Notes</div>
+                </div>
+                <div id="assetsList">
+                    <div class="asset-item">
+                        <select class="asset-type">
+                            <option value="rrsp">RRSP</option>
+                            <option value="tfsa">TFSA</option>
+                            <option value="non-registered">Non-Registered</option>
+                            <option value="pension">Pension</option>
+                            <option value="rdsp">RDSP</option>
+                            <option value="resp">RESP</option>
+                            <option value="real-estate">Real Estate</option>
+                            <option value="business">Business</option>
+                            <option value="precious-metals">Precious Metals</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <input type="text" class="asset-value" placeholder="$0.00" step="1000" value="$0.00" onchange="formatCurrency(this)">
+                        <input type="text" class="asset-growth" placeholder="1.00%" step="0.01" value="1.00%" onchange="formatPercentage(this)">
+                        <input type="text" class="asset-notes" placeholder="Institution and Notes">
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addAsset()">+ Add Asset</button>
+            </div>
+        </div>
+        
+        <!-- Liabilities Tab -->
+        <div id="liabilities" class="tab-content">
+            <div class="form-section">
+                <h3>💳 Liabilities</h3>
+                <!-- Column Headers -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 10px; padding: 10px 15px; background: #f8f9fa; border-radius: 6px; font-weight: 600; color: #2c3e50;">
+                    <div>Liability Type</div>
+                    <div>Current Balance ($)</div>
+                    <div>Interest Rate (%)</div>
+                    <div>Monthly Payment ($)</div>
+                </div>
+                <div id="liabilitiesList">
+                    <div class="liability-item">
+                        <select class="liability-type">
+                            <option value="mortgage">Mortgage</option>
+                            <option value="vehicle">Vehicle</option>
+                            <option value="secured-loan">Secured Loan</option>
+                            <option value="unsecured-loan">Unsecured Loan</option>
+                            <option value="credit-card">Credit Card</option>
+                            <option value="line-of-credit">Line of Credit</option>
+                            <option value="student-loan">Student Loan</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <input type="number" class="liability-balance" placeholder="Current Balance ($)" step="1000" onchange="updateLiabilityPayment(this)">
+                        <input type="number" class="liability-rate" placeholder="19.00%" step="0.1" value="19.00">
+                        <input type="number" class="liability-payment" placeholder="Monthly Payment ($)" step="10">
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addLiability()">+ Add Liability</button>
+            </div>
+        </div>
+        
+        <!-- Insurance Tab -->
+        <div id="insurance" class="tab-content">
+            <div class="form-section">
+                <h3>🛡️ Current Insurance Policies</h3>
+                <div id="insuranceList">
+                    <div class="form-row-4">
+                        <div class="form-group">
+                            <label>Policy Type:</label>
+                            <select class="insurance-type">
+                                <option value="term-life">Term Life</option>
+                                <option value="whole-life">Whole Life</option>
+                                <option value="universal-life">Universal Life</option>
+                                <option value="disability">Disability</option>
+                                <option value="critical-illness">Critical Illness</option>
+                                <option value="health">Health/Extended Health</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Coverage Amount ($):</label>
+                            <input type="number" class="insurance-amount" step="10000" placeholder="Coverage Amount">
+                        </div>
+                        <div class="form-group">
+                            <label>Monthly Premium ($):</label>
+                            <input type="number" class="insurance-premium" step="10" placeholder="Monthly Premium">
+                        </div>
+                        <div class="form-group">
+                            <label>Term/Duration:</label>
+                            <input type="text" class="insurance-term" placeholder="e.g., 20 years, Age 65">
+                        </div>
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addInsurance()">+ Add Insurance Policy</button>
+            </div>
+            
+            <div class="form-section">
+                <h3>💰 Insurance Needs Analysis (DIME Method)</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="finalExpenses">Final Expenses ($):</label>
+                        <input type="number" id="finalExpenses" value="15000" step="1000">
+                        <small style="color: #666;">Funeral, legal, medical costs</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="incomeReplacement">Years of Income Replacement:</label>
+                        <input type="number" id="incomeReplacement" value="10" min="1" max="30">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="mortgageDebt">Total Mortgage/Debt to Pay Off ($):</label>
+                        <input type="number" id="mortgageDebt" step="10000" placeholder="Auto-calculated from liabilities">
+                        <small style="color: #666;">Will be calculated from your liabilities</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="educationFund">Education Fund Needed ($):</label>
+                        <input type="number" id="educationFund" step="5000" placeholder="Auto-calculated from dependents">
+                        <small style="color: #666;">Will be calculated from your dependents</small>
+                    </div>
+                </div>
+                
+                <div class="results-section" style="margin-top: 25px;">
+                    <h4>Insurance Coverage Analysis (DIME Method)</h4>
+                    <div id="dimeCalculationTable" style="margin: 20px 0;">
+                        <!-- DIME calculation table will be populated by JavaScript -->
+                    </div>
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <div id="totalInsuranceNeed" class="value">$0</div>
+                            <div class="label">Total Insurance Needed</div>
+                        </div>
+                        <div class="summary-card">
+                            <div id="currentInsuranceCoverage" class="value">$0</div>
+                            <div class="label">Current Coverage</div>
+                        </div>
+                        <div class="summary-card">
+                            <div id="insuranceGap" class="value">$0</div>
+                            <div class="label">Coverage Gap</div>
+                        </div>
+                        <div class="summary-card">
+                            <div id="monthlyPremiums" class="value">$0</div>
+                            <div class="label">Monthly Premiums</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Tab -->
+        <div id="results" class="tab-content">
+            <button class="calculate-btn" onclick="calculateComprehensiveFIN()">🧮 Calculate Complete Financial Analysis</button>
+            
+            <div id="calculationResults" class="hidden">
+                <div class="fin-display">
+                    <h2>Your Financial Independence Number (FIN#)</h2>
+                    <div id="finNumber" class="fin-number">$0</div>
+                    <p>Total amount needed at retirement</p>
+                </div>
+                
+                <div class="scenario-tabs">
+                    <div class="scenario-tab active" onclick="switchScenario('preserve')">Preserve Principal</div>
+                    <div class="scenario-tab" onclick="switchScenario('deplete')">Deplete by Life Expectancy</div>
+                    <div class="scenario-tab" onclick="switchScenario('blended')">Blended Approach</div>
+                </div>
+                
+                <div id="scenarioResults">
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <div id="yearsToRetirement" class="value">0</div>
+                            <div class="label">Years to Retirement</div>
+                        </div>
+                        <div class="summary-card">
+                            <div id="retirementLength" class="value">0</div>
+                            <div class="label">Years in Retirement</div>
+                        </div>
+                        <div class="summary-card">
+                            <div id="monthlyShortfall" class="value">$0</div>
+                            <div class="label">Monthly Income Shortfall</div>
+                        </div>
+                        <div class="summary-card">
+                            <div id="monthlySavingsNeeded" class="value">$0</div>
+                            <div class="label">Monthly Savings Needed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="projectionChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="netWorthChart"></canvas>
+                </div>
+                
+                <div class="form-section">
+                    <h3>📊 Detailed Breakdown</h3>
+                    <div id="detailedBreakdown"></div>
+                </div>
+                
+                <button class="print-btn" onclick="generatePrintSummary()">🖨️ Generate Printable Summary</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hidden print summary -->
+    <div id="printSummary" class="print-summary hidden">
+        <!-- Print content will be generated here -->
+    </div>
+    
+    <script>
+        // Global function - defined immediately
+        function switchTab(tabName) {
+            console.log('switchTab called with:', tabName);
+            
+            // Hide all tab content
+            var contents = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+            
+            // Remove active from all tabs
+            var tabs = document.getElementsByClassName('tab');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            // Show selected content
+            var selectedContent = document.getElementById(tabName);
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
+            
+            // Activate clicked tab
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        }
+        
+        // Global functions for adding form elements
+        // Add new dependent row with exact same grid layout as original
+        function addDependent() {
+            const container = document.getElementById('dependentsList');
+            const div = document.createElement('div');
+            div.className = 'form-row-4';
+            // Match the exact inline style from the original row (line 527)
+            div.style.gridTemplateColumns = '1fr 1fr 1fr 1fr 1fr';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>Child Name:</label>
+                    <input type="text" class="dependent-name" placeholder="Child's Name">
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth:</label>
+                    <input type="date" class="dependent-dob">
+                </div>
+                <div class="form-group">
+                    <label>Post-Secondary Start Age:</label>
+                    <input type="number" class="dependent-edu-age" value="18" min="16" max="25">
+                </div>
+                <div class="form-group">
+                    <label>Years of Study:</label>
+                    <input type="number" class="dependent-study-years" value="4" min="1" max="8">
+                </div>
+                <div class="form-group">
+                    <label>Annual Education Cost:</label>
+                    <input type="number" class="dependent-edu-cost" value="12000" step="1000">
+                </div>
+            `;
+            container.appendChild(div);
+        }
+        
+        function addGoal() {
+            const container = document.getElementById('goalsList');
+            const div = document.createElement('div');
+            div.className = 'goal-item';
+            div.innerHTML = `
+                <select class="goal-type">
+                    <option value="home">Home Purchase</option>
+                    <option value="mortgage">Pay Off Mortgage</option>
+                    <option value="education">Education Funding</option>
+                    <option value="business">Start Business</option>
+                    <option value="travel">Travel</option>
+                    <option value="debt">Pay Off Debts</option>
+                    <option value="parents">Aging Parents Support</option>
+                    <option value="emergency">Emergency Fund</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="number" class="goal-years" placeholder="Years Away" min="0" max="50">
+                <input type="number" class="goal-amount" placeholder="Amount ($)" step="1000">
+                <select class="goal-frequency">
+                    <option value="one-time">One-time</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+            `;
+            container.appendChild(div);
+        }
+        
+        function addAsset() {
+            const container = document.getElementById('assetsList');
+            const div = document.createElement('div');
+            div.className = 'asset-item';
+            div.innerHTML = `
+                <select class="asset-type">
+                    <option value="rrsp">RRSP</option>
+                    <option value="tfsa">TFSA</option>
+                    <option value="non-registered">Non-Registered</option>
+                    <option value="pension">Pension</option>
+                    <option value="rdsp">RDSP</option>
+                    <option value="resp">RESP</option>
+                    <option value="real-estate">Real Estate</option>
+                    <option value="business">Business</option>
+                    <option value="precious-metals">Precious Metals</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="text" class="asset-value" placeholder="$0.00" value="$0.00" onchange="formatCurrency(this)">
+                <input type="text" class="asset-growth" placeholder="1.00%" value="1.00%" onchange="formatPercentage(this)">
+                <input type="text" class="asset-notes" placeholder="Institution and Notes">
+            `;
+            container.appendChild(div);
+        }
+        
+        function addLiability() {
+            const container = document.getElementById('liabilitiesList');
+            const div = document.createElement('div');
+            div.className = 'liability-item';
+            div.innerHTML = `
+                <select class="liability-type">
+                    <option value="mortgage">Mortgage</option>
+                    <option value="vehicle">Vehicle</option>
+                    <option value="secured-loan">Secured Loan</option>
+                    <option value="unsecured-loan">Unsecured Loan</option>
+                    <option value="credit-card">Credit Card</option>
+                    <option value="line-of-credit">Line of Credit</option>
+                    <option value="student-loan">Student Loan</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="number" class="liability-balance" placeholder="Current Balance ($)" step="1000" onchange="updateLiabilityPayment(this)">
+                <input type="number" class="liability-rate" placeholder="19.00%" step="0.1" value="19.00">
+                <input type="number" class="liability-payment" placeholder="Monthly Payment ($)" step="10">
+            `;
+            container.appendChild(div);
+        }
+        
+        function addInsurance() {
+            const container = document.getElementById('insuranceList');
+            const div = document.createElement('div');
+            div.className = 'form-row-4';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>Policy Type:</label>
+                    <select class="insurance-type">
+                        <option value="term-life">Term Life</option>
+                        <option value="whole-life">Whole Life</option>
+                        <option value="universal-life">Universal Life</option>
+                        <option value="disability">Disability</option>
+                        <option value="critical-illness">Critical Illness</option>
+                        <option value="health">Health/Extended Health</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Coverage Amount ($):</label>
+                    <input type="number" class="insurance-amount" step="10000" placeholder="Coverage Amount">
+                </div>
+                <div class="form-group">
+                    <label>Monthly Premium ($):</label>
+                    <input type="number" class="insurance-premium" step="10" placeholder="Monthly Premium">
+                </div>
+                <div class="form-group">
+                    <label>Term/Duration:</label>
+                    <input type="text" class="insurance-term" placeholder="e.g., 20 years, Age 65">
+                </div>
+            `;
+            container.appendChild(div);
+        }
+        
+        function saveData() {
+            try {
+                const data = collectAllData();
+                const lastName = data.family.spouse1.name ? data.family.spouse1.name.split(' ').pop() : 'Client';
+                const today = new Date();
+                const dateStr = today.getFullYear() + '-' + 
+                              String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                              String(today.getDate()).padStart(2, '0');
+                
+                let finNumber = 0;
+                if (window.currentCalculations) {
+                    finNumber = window.currentCalculations.scenarios[currentScenario].finNumber;
+                }
+                
+                const filename = `${dateStr} ${lastName} FIN ${Math.round(finNumber/1000)}k.json`;
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('Data saved successfully!');
+            } catch (error) {
+                alert('Error saving data: ' + error.message);
+            }
+        }
+        
+        function updateLiabilityPayment(balanceInput) {
+            const balance = parseFloat(balanceInput.value) || 0;
+            const paymentInput = balanceInput.parentElement.parentElement.querySelector('.liability-payment');
+            const payment = Math.max(10, balance * 0.01);
+            paymentInput.value = payment.toFixed(0);
+        }
+        
+        // Update income display with real-time calculations
+        function updateIncomeDisplay() {
+            try {
+                // Partner 1 Income Calculation
+                const rate1 = parseFloat(document.getElementById('income1Rate').value) || 0;
+                const frequency1 = document.getElementById('income1Frequency').value;
+                const hours1 = parseFloat(document.getElementById('income1Hours').value) || 40;
+                const rental1 = parseFloat(document.getElementById('income1Rental').value) || 0;
+                const business1 = parseFloat(document.getElementById('income1Business').value) || 0;
+                
+                const annual1 = calculateAnnualIncome(rate1, frequency1, hours1) + (rental1 * 12) + (business1 * 12);
+                
+                // Partner 2 Income Calculation
+                const rate2 = parseFloat(document.getElementById('income2Rate').value) || 0;
+                const frequency2 = document.getElementById('income2Frequency').value;
+                const hours2 = parseFloat(document.getElementById('income2Hours').value) || 40;
+                const rental2 = parseFloat(document.getElementById('income2Rental').value) || 0;
+                const business2 = parseFloat(document.getElementById('income2Business').value) || 0;
+                
+                const annual2 = calculateAnnualIncome(rate2, frequency2, hours2) + (rental2 * 12) + (business2 * 12);
+                
+                // Calculate total from other income sources
+                let otherIncomeTotal = 0;
+                document.querySelectorAll('.income-item').forEach(item => {
+                    const amount = parseFloat(item.querySelector('.income-amount').value) || 0;
+                    otherIncomeTotal += amount * 12; // Convert monthly to annual
+                });
+                
+                // NEW: Get partner names for personalization
+                const partner1Name = document.getElementById('spouse1Name').value.trim();
+                const partner2Name = document.getElementById('spouse2Name').value.trim();
+                
+                // NEW: Create personalized titles or fall back to generic ones
+                const income1Title = partner1Name ? `💰 ${partner1Name} Income` : '💰 Partner 1 Income';
+                const income2Title = partner2Name ? `💰 ${partner2Name} Income` : '💰 Partner 2 Income';
+                
+                // Calculate total household income including other sources
+                const totalHouseholdIncome = annual1 + annual2 + otherIncomeTotal;
+                
+                // Update titles with calculated amounts and personalized names
+                document.getElementById('partner1IncomeTitle').textContent = 
+                    `${income1Title} - $${annual1.toLocaleString()} per year`;
+                    
+                document.getElementById('partner2IncomeTitle').textContent = 
+                    `${income2Title} - $${annual2.toLocaleString()} per year`;
+                    
+            } catch (error) {
+                console.error('Error updating income display:', error);
+            }
+        }
+        
+        // NEW: Function to update partner names throughout the application
+        function updatePartnerNames() {
+            const partner1Name = document.getElementById('spouse1Name').value.trim();
+            const partner2Name = document.getElementById('spouse2Name').value.trim();
+            
+            // Update family tab headers with actual names or fallback to generic
+            document.getElementById('partner1Header').textContent = partner1Name ? `👤 ${partner1Name}` : '👤 Partner 1';
+            document.getElementById('partner2Header').textContent = partner2Name ? `👤 ${partner2Name}` : '👤 Partner 2';
+            
+            // Update CPP/OAS labels in assumptions tab with personalized names
+            const cpp1Label = partner1Name ? `${partner1Name} CPP Monthly ($):` : 'Partner 1 CPP Monthly ($):';
+            const oas1Label = partner1Name ? `${partner1Name} OAS Monthly ($):` : 'Partner 1 OAS Monthly ($):';
+            const cpp2Label = partner2Name ? `${partner2Name} CPP Monthly ($):` : 'Partner 2 CPP Monthly ($):';
+            const oas2Label = partner2Name ? `${partner2Name} OAS Monthly ($):` : 'Partner 2 OAS Monthly ($):';
+            
+            document.getElementById('cpp1Label').textContent = cpp1Label;
+            document.getElementById('oas1Label').textContent = oas1Label;
+            document.getElementById('cpp2Label').textContent = cpp2Label;
+            document.getElementById('oas2Label').textContent = oas2Label;
+            
+            // Also update income displays to reflect name changes
+            updateIncomeDisplay();
+        }
+
+        // Show/hide downsize value field based on downsize intent selection
+        function toggleDownsizeField() {
+            const downsizeIntent = document.getElementById('downsizeIntent').value;
+            const downsizeValueGroup = document.getElementById('downsizeValueGroup');
+            
+            if (downsizeIntent === 'yes') {
+                downsizeValueGroup.style.display = 'block';
+            } else {
+                downsizeValueGroup.style.display = 'none';
+                // Clear the value when hiding
+                document.getElementById('downsizeValue').value = '';
+            }
+        }
+
+        // Show/hide retirement rent field based on retirement housing selection
+        function toggleRentField() {
+            const retirementHousing = document.getElementById('retirementHousing').value;
+            const retirementRentGroup = document.getElementById('retirementRentGroup');
+            
+            if (retirementHousing === 'rent') {
+                retirementRentGroup.style.display = 'block';
+            } else {
+                retirementRentGroup.style.display = 'none';
+                // Reset to default value when hiding
+                document.getElementById('retirementRent').value = '2200';
+            }
+        }
+
+        /* // Initialize the field visibility on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleDownsizeField();
+            toggleRentField();
+        }); */
+
+        // Calculate annual income from frequency
+        function calculateAnnualIncome(rate, frequency, hours = 40) {
+            if (!rate || rate <= 0) return 0;
+            
+            const multipliers = {
+                'hourly': hours * 52,
+                'weekly': 52,
+                'biweekly': 26,
+                'monthly': 12,
+                'yearly': 1
+            };
+            return rate * (multipliers[frequency] || 1);
+        }
+        
+        // Calculate age from date of birth for dependents and spouses
+        function calculateAge(dob) {
+            if (!dob) return 0;
+            const today = new Date();
+            const birth = new Date(dob);
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            // Adjust if birthday hasn't occurred this year
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        // Collect all form data from every tab and return as structured object
+        function collectAllData() {
+            // Collect family data from Family tab
+            const family = {
+                spouse1: {
+                    name: document.getElementById('spouse1Name').value,
+                    dob: document.getElementById('spouse1DOB').value,
+                    gender: document.getElementById('spouse1Gender').value,
+                    retireAge: parseInt(document.getElementById('spouse1RetireAge').value) || 65,
+                    lifeExpectancy: parseInt(document.getElementById('spouse1LifeExpectancy').value) || 85,
+                    age: calculateAge(document.getElementById('spouse1DOB').value)
+                },
+                spouse2: {
+                    name: document.getElementById('spouse2Name').value,
+                    dob: document.getElementById('spouse2DOB').value,
+                    gender: document.getElementById('spouse2Gender').value,
+                    retireAge: parseInt(document.getElementById('spouse2RetireAge').value) || 65,
+                    lifeExpectancy: parseInt(document.getElementById('spouse2LifeExpectancy').value) || 85,
+                    age: calculateAge(document.getElementById('spouse2DOB').value)
+                },
+                dependents: []
+            };
+            
+            // Collect all dependents from the dynamic list
+            document.querySelectorAll('#dependentsList .form-row-4').forEach(row => {
+                const name = row.querySelector('.dependent-name').value;
+                const dob = row.querySelector('.dependent-dob').value;
+                const eduAge = parseInt(row.querySelector('.dependent-edu-age').value) || 18;
+                const studyYears = parseInt(row.querySelector('.dependent-study-years').value) || 4;
+                const eduCost = parseFloat(row.querySelector('.dependent-edu-cost').value) || 12000;
+                
+                // Only add if name and DOB are provided
+                if (name && dob) {
+                    family.dependents.push({
+                        name, dob, eduAge, studyYears, eduCost,
+                        age: calculateAge(dob)
+                    });
+                }
+            });
+            
+            // Collect financial assumptions from Assumptions tab
+            const assumptions = {
+                inflationRate: parseFloat(document.getElementById('inflationRate').value) / 100 || 0.028,
+                preRetireRate: parseFloat(document.getElementById('preRetireRate').value) / 100 || 0.065,
+                postRetireRate: parseFloat(document.getElementById('postRetireRate').value) / 100 || 0.04,
+                retirementIncomePercent: parseFloat(document.getElementById('retirementIncomePercent').value) / 100 || 0.70,
+                widowReduction: parseFloat(document.getElementById('widowReduction').value) / 100 || 0.70,
+                currentHousing: document.getElementById('currentHousing').value,
+                retirementHousing: document.getElementById('retirementHousing').value,
+                downsizeIntent: document.getElementById('downsizeIntent').value === 'yes',
+                downsizeValue: parseFloat(document.getElementById('downsizeValue').value) || 0,
+                retirementRent: parseFloat(document.getElementById('retirementRent').value) || 2200,
+                cpp1: parseFloat(document.getElementById('cpp1Monthly').value) || 758,
+                oas1: parseFloat(document.getElementById('oas1Monthly').value) || 713,
+                cpp2: parseFloat(document.getElementById('cpp2Monthly').value) || 758,
+                oas2: parseFloat(document.getElementById('oas2Monthly').value) || 713
+            };
+            
+            // Collect goals from Goals tab
+            const goals = [];
+            document.querySelectorAll('.goal-item').forEach(item => {
+                const type = item.querySelector('.goal-type').value;
+                const years = parseInt(item.querySelector('.goal-years').value) || 0;
+                const amount = parseFloat(item.querySelector('.goal-amount').value) || 0;
+                const frequency = item.querySelector('.goal-frequency').value;
+                
+                // Only save goals that have an amount
+                if (amount > 0) {
+                    goals.push({ type, years, amount, frequency });
+                }
+            });
+            
+            // Collect income data from Income tab
+            const income = {
+                spouse1: {
+                    rate: parseFloat(document.getElementById('income1Rate').value) || 0,
+                    frequency: document.getElementById('income1Frequency').value,
+                    hours: parseFloat(document.getElementById('income1Hours').value) || 40,
+                    rental: parseFloat(document.getElementById('income1Rental').value) || 0,
+                    business: parseFloat(document.getElementById('income1Business').value) || 0
+                },
+                spouse2: {
+                    rate: parseFloat(document.getElementById('income2Rate').value) || 0,
+                    frequency: document.getElementById('income2Frequency').value,
+                    hours: parseFloat(document.getElementById('income2Hours').value) || 40,
+                    rental: parseFloat(document.getElementById('income2Rental').value) || 0,
+                    business: parseFloat(document.getElementById('income2Business').value) || 0
+                },
+                otherSources: []
+            };
+            
+            // Collect other income sources
+            document.querySelectorAll('.income-item').forEach(item => {
+                const type = item.querySelector('.income-type').value;
+                const amount = parseFloat(item.querySelector('.income-amount').value) || 0;
+                const description = item.querySelector('.income-description').value;
+                
+                if (amount > 0) {
+                    income.otherSources.push({ type, amount, description });
+                }
+            });
+            
+            // Calculate total annual incomes for reference
+            income.spouse1.annual = calculateAnnualIncome(income.spouse1.rate, income.spouse1.frequency, income.spouse1.hours) + 
+                                (income.spouse1.rental * 12) + (income.spouse1.business * 12);
+            income.spouse2.annual = calculateAnnualIncome(income.spouse2.rate, income.spouse2.frequency, income.spouse2.hours) + 
+                                (income.spouse2.rental * 12) + (income.spouse2.business * 12);
+            income.otherSourcesAnnual = income.otherSources.reduce((total, source) => total + (source.amount * 12), 0);
+            income.totalAnnual = income.spouse1.annual + income.spouse2.annual + income.otherSourcesAnnual;
+            
+            // Collect assets from Assets tab
+            const assets = [];
+            document.querySelectorAll('.asset-item').forEach(item => {
+                const type = item.querySelector('.asset-type').value;
+                // Handle both formatted ($X,XXX.XX) and plain number inputs
+                const valueStr = item.querySelector('.asset-value').value.replace(/[^0-9.]/g, '');
+                const value = parseFloat(valueStr) || 0;
+                const growthStr = item.querySelector('.asset-growth').value.replace(/[^0-9.]/g, '');
+                const growth = parseFloat(growthStr) / 100 || 0.01;
+                const notes = item.querySelector('.asset-notes').value;
+                
+                // Only save assets with value
+                if (value > 0) {
+                    assets.push({ type, value, growth, notes });
+                }
+            });
+            
+            // Collect liabilities from Liabilities tab
+            const liabilities = [];
+            document.querySelectorAll('.liability-item').forEach(item => {
+                const type = item.querySelector('.liability-type').value;
+                const balance = parseFloat(item.querySelector('.liability-balance').value) || 0;
+                const rate = parseFloat(item.querySelector('.liability-rate').value) / 100 || 0;
+                const payment = parseFloat(item.querySelector('.liability-payment').value) || 0;
+                
+                // Only save liabilities with balance
+                if (balance > 0) {
+                    liabilities.push({ type, balance, rate, payment });
+                }
+            });
+            
+            // Collect insurance from Insurance tab
+            const insurance = [];
+            document.querySelectorAll('#insuranceList .form-row-4').forEach(row => {
+                const type = row.querySelector('.insurance-type').value;
+                const amount = parseFloat(row.querySelector('.insurance-amount').value) || 0;
+                const premium = parseFloat(row.querySelector('.insurance-premium').value) || 0;
+                const term = row.querySelector('.insurance-term').value;
+                
+                // Only save insurance with coverage amount
+                if (amount > 0) {
+                    insurance.push({ type, amount, premium, term });
+                }
+            });
+            
+            // Collect insurance needs analysis data
+            const insuranceNeeds = {
+                finalExpenses: parseFloat(document.getElementById('finalExpenses').value) || 15000,
+                incomeReplacement: parseInt(document.getElementById('incomeReplacement').value) || 10
+            };
+            
+            // Return complete data structure
+            return { family, assumptions, goals, income, assets, liabilities, insurance, insuranceNeeds };
+        }
+
+        // Initialize event listeners after all functions are defined
+        // Set up file input event listener for loading data - use anonymous function to avoid reference error
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Inline populateFormData function to avoid reference issues
+                    function populateFormDataInline(data) {
+                        // Populate family data
+                        if (data.family) {
+                            document.getElementById('spouse1Name').value = data.family.spouse1.name || '';
+                            document.getElementById('spouse1DOB').value = data.family.spouse1.dob || '';
+                            document.getElementById('spouse1Gender').value = data.family.spouse1.gender || '';
+                            document.getElementById('spouse1RetireAge').value = data.family.spouse1.retireAge || 65;
+                            document.getElementById('spouse1LifeExpectancy').value = data.family.spouse1.lifeExpectancy || 85;
+                            
+                            document.getElementById('spouse2Name').value = data.family.spouse2.name || '';
+                            document.getElementById('spouse2DOB').value = data.family.spouse2.dob || '';
+                            document.getElementById('spouse2Gender').value = data.family.spouse2.gender || '';
+                            document.getElementById('spouse2RetireAge').value = data.family.spouse2.retireAge || 65;
+                            document.getElementById('spouse2LifeExpectancy').value = data.family.spouse2.lifeExpectancy || 85;
+                        }
+                        
+                        // Populate assumptions data
+                        if (data.assumptions) {
+                            document.getElementById('inflationRate').value = (data.assumptions.inflationRate * 100).toFixed(2) || 2.8;
+                            document.getElementById('preRetireRate').value = (data.assumptions.preRetireRate * 100).toFixed(2) || 6.5;
+                            document.getElementById('postRetireRate').value = (data.assumptions.postRetireRate * 100).toFixed(2) || 4.0;
+                            document.getElementById('retirementIncomePercent').value = (data.assumptions.retirementIncomePercent * 100).toFixed(2) || 70;
+                            document.getElementById('widowReduction').value = (data.assumptions.widowReduction * 100).toFixed(2) || 70;
+                            document.getElementById('currentHousing').value = data.assumptions.currentHousing || 'own';
+                            document.getElementById('retirementHousing').value = data.assumptions.retirementHousing || 'own';
+                            document.getElementById('downsizeIntent').value = data.assumptions.downsizeIntent ? 'yes' : 'no';
+                            document.getElementById('downsizeValue').value = data.assumptions.downsizeValue || '';
+                            document.getElementById('retirementRent').value = data.assumptions.retirementRent || 2200;
+                            document.getElementById('cpp1Monthly').value = data.assumptions.cpp1 || 758;
+                            document.getElementById('oas1Monthly').value = data.assumptions.oas1 || 713;
+                            document.getElementById('cpp2Monthly').value = data.assumptions.cpp2 || 758;
+                            document.getElementById('oas2Monthly').value = data.assumptions.oas2 || 713;
+                            
+                            // Update conditional field visibility
+                            if (typeof toggleDownsizeField === 'function') toggleDownsizeField();
+                            if (typeof toggleRentField === 'function') toggleRentField();
+                        }
+                        
+                        // Populate income data
+                        if (data.income) {
+                            document.getElementById('income1Rate').value = data.income.spouse1.rate || '';
+                            document.getElementById('income1Frequency').value = data.income.spouse1.frequency || 'yearly';
+                            document.getElementById('income1Hours').value = data.income.spouse1.hours || 40;
+                            document.getElementById('income1Rental').value = data.income.spouse1.rental || '';
+                            document.getElementById('income1Business').value = data.income.spouse1.business || '';
+                            
+                            document.getElementById('income2Rate').value = data.income.spouse2.rate || '';
+                            document.getElementById('income2Frequency').value = data.income.spouse2.frequency || 'yearly';
+                            document.getElementById('income2Hours').value = data.income.spouse2.hours || 40;
+                            document.getElementById('income2Rental').value = data.income.spouse2.rental || '';
+                            document.getElementById('income2Business').value = data.income.spouse2.business || '';
+                        }
+                        
+                        // Populate insurance needs
+                        if (data.insuranceNeeds) {
+                            document.getElementById('finalExpenses').value = data.insuranceNeeds.finalExpenses || 15000;
+                            document.getElementById('incomeReplacement').value = data.insuranceNeeds.incomeReplacement || 10;
+                        }
+                    }
+                    
+                    // Call the inline function
+                    populateFormDataInline(data);
+                    
+                    // Update partner names after loading data
+                    if (typeof updatePartnerNames === 'function') {
+                        updatePartnerNames();
+                    }
+                    
+                    // Update income displays
+                    if (typeof updateIncomeDisplay === 'function') {
+                        updateIncomeDisplay();
+                    }
+                    
+                    alert('Data loaded successfully!');
+                    
+                } catch (error) {
+                    alert('Error loading data: ' + error.message);
+                    console.error('JSON parsing error:', error);
+                }
+            };
+            
+            // Handle file reading errors
+            reader.onerror = function() {
+                alert('Error reading file. Please try again.');
+                console.error('FileReader error');
+            };
+            
+            reader.readAsText(file);
+        });
+        
+        /* // Added as per claude request to the better solution is to move this entire DOMContentLoaded event listener to the very end of the JavaScript code, 
+        // right before the closing script tag (after all functions are defined).
+        // Initialize event listeners after all functions are defined
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up file input event listener for loading data
+            document.getElementById('fileInput').addEventListener('change', loadData);
+            
+            // Initialize conditional field visibility
+            toggleDownsizeField();
+            toggleRentField();
+            
+            // Initialize income display
+            updateIncomeDisplay();
+        }); */
+
+    </script>
+    
+    <script>
+        // Rest of the application code
+        let charts = {};
+        let currentScenario = 'preserve';
+        
+        // Scenario switching
+        function switchScenario(scenario) {
+            currentScenario = scenario;
+            document.querySelectorAll('.scenario-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick="switchScenario('${scenario}')"]`).classList.add('active');
+            updateScenarioDisplay();
+        }
+        
+        // Add new dependent row to the dependents list
+        // Add new dependent row with same formatting as original row
+        function addDependent() {
+            const container = document.getElementById('dependentsList');
+            const div = document.createElement('div');
+            div.className = 'form-row-4';
+            // Match the original row's 5-column grid layout
+            div.style.gridTemplateColumns = '1fr 1fr 1fr 1fr 1fr';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>Child Name:</label>
+                    <input type="text" class="dependent-name" placeholder="Child's Name">
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth:</label>
+                    <input type="date" class="dependent-dob">
+                </div>
+                <div class="form-group">
+                    <label>Post-Secondary Start Age:</label>
+                    <input type="number" class="dependent-edu-age" value="18" min="16" max="25">
+                </div>
+                <div class="form-group">
+                    <label>Years of Study:</label>
+                    <input type="number" class="dependent-study-years" value="4" min="1" max="8">
+                </div>
+                <div class="form-group">
+                    <label>Annual Education Cost:</label>
+                    <input type="number" class="dependent-edu-cost" value="12000" step="1000">
+                </div>
+            `;
+            container.appendChild(div);
+        }
+        
+        function addGoal() {
+            const container = document.getElementById('goalsList');
+            const div = document.createElement('div');
+            div.className = 'goal-item';
+            div.innerHTML = `
+                <input type="checkbox" class="goal-active">
+                <select class="goal-type">
+                    <option value="home">Home Purchase</option>
+                    <option value="mortgage">Pay Off Mortgage</option>
+                    <option value="education">Education Funding</option>
+                    <option value="business">Start Business</option>
+                    <option value="travel">Travel</option>
+                    <option value="debt">Pay Off Debts</option>
+                    <option value="parents">Aging Parents Support</option>
+                    <option value="emergency">Emergency Fund</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="number" class="goal-years" placeholder="Years Away" min="0" max="50">
+                <input type="number" class="goal-amount" placeholder="Amount ($)" step="1000">
+                <select class="goal-frequency">
+                    <option value="one-time">One-time</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+            `;
+            container.appendChild(div);
+        }
+        
+        function addAsset() {
+            const container = document.getElementById('assetsList');
+            const div = document.createElement('div');
+            div.className = 'asset-item';
+            div.innerHTML = `
+                <select class="asset-type">
+                    <option value="rrsp">RRSP</option>
+                    <option value="tfsa">TFSA</option>
+                    <option value="non-registered">Non-Registered</option>
+                    <option value="pension">Pension</option>
+                    <option value="rdsp">RDSP</option>
+                    <option value="resp">RESP</option>
+                    <option value="real-estate">Real Estate</option>
+                    <option value="business">Business</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="number" class="asset-value" placeholder="Current Value ($)" step="1000">
+                <input type="number" class="asset-growth" placeholder="Growth Rate (%)" step="0.1" value="6">
+                <input type="text" class="asset-notes" placeholder="Notes">
+            `;
+            container.appendChild(div);
+        }
+        
+        function addLiability() {
+            const container = document.getElementById('liabilitiesList');
+            const div = document.createElement('div');
+            div.className = 'liability-item';
+            div.innerHTML = `
+                <select class="liability-type">
+                    <option value="mortgage">Mortgage</option>
+                    <option value="secured-loan">Secured Loan</option>
+                    <option value="unsecured-loan">Unsecured Loan</option>
+                    <option value="credit-card">Credit Card</option>
+                    <option value="line-of-credit">Line of Credit</option>
+                    <option value="student-loan">Student Loan</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="number" class="liability-balance" placeholder="Current Balance ($)" step="1000">
+                <input type="number" class="liability-rate" placeholder="Interest Rate (%)" step="0.1">
+                <input type="number" class="liability-payment" placeholder="Monthly Payment ($)" step="10">
+            `;
+            container.appendChild(div);
+        }
+        
+        function addInsurance() {
+            const container = document.getElementById('insuranceList');
+            const div = document.createElement('div');
+            div.className = 'form-row-4';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>Policy Type:</label>
+                    <select class="insurance-type">
+                        <option value="term-life">Term Life</option>
+                        <option value="whole-life">Whole Life</option>
+                        <option value="universal-life">Universal Life</option>
+                        <option value="disability">Disability</option>
+                        <option value="critical-illness">Critical Illness</option>
+                        <option value="health">Health/Extended Health</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Coverage Amount ($):</label>
+                    <input type="number" class="insurance-amount" step="10000" placeholder="Coverage Amount">
+                </div>
+                <div class="form-group">
+                    <label>Annual Premium ($):</label>
+                    <input type="number" class="insurance-premium" step="100" placeholder="Annual Premium">
+                </div>
+                <div class="form-group">
+                    <label>Term/Duration:</label>
+                    <input type="text" class="insurance-term" placeholder="e.g., 20 years, Age 65">
+                </div>
+            `;
+            container.appendChild(div);
+        }
+        
+        // Calculate age from DOB
+        function calculateAge(dob) {
+            if (!dob) return 0;
+            const today = new Date();
+            const birth = new Date(dob);
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            return age;
+        }
+        
+        // Calculate annual income from frequency
+        function calculateAnnualIncome(rate, frequency, hours = 40) {
+            if (!rate || rate <= 0) return 0;
+            
+            const multipliers = {
+                'hourly': hours * 52,
+                'weekly': 52,
+                'biweekly': 26,
+                'monthly': 12,
+                'yearly': 1
+            };
+            return rate * (multipliers[frequency] || 1);
+        }
+        
+        // Update income display with real-time calculations
+        function updateIncomeDisplay() {
+            try {
+                // Partner 1 Income Calculation
+                const rate1 = parseFloat(document.getElementById('income1Rate').value) || 0;
+                const frequency1 = document.getElementById('income1Frequency').value;
+                const hours1 = parseFloat(document.getElementById('income1Hours').value) || 40;
+                const rental1 = parseFloat(document.getElementById('income1Rental').value) || 0;
+                const business1 = parseFloat(document.getElementById('income1Business').value) || 0;
+                
+                const annual1 = calculateAnnualIncome(rate1, frequency1, hours1) + (rental1 * 12) + (business1 * 12);
+                
+                // Partner 2 Income Calculation
+                const rate2 = parseFloat(document.getElementById('income2Rate').value) || 0;
+                const frequency2 = document.getElementById('income2Frequency').value;
+                const hours2 = parseFloat(document.getElementById('income2Hours').value) || 40;
+                const rental2 = parseFloat(document.getElementById('income2Rental').value) || 0;
+                const business2 = parseFloat(document.getElementById('income2Business').value) || 0;
+                
+                const annual2 = calculateAnnualIncome(rate2, frequency2, hours2) + (rental2 * 12) + (business2 * 12);
+                
+                // Update titles with calculated amounts
+                document.getElementById('partner1IncomeTitle').textContent = 
+                    `💰 Partner 1 Income - ${annual1.toLocaleString()} per year`;
+                    
+                document.getElementById('partner2IncomeTitle').textContent = 
+                    `💰 Partner 2 Income - ${annual2.toLocaleString()} per year`;
+                    
+            } catch (error) {
+                console.error('Error updating income display:', error);
+            }
+        }
+        
+        // Main calculation function
+        function calculateComprehensiveFIN() {
+            try {
+                const data = collectAllData();
+                const calculations = performCalculations(data);
+                displayResults(calculations);
+                document.getElementById('calculationResults').classList.remove('hidden');
+            } catch (error) {
+                alert('Error in calculations: ' + error.message);
+                console.error(error);
+            }
+        }
+        
+        function collectAllData() {
+            // Collect family data
+            const family = {
+                spouse1: {
+                    name: document.getElementById('spouse1Name').value,
+                    dob: document.getElementById('spouse1DOB').value,
+                    gender: document.getElementById('spouse1Gender').value,
+                    retireAge: parseInt(document.getElementById('spouse1RetireAge').value) || 65,
+                    lifeExpectancy: parseInt(document.getElementById('spouse1LifeExpectancy').value) || 85,
+                    age: calculateAge(document.getElementById('spouse1DOB').value)
+                },
+                spouse2: {
+                    name: document.getElementById('spouse2Name').value,
+                    dob: document.getElementById('spouse2DOB').value,
+                    gender: document.getElementById('spouse2Gender').value,
+                    retireAge: parseInt(document.getElementById('spouse2RetireAge').value) || 65,
+                    lifeExpectancy: parseInt(document.getElementById('spouse2LifeExpectancy').value) || 85,
+                    age: calculateAge(document.getElementById('spouse2DOB').value)
+                },
+                dependents: []
+            };
+            
+            // Collect dependents
+            document.querySelectorAll('#dependentsList .form-row-4').forEach(row => {
+                const name = row.querySelector('.dependent-name').value;
+                const dob = row.querySelector('.dependent-dob').value;
+                const eduAge = parseInt(row.querySelector('.dependent-edu-age').value) || 18;
+                const eduCost = parseFloat(row.querySelector('.dependent-edu-cost').value) || 12000;
+                
+                if (name && dob) {
+                    family.dependents.push({
+                        name, dob, eduAge, eduCost,
+                        age: calculateAge(dob)
+                    });
+                }
+            });
+            
+            // Collect assumptions
+            const assumptions = {
+                inflationRate: parseFloat(document.getElementById('inflationRate').value) / 100 || 0.028,
+                preRetireRate: parseFloat(document.getElementById('preRetireRate').value) / 100 || 0.065,
+                postRetireRate: parseFloat(document.getElementById('postRetireRate').value) / 100 || 0.04,
+                survivorYears: parseInt(document.getElementById('survivorYears').value) || 5,
+                retirementIncome: parseFloat(document.getElementById('retirementIncome').value) || 0,
+                currentHousing: document.getElementById('currentHousing').value,
+                retirementHousing: document.getElementById('retirementHousing').value,
+                downsizeIntent: document.getElementById('downsizeIntent').value === 'yes',
+                retirementRent: parseFloat(document.getElementById('retirementRent').value) || 2200,
+                cpp1: parseFloat(document.getElementById('cpp1Monthly').value) || 758,
+                oas1: parseFloat(document.getElementById('oas1Monthly').value) || 713,
+                cpp2: parseFloat(document.getElementById('cpp2Monthly').value) || 758,
+                oas2: parseFloat(document.getElementById('oas2Monthly').value) || 713
+            };
+            
+            // Collect goals
+            const goals = [];
+            document.querySelectorAll('.goal-item').forEach(item => {
+                const active = item.querySelector('.goal-active').checked;
+                const type = item.querySelector('.goal-type').value;
+                const years = parseInt(item.querySelector('.goal-years').value) || 0;
+                const amount = parseFloat(item.querySelector('.goal-amount').value) || 0;
+                const frequency = item.querySelector('.goal-frequency').value;
+                
+                if (active && amount > 0) {
+                    goals.push({ type, years, amount, frequency });
+                }
+            });
+            
+            // Collect income
+            const income = {
+                spouse1: {
+                    rate: parseFloat(document.getElementById('income1Rate').value) || 0,
+                    frequency: document.getElementById('income1Frequency').value,
+                    hours: parseFloat(document.getElementById('income1Hours').value) || 40,
+                    rental: parseFloat(document.getElementById('income1Rental').value) || 0,
+                    business: parseFloat(document.getElementById('income1Business').value) || 0
+                },
+                spouse2: {
+                    rate: parseFloat(document.getElementById('income2Rate').value) || 0,
+                    frequency: document.getElementById('income2Frequency').value,
+                    hours: parseFloat(document.getElementById('income2Hours').value) || 40,
+                    rental: parseFloat(document.getElementById('income2Rental').value) || 0,
+                    business: parseFloat(document.getElementById('income2Business').value) || 0
+                }
+            };
+            
+            // Calculate total annual incomes
+            income.spouse1.annual = calculateAnnualIncome(income.spouse1.rate, income.spouse1.frequency, income.spouse1.hours) + 
+                                   (income.spouse1.rental * 12) + (income.spouse1.business * 12);
+            income.spouse2.annual = calculateAnnualIncome(income.spouse2.rate, income.spouse2.frequency, income.spouse2.hours) + 
+                                   (income.spouse2.rental * 12) + (income.spouse2.business * 12);
+            
+            // Collect assets
+            const assets = [];
+            document.querySelectorAll('.asset-item').forEach(item => {
+                const type = item.querySelector('.asset-type').value;
+                const value = parseFloat(item.querySelector('.asset-value').value) || 0;
+                const growth = parseFloat(item.querySelector('.asset-growth').value) / 100 || 0.06;
+                const notes = item.querySelector('.asset-notes').value;
+                
+                if (value > 0) {
+                    assets.push({ type, value, growth, notes });
+                }
+            });
+            
+            // Collect liabilities
+            const liabilities = [];
+            document.querySelectorAll('.liability-item').forEach(item => {
+                const type = item.querySelector('.liability-type').value;
+                const balance = parseFloat(item.querySelector('.liability-balance').value) || 0;
+                const rate = parseFloat(item.querySelector('.liability-rate').value) / 100 || 0;
+                const payment = parseFloat(item.querySelector('.liability-payment').value) || 0;
+                
+                if (balance > 0) {
+                    liabilities.push({ type, balance, rate, payment });
+                }
+            });
+            
+            // Collect insurance
+            const insurance = [];
+            document.querySelectorAll('#insuranceList .form-row-4').forEach(row => {
+                const type = row.querySelector('.insurance-type').value;
+                const amount = parseFloat(row.querySelector('.insurance-amount').value) || 0;
+                const premium = parseFloat(row.querySelector('.insurance-premium').value) || 0;
+                const term = row.querySelector('.insurance-term').value;
+                
+                if (amount > 0) {
+                    insurance.push({ type, amount, premium, term });
+                }
+            });
+            
+            const insuranceNeeds = {
+                finalExpenses: parseFloat(document.getElementById('finalExpenses').value) || 15000,
+                incomeReplacement: parseInt(document.getElementById('incomeReplacement').value) || 10
+            };
+            
+            return { family, assumptions, goals, income, assets, liabilities, insurance, insuranceNeeds };
+        }
+        
+        function performCalculations(data) {
+            const calculations = {};
+            
+            // Calculate basic retirement timing
+            const earliestRetirement = Math.min(
+                data.family.spouse1.retireAge - data.family.spouse1.age,
+                data.family.spouse2.name ? data.family.spouse2.retireAge - data.family.spouse2.age : Infinity
+            );
+            const latestLifeExpectancy = Math.max(
+                data.family.spouse1.lifeExpectancy,
+                data.family.spouse2.name ? data.family.spouse2.lifeExpectancy : 0
+            );
+            const latestRetirementAge = Math.max(
+                data.family.spouse1.retireAge,
+                data.family.spouse2.name ? data.family.spouse2.retireAge : 0
+            );
+            
+            calculations.yearsToRetirement = Math.max(0, earliestRetirement);
+            calculations.retirementLength = latestLifeExpectancy - latestRetirementAge;
+            
+            // Calculate current net worth
+            const totalAssets = data.assets.reduce((sum, asset) => sum + asset.value, 0);
+            const totalLiabilities = data.liabilities.reduce((sum, liability) => sum + liability.balance, 0);
+            calculations.currentNetWorth = totalAssets - totalLiabilities;
+            
+            // Calculate total annual income
+            calculations.totalAnnualIncome = data.income.spouse1.annual + data.income.spouse2.annual;
+            
+            // Calculate government benefits at retirement
+            const govBenefits = (data.assumptions.cpp1 + data.assumptions.oas1 + 
+                               data.assumptions.cpp2 + data.assumptions.oas2) * 12;
+            
+            // Calculate required retirement income
+            const requiredAnnualIncome = data.assumptions.retirementIncome * 12;
+            const incomeShortfall = Math.max(0, requiredAnnualIncome - govBenefits);
+            calculations.monthlyShortfall = incomeShortfall / 12;
+            
+            // Calculate education costs for dependents
+            let totalEducationCosts = 0;
+            data.family.dependents.forEach(dependent => {
+                const yearsToEducation = Math.max(0, dependent.eduAge - dependent.age);
+                const inflatedCost = dependent.eduCost * Math.pow(1 + data.assumptions.inflationRate, yearsToEducation);
+                totalEducationCosts += inflatedCost * 4; // 4 years of education
+            });
+            
+            // Calculate goal costs
+            let totalGoalCosts = 0;
+            data.goals.forEach(goal => {
+                const inflatedAmount = goal.amount * Math.pow(1 + data.assumptions.inflationRate, goal.years);
+                if (goal.frequency === 'one-time') {
+                    totalGoalCosts += inflatedAmount;
+                } else if (goal.frequency === 'monthly') {
+                    totalGoalCosts += inflatedAmount * 12 * 20; // Assume 20 years
+                } else if (goal.frequency === 'yearly') {
+                    totalGoalCosts += inflatedAmount * 20; // Assume 20 years
+                }
+            });
+            
+            // Calculate FIN# for different scenarios
+            calculations.scenarios = {};
+            
+            // Scenario 1: Preserve Principal (4% rule)
+            const preservePrincipal = (incomeShortfall + totalEducationCosts/20 + totalGoalCosts/20) / 0.04;
+            calculations.scenarios.preserve = {
+                finNumber: preservePrincipal,
+                monthlyNeeded: calculateMonthlyContribution(
+                    Math.max(0, preservePrincipal - totalAssets),
+                    calculations.yearsToRetirement,
+                    data.assumptions.preRetireRate
+                )
+            };
+            
+            // Scenario 2: Deplete by Life Expectancy
+            let depletePrincipal = 0;
+            for (let year = 0; year < calculations.retirementLength; year++) {
+                const inflatedNeed = incomeShortfall * Math.pow(1 + data.assumptions.inflationRate, year);
+                depletePrincipal += inflatedNeed / Math.pow(1 + data.assumptions.postRetireRate, year);
+            }
+            depletePrincipal += totalEducationCosts + totalGoalCosts;
+            
+            calculations.scenarios.deplete = {
+                finNumber: depletePrincipal,
+                monthlyNeeded: calculateMonthlyContribution(
+                    Math.max(0, depletePrincipal - totalAssets),
+                    calculations.yearsToRetirement,
+                    data.assumptions.preRetireRate
+                )
+            };
+            
+            // Scenario 3: Blended Approach (leave $500k)
+            const inheritanceGoal = 500000;
+            const blendedPrincipal = depletePrincipal + (inheritanceGoal / Math.pow(1 + data.assumptions.postRetireRate, calculations.retirementLength));
+            
+            calculations.scenarios.blended = {
+                finNumber: blendedPrincipal,
+                monthlyNeeded: calculateMonthlyContribution(
+                    Math.max(0, blendedPrincipal - totalAssets),
+                    calculations.yearsToRetirement,
+                    data.assumptions.preRetireRate
+                ),
+                inheritance: inheritanceGoal
+            };
+            
+            // Calculate insurance needs (DIME method)
+            const debtTotal = totalLiabilities;
+            const incomeNeeds = calculations.totalAnnualIncome * data.insuranceNeeds.incomeReplacement;
+            const mortgageDebt = debtTotal;
+            const educationFund = totalEducationCosts;
+            
+            calculations.insurance = {
+                totalNeed: data.insuranceNeeds.finalExpenses + incomeNeeds + mortgageDebt + educationFund,
+                currentCoverage: data.insurance.reduce((sum, policy) => {
+                    return policy.type.includes('life') ? sum + policy.amount : sum;
+                }, 0),
+                annualPremiums: data.insurance.reduce((sum, policy) => sum + policy.premium, 0)
+            };
+            calculations.insurance.gap = Math.max(0, calculations.insurance.totalNeed - calculations.insurance.currentCoverage);
+            
+            // Update insurance fields
+            document.getElementById('mortgageDebt').value = mortgageDebt;
+            document.getElementById('educationFund').value = educationFund;
+            
+            return calculations;
+        }
+        
+        function calculateMonthlyContribution(futureValue, years, annualRate) {
+            if (futureValue <= 0 || years <= 0) return 0;
+            
+            const monthlyRate = annualRate / 12;
+            const months = years * 12;
+            
+            if (monthlyRate === 0) {
+                return futureValue / months;
+            }
+            
+            return futureValue / (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate));
+        }
+        
+        function displayResults(calculations) {
+            // Update main FIN# display based on current scenario
+            const scenario = calculations.scenarios[currentScenario];
+            document.getElementById('finNumber').textContent = 
+         '$' + scenario.finNumber.toLocaleString(undefined, {maximumFractionDigits: 0});
+            
+            // Update summary cards
+            document.getElementById('yearsToRetirement').textContent = calculations.yearsToRetirement;
+            document.getElementById('retirementLength').textContent = calculations.retirementLength;
+            document.getElementById('monthlyShortfall').textContent = 
+         '$' + calculations.monthlyShortfall.toLocaleString(undefined, {maximumFractionDigits: 0});
+            document.getElementById('monthlySavingsNeeded').textContent = 
+         '$' + scenario.monthlyNeeded.toLocaleString(undefined, {maximumFractionDigits: 0});
+            
+            // Update insurance analysis
+            document.getElementById('totalInsuranceNeed').textContent = 
+         '$' + calculations.insurance.totalNeed.toLocaleString(undefined, {maximumFractionDigits: 0});
+            document.getElementById('currentInsuranceCoverage').textContent = 
+         '$' + calculations.insurance.currentCoverage.toLocaleString(undefined, {maximumFractionDigits: 0});
+            document.getElementById('insuranceGap').textContent = 
+         '$' + calculations.insurance.gap.toLocaleString(undefined, {maximumFractionDigits: 0});
+            document.getElementById('annualPremiums').textContent = 
+         '$' + calculations.insurance.annualPremiums.toLocaleString(undefined, {maximumFractionDigits: 0});
+            
+            // Create charts
+            createProjectionChart(calculations);
+            createNetWorthChart(calculations);
+            
+            // Store calculations globally for scenario switching
+            window.currentCalculations = calculations;
+        }
+        
+        function updateScenarioDisplay() {
+            if (!window.currentCalculations) return;
+            
+            const scenario = window.currentCalculations.scenarios[currentScenario];
+            document.getElementById('finNumber').textContent = 
+         '$' + scenario.finNumber.toLocaleString(undefined, {maximumFractionDigits: 0});
+            document.getElementById('monthlySavingsNeeded').textContent = 
+         '$' + scenario.monthlyNeeded.toLocaleString(undefined, {maximumFractionDigits: 0});
+            
+            // Update charts with new scenario
+            createProjectionChart(window.currentCalculations);
+        }
+        
+        function createProjectionChart(calculations) {
+            const ctx = document.getElementById('projectionChart').getContext('2d');
+            
+            if (charts.projection) {
+                charts.projection.destroy();
+            }
+            
+            const years = [];
+            const currentPath = [];
+            const targetPath = [];
+            const requiredPath = [];
+            
+            const scenario = calculations.scenarios[currentScenario];
+            const currentAssets = calculations.currentNetWorth;
+            const monthlyContribution = scenario.monthlyNeeded;
+            
+            // Collect data for assumptions
+            const data = collectAllData();
+            const preRetireRate = data.assumptions.preRetireRate;
+            
+            for (let year = 0; year <= calculations.yearsToRetirement + 10; year++) {
+                years.push(year);
+                
+                // Current assets growth with no additional contributions
+                currentPath.push(Math.max(0, currentAssets * Math.pow(1 + preRetireRate, year)));
+                
+                // Target amount (FIN#)
+                if (year <= calculations.yearsToRetirement) {
+                    targetPath.push(scenario.finNumber);
+                } else {
+                    // Show depletion in retirement for deplete scenario
+                    if (currentScenario === 'deplete') {
+                        const yearsInRetirement = year - calculations.yearsToRetirement;
+                        const remaining = scenario.finNumber * Math.pow(1 + data.assumptions.postRetireRate, yearsInRetirement) - 
+                                        (calculations.monthlyShortfall * 12 * yearsInRetirement);
+                        targetPath.push(Math.max(0, remaining));
+                    } else {
+                        targetPath.push(scenario.finNumber);
+                    }
+                }
+                
+                // Required path with monthly contributions
+                if (year <= calculations.yearsToRetirement) {
+                    if (monthlyContribution > 0) {
+                        const monthlyRate = preRetireRate / 12;
+                        const months = year * 12;
+                        const futureValueContributions = monthlyContribution * (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate));
+                        requiredPath.push(currentAssets * Math.pow(1 + preRetireRate, year) + futureValueContributions);
+                    } else {
+                        requiredPath.push(currentAssets * Math.pow(1 + preRetireRate, year));
+                    }
+                } else {
+                    // Continue the path in retirement
+                    const retirementValue = requiredPath[calculations.yearsToRetirement];
+                    const yearsInRetirement = year - calculations.yearsToRetirement;
+                    if (currentScenario === 'preserve') {
+                        requiredPath.push(retirementValue);
+                    } else {
+                        const remaining = retirementValue * Math.pow(1 + data.assumptions.postRetireRate, yearsInRetirement) - 
+                                        (calculations.monthlyShortfall * 12 * yearsInRetirement);
+                        requiredPath.push(Math.max(0, remaining));
+                    }
+                }
+            }
+            
+            charts.projection = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: years.map(y => y === 0 ? 'Today' : `Year ${y}`),
+                    datasets: [
+                        {
+                            label: 'Current Path (No Additional Savings)',
+                            data: currentPath,
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            fill: false,
+                            tension: 0.1
+                        },
+                        {
+                            label: `${currentScenario.charAt(0).toUpperCase() + currentScenario.slice(1)} Target`,
+                            data: targetPath,
+                            borderColor: '#27ae60',
+                            backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                            fill: false,
+                            borderDash: [5, 5]
+                        },
+                        {
+                            label: 'Projected with Required Savings',
+                            data: requiredPath,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            fill: false,
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Financial Projection - ${currentScenario.charAt(0).toUpperCase() + currentScenario.slice(1)} Scenario`
+                        },
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000000) {
+                                        return 
+         '$' + (value / 1000000).toFixed(1) + 'M';
+                                    } else if (value >= 1000) {
+                                        return 
+         '$' + (value / 1000).toFixed(0) + 'K';
+                                    }
+                                    return 
+         '$' + value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: function(context) {
+                                    return context.tick.value === calculations.yearsToRetirement ? '#667eea' : '#e0e0e0';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createNetWorthChart(calculations) {
+            const ctx = document.getElementById('netWorthChart').getContext('2d');
+            
+            if (charts.netWorth) {
+                charts.netWorth.destroy();
+            }
+            
+            const data = collectAllData();
+            const ages = [];
+            const netWorthData = [];
+            const assetsData = [];
+            const liabilitiesData = [];
+            
+            const startAge = Math.min(data.family.spouse1.age, data.family.spouse2.age || 100);
+            const endAge = Math.max(data.family.spouse1.lifeExpectancy, data.family.spouse2.lifeExpectancy || 0);
+            
+            for (let age = startAge; age <= endAge; age += 5) {
+                ages.push(age);
+                
+                const yearsFromNow = age - startAge;
+                
+                // Calculate assets growth
+                let totalAssets = 0;
+                data.assets.forEach(asset => {
+                    totalAssets += asset.value * Math.pow(1 + asset.growth, yearsFromNow);
+                });
+                
+                // Add savings if still working
+                if (age < Math.min(data.family.spouse1.retireAge, data.family.spouse2.retireAge || 100)) {
+                    const scenario = calculations.scenarios[currentScenario];
+                    const monthlyContribution = scenario.monthlyNeeded;
+                    const monthlyRate = data.assumptions.preRetireRate / 12;
+                    const months = yearsFromNow * 12;
+                    if (monthlyContribution > 0 && months > 0) {
+                        const futureValueContributions = monthlyContribution * (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate));
+                        totalAssets += futureValueContributions;
+                    }
+                }
+                
+                // Calculate liabilities reduction
+                let totalLiabilities = 0;
+                data.liabilities.forEach(liability => {
+                    // Simplified: assume liabilities decrease over time
+                    const remainingBalance = Math.max(0, liability.balance - (liability.payment * 12 * yearsFromNow));
+                    totalLiabilities += remainingBalance;
+                });
+                
+                assetsData.push(totalAssets);
+                liabilitiesData.push(totalLiabilities);
+                netWorthData.push(totalAssets - totalLiabilities);
+            }
+            
+            charts.netWorth = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ages.map(age => `Age ${age}`),
+                    datasets: [
+                        {
+                            label: 'Total Assets',
+                            data: assetsData,
+                            borderColor: '#27ae60',
+                            backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                            fill: '+1'
+                        },
+                        {
+                            label: 'Total Liabilities',
+                            data: liabilitiesData,
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            fill: 'origin'
+                        },
+                        {
+                            label: 'Net Worth',
+                            data: netWorthData,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                            fill: false,
+                            tension: 0.1,
+                            borderWidth: 3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Net Worth Projection by Age'
+                        },
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000000) {
+                                        return 
+         '$' + (value / 1000000).toFixed(1) + 'M';
+                                    } else if (value >= 1000) {
+                                        return 
+         '$' + (value / 1000).toFixed(0) + 'K';
+                                    }
+                                    return 
+         '$' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+        
+        // Save and Load Functions
+        function saveData() {
+            try {
+                const data = collectAllData();
+                const lastName = data.family.spouse1.name ? data.family.spouse1.name.split(' ').pop() : 'Client';
+                const today = new Date();
+                const dateStr = today.getFullYear() + '-' + 
+                              String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                              String(today.getDate()).padStart(2, '0');
+                
+                let finNumber = 0;
+                if (window.currentCalculations) {
+                    finNumber = window.currentCalculations.scenarios[currentScenario].finNumber;
+                }
+                
+                const filename = `${dateStr} ${lastName} FIN ${Math.round(finNumber/1000)}k.json`;
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('Data saved successfully!');
+            } catch (error) {
+                alert('Error saving data: ' + error.message);
+            }
+        }
+        
+        // Load saved data from JSON file and populate all form fields
+        function loadData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    // populateFormData(data); removed as per claude
+                    if (typeof populateFormData === 'function') {
+                        populateFormData(data);
+                    } else {
+                        console.error('populateFormData function not defined yet');
+                    }
+                    // Update partner names after loading
+                    updatePartnerNames();
+                    alert('Data loaded successfully!');
+                } catch (error) {
+                    alert('Error loading data: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        // Populate all form fields with data from loaded JSON file
+        function populateFormData(data) {
+            // Populate family data
+            if (data.family) {
+                document.getElementById('spouse1Name').value = data.family.spouse1.name || '';
+                document.getElementById('spouse1DOB').value = data.family.spouse1.dob || '';
+                document.getElementById('spouse1Gender').value = data.family.spouse1.gender || '';
+                document.getElementById('spouse1RetireAge').value = data.family.spouse1.retireAge || 65;
+                document.getElementById('spouse1LifeExpectancy').value = data.family.spouse1.lifeExpectancy || 85;
+                
+                document.getElementById('spouse2Name').value = data.family.spouse2.name || '';
+                document.getElementById('spouse2DOB').value = data.family.spouse2.dob || '';
+                document.getElementById('spouse2Gender').value = data.family.spouse2.gender || '';
+                document.getElementById('spouse2RetireAge').value = data.family.spouse2.retireAge || 65;
+                document.getElementById('spouse2LifeExpectancy').value = data.family.spouse2.lifeExpectancy || 85;
+            }
+            
+            // Populate assumptions data
+            if (data.assumptions) {
+                document.getElementById('inflationRate').value = (data.assumptions.inflationRate * 100).toFixed(2) || 2.8;
+                document.getElementById('preRetireRate').value = (data.assumptions.preRetireRate * 100).toFixed(2) || 6.5;
+                document.getElementById('postRetireRate').value = (data.assumptions.postRetireRate * 100).toFixed(2) || 4.0;
+                document.getElementById('retirementIncomePercent').value = (data.assumptions.retirementIncomePercent * 100).toFixed(2) || 70;
+                document.getElementById('widowReduction').value = (data.assumptions.widowReduction * 100).toFixed(2) || 70;
+                document.getElementById('currentHousing').value = data.assumptions.currentHousing || 'own';
+                document.getElementById('retirementHousing').value = data.assumptions.retirementHousing || 'own';
+                document.getElementById('downsizeIntent').value = data.assumptions.downsizeIntent ? 'yes' : 'no';
+                document.getElementById('downsizeValue').value = data.assumptions.downsizeValue || '';
+                document.getElementById('retirementRent').value = data.assumptions.retirementRent || 2200;
+                document.getElementById('cpp1Monthly').value = data.assumptions.cpp1 || 758;
+                document.getElementById('oas1Monthly').value = data.assumptions.oas1 || 713;
+                document.getElementById('cpp2Monthly').value = data.assumptions.cpp2 || 758;
+                document.getElementById('oas2Monthly').value = data.assumptions.oas2 || 713;
+                
+                // Update conditional field visibility
+                toggleDownsizeField();
+                toggleRentField();
+            }
+            
+            // Populate income data
+            if (data.income) {
+                document.getElementById('income1Rate').value = data.income.spouse1.rate || '';
+                document.getElementById('income1Frequency').value = data.income.spouse1.frequency || 'yearly';
+                document.getElementById('income1Hours').value = data.income.spouse1.hours || 40;
+                document.getElementById('income1Rental').value = data.income.spouse1.rental || '';
+                document.getElementById('income1Business').value = data.income.spouse1.business || '';
+                
+                document.getElementById('income2Rate').value = data.income.spouse2.rate || '';
+                document.getElementById('income2Frequency').value = data.income.spouse2.frequency || 'yearly';
+                document.getElementById('income2Hours').value = data.income.spouse2.hours || 40;
+                document.getElementById('income2Rental').value = data.income.spouse2.rental || '';
+                document.getElementById('income2Business').value = data.income.spouse2.business || '';
+            }
+            
+            // Clear and repopulate dynamic lists
+            // Clear all dynamic lists back to single empty row before repopulating
+            function clearDynamicLists() {
+                // Clear dependents (keep first row, remove others)
+                const dependentsList = document.getElementById('dependentsList');
+                const firstDependent = dependentsList.querySelector('.form-row-4');
+                dependentsList.innerHTML = '';
+                dependentsList.appendChild(firstDependent);
+                // Clear the first row's values
+                firstDependent.querySelector('.dependent-name').value = '';
+                firstDependent.querySelector('.dependent-dob').value = '';
+                firstDependent.querySelector('.dependent-edu-age').value = '18';
+                firstDependent.querySelector('.dependent-study-years').value = '4';
+                firstDependent.querySelector('.dependent-edu-cost').value = '12000';
+                
+                // Clear goals (keep first row, remove others)
+                const goalsList = document.getElementById('goalsList');
+                const firstGoal = goalsList.querySelector('.goal-item');
+                goalsList.innerHTML = '';
+                goalsList.appendChild(firstGoal);
+                // Clear the first row's values
+                firstGoal.querySelector('.goal-type').value = 'home';
+                firstGoal.querySelector('.goal-years').value = '';
+                firstGoal.querySelector('.goal-amount').value = '';
+                firstGoal.querySelector('.goal-frequency').value = 'one-time';
+                
+                // Clear assets (keep first row, remove others)
+                const assetsList = document.getElementById('assetsList');
+                const firstAsset = assetsList.querySelector('.asset-item');
+                assetsList.innerHTML = '';
+                assetsList.appendChild(firstAsset);
+                // Clear the first row's values
+                firstAsset.querySelector('.asset-type').value = 'rrsp';
+                firstAsset.querySelector('.asset-value').value = '$0.00';
+                firstAsset.querySelector('.asset-growth').value = '1.00%';
+                firstAsset.querySelector('.asset-notes').value = '';
+                
+                // Clear liabilities (keep first row, remove others)
+                const liabilitiesList = document.getElementById('liabilitiesList');
+                const firstLiability = liabilitiesList.querySelector('.liability-item');
+                liabilitiesList.innerHTML = '';
+                liabilitiesList.appendChild(firstLiability);
+                // Clear the first row's values
+                firstLiability.querySelector('.liability-type').value = 'mortgage';
+                firstLiability.querySelector('.liability-balance').value = '';
+                firstLiability.querySelector('.liability-rate').value = '19.00';
+                firstLiability.querySelector('.liability-payment').value = '';
+                
+                // Clear insurance (keep first row, remove others)
+                const insuranceList = document.getElementById('insuranceList');
+                const firstInsurance = insuranceList.querySelector('.form-row-4');
+                insuranceList.innerHTML = '';
+                insuranceList.appendChild(firstInsurance);
+                // Clear the first row's values
+                firstInsurance.querySelector('.insurance-type').value = 'term-life';
+                firstInsurance.querySelector('.insurance-amount').value = '';
+                firstInsurance.querySelector('.insurance-premium').value = '';
+                firstInsurance.querySelector('.insurance-term').value = '';
+            }
+            
+            // Populate dependents
+            if (data.family && data.family.dependents && data.family.dependents.length > 0) {
+                data.family.dependents.forEach((dependent, index) => {
+                    if (index > 0) addDependent();
+                    const containers = document.querySelectorAll('#dependentsList .form-row-4');
+                    const container = containers[index];
+                    if (container) {
+                        container.querySelector('.dependent-name').value = dependent.name || '';
+                        container.querySelector('.dependent-dob').value = dependent.dob || '';
+                        container.querySelector('.dependent-edu-age').value = dependent.eduAge || 18;
+                        container.querySelector('.dependent-study-years').value = dependent.studyYears || 4;
+                        container.querySelector('.dependent-edu-cost').value = dependent.eduCost || 12000;
+                    }
+                });
+            }
+            
+            // Populate goals
+            if (data.goals && data.goals.length > 0) {
+                data.goals.forEach((goal, index) => {
+                    if (index > 0) addGoal();
+                    const containers = document.querySelectorAll('.goal-item');
+                    const container = containers[index];
+                    if (container) {
+                        container.querySelector('.goal-type').value = goal.type || 'other';
+                        container.querySelector('.goal-years').value = goal.years || '';
+                        container.querySelector('.goal-amount').value = goal.amount || '';
+                        container.querySelector('.goal-frequency').value = goal.frequency || 'one-time';
+                    }
+                });
+            }
+            
+            // Populate assets
+            if (data.assets && data.assets.length > 0) {
+                data.assets.forEach((asset, index) => {
+                    if (index > 0) addAsset();
+                    const containers = document.querySelectorAll('.asset-item');
+                    const container = containers[index];
+                    if (container) {
+                        container.querySelector('.asset-type').value = asset.type || 'other';
+                        container.querySelector('.asset-value').value = '$' + asset.value.toLocaleString() || '$0.00';
+                        container.querySelector('.asset-growth').value = (asset.growth * 100).toFixed(2) + '%' || '1.00%';
+                        container.querySelector('.asset-notes').value = asset.notes || '';
+                    }
+                });
+            }
+            
+            // Populate liabilities
+            if (data.liabilities && data.liabilities.length > 0) {
+                data.liabilities.forEach((liability, index) => {
+                    if (index > 0) addLiability();
+                    const containers = document.querySelectorAll('.liability-item');
+                    const container = containers[index];
+                    if (container) {
+                        container.querySelector('.liability-type').value = liability.type || 'other';
+                        container.querySelector('.liability-balance').value = liability.balance || '';
+                        container.querySelector('.liability-rate').value = (liability.rate * 100).toFixed(2) || '';
+                        container.querySelector('.liability-payment').value = liability.payment || '';
+                    }
+                });
+            }
+            
+            // Populate insurance
+            if (data.insurance && data.insurance.length > 0) {
+                data.insurance.forEach((policy, index) => {
+                    if (index > 0) addInsurance();
+                    const containers = document.querySelectorAll('#insuranceList .form-row-4');
+                    const container = containers[index];
+                    if (container) {
+                        container.querySelector('.insurance-type').value = policy.type || 'term-life';
+                        container.querySelector('.insurance-amount').value = policy.amount || '';
+                        container.querySelector('.insurance-premium').value = policy.premium || '';
+                        container.querySelector('.insurance-term').value = policy.term || '';
+                    }
+                });
+            }
+            
+            // Populate insurance needs
+            if (data.insuranceNeeds) {
+                document.getElementById('finalExpenses').value = data.insuranceNeeds.finalExpenses || 15000;
+                document.getElementById('incomeReplacement').value = data.insuranceNeeds.incomeReplacement || 10;
+            }
+            
+            // Update income displays with loaded data
+            updateIncomeDisplay();
+        }
+        
+        function clearDynamicLists() {
+            // Clear dependents (keep first one)
+            const dependentsList = document.getElementById('dependentsList');
+            const firstDependent = dependentsList.querySelector('.form-row-4');
+            dependentsList.innerHTML = '';
+            dependentsList.appendChild(firstDependent);
+            
+            // Clear goals (keep first one)
+            const goalsList = document.getElementById('goalsList');
+            const firstGoal = goalsList.querySelector('.goal-item');
+            goalsList.innerHTML = '';
+            goalsList.appendChild(firstGoal);
+            
+            // Clear assets (keep first one)
+            const assetsList = document.getElementById('assetsList');
+            const firstAsset = assetsList.querySelector('.asset-item');
+            assetsList.innerHTML = '';
+            assetsList.appendChild(firstAsset);
+            
+            // Clear liabilities (keep first one)
+            const liabilitiesList = document.getElementById('liabilitiesList');
+            const firstLiability = liabilitiesList.querySelector('.liability-item');
+            liabilitiesList.innerHTML = '';
+            liabilitiesList.appendChild(firstLiability);
+            
+            // Clear insurance (keep first one)
+            const insuranceList = document.getElementById('insuranceList');
+            const firstInsurance = insuranceList.querySelector('.form-row-4');
+            insuranceList.innerHTML = '';
+            insuranceList.appendChild(firstInsurance);
+        }
+        
+        function generatePrintSummary() {
+            if (!window.currentCalculations) {
+                alert('Please calculate your FIN# first!');
+                return;
+            }
+            
+            const data = collectAllData();
+            const calc = window.currentCalculations;
+            const scenario = calc.scenarios[currentScenario];
+            
+            const printContent = 
+                <div style="font-family: Arial, sans-serif; max-width: 8.5in; margin: 0 auto; padding: 0.5in;">
+                    {/*  Header with logo placeholder */}
+                    <div style="text-align: center; border-bottom: 2px solid #667eea; padding-bottom: 20px; margin-bottom: 30px;">
+                        {/* Replace this div with actual logo */}
+                        {/* Logo should be approximately 120px x 60px for professional letterhead */}
+                        <div style="width: 120px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); margin: 0 auto 15px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">LOGO</div>
+                        <h1 style="color: #2c3e50; margin: 0;">Financial Needs Analysis Summary</h1>
+                        <p style="color: #666; margin: 5px 0;">Prepared for ${data.family.spouse1.name}${data.family.spouse2.name ? ' & ' + data.family.spouse2.name : ''}</p>
+                        <p style="color: #666; margin: 0;">Date: ${new Date().toLocaleDateString('en-CA')}</p>
+                    </div>
+                    
+                    {/* Executive Summary */}
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                        <h2 style="color: #2c3e50; margin-top: 0;">Executive Summary</h2>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <h3 style="color: #667eea; margin-bottom: 10px;">Financial Independence Number (FIN#)</h3>
+                                <p style="font-size: 2em; font-weight: bold; color: #27ae60; margin: 0;">${scenario.finNumber.toLocaleString()}</p>
+                                <p style="color: #666; margin: 5px 0 0 0;">${currentScenario.charAt(0).toUpperCase() + currentScenario.slice(1)} Scenario</p>
+                            </div>
+                            <div>
+                                <h3 style="color: #667eea; margin-bottom: 10px;">Monthly Savings Required</h3>
+                                <p style="font-size: 2em; font-weight: bold; color: #e74c3c; margin: 0;">${scenario.monthlyNeeded.toLocaleString()}</p>
+                                <p style="color: #666; margin: 5px 0 0 0;">To reach retirement goal</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Key Metrics */}
+                    <div style="margin-bottom: 25px;">
+                        <h2 style="color: #2c3e50;">Key Metrics</h2>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px;">
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                                <div style="font-size: 1.5em; font-weight: bold; color: #667eea;">${calc.yearsToRetirement}</div>
+                                <div style="color: #666; font-size: 0.9em;">Years to Retirement</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                                <div style="font-size: 1.5em; font-weight: bold; color: #667eea;">${calc.retirementLength}</div>
+                                <div style="color: #666; font-size: 0.9em;">Years in Retirement</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                                <div style="font-size: 1.5em; font-weight: bold; color: #667eea;">${calc.monthlyShortfall.toLocaleString()}</div>
+                                <div style="color: #666; font-size: 0.9em;">Monthly Income Gap</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                                <div style="font-size: 1.5em; font-weight: bold; color: #667eea;">${calc.currentNetWorth.toLocaleString()}</div>
+                                <div style="color: #666; font-size: 0.9em;">Current Net Worth</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Insurance Analysis */}
+                    <div style="margin-bottom: 25px;">
+                        <h2 style="color: #2c3e50;">Insurance Analysis (DIME Method)</h2>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                                <div style="font-size: 1.3em; font-weight: bold; color: #e74c3c;">${calc.insurance.totalNeed.toLocaleString()}</div>
+                                <div style="color: #666; font-size: 0.9em;">Total Insurance Needed</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                                <div style="font-size: 1.3em; font-weight: bold; color: #27ae60;">${calc.insurance.currentCoverage.toLocaleString()}</div>
+                                <div style="color: #666; font-size: 0.9em;">Current Coverage</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                                <div style="font-size: 1.3em; font-weight: bold; color: ${calc.insurance.gap > 0 ? '#e74c3c' : '#27ae60'};">${calc.insurance.gap.toLocaleString()}</div>
+                                <div style="color: #666; font-size: 0.9em;">Coverage ${calc.insurance.gap > 0 ? 'Gap' : 'Surplus'}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        }
+        
+        function addIncomeSource() {
+            const container = document.getElementById('otherIncomeList');
+            const div = document.createElement('div');
+            div.className = 'income-item';
+            div.innerHTML = `
+                <select class="income-type" onchange="updateIncomeDisplay()">
+                    <option value="rental">Rental Income</option>
+                    <option value="investment">Investment Income</option>
+                    <option value="vacation-rental">Vacation Rental</option>
+                    <option value="royalties">Royalties</option>
+                    <option value="pension">Pension Income</option>
+                    <option value="social-benefits">Social Benefits</option>
+                    <option value="freelance">Freelance/Contract</option>
+                    <option value="side-business">Side Business</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="number" class="income-amount" placeholder="Monthly Amount ($)" step="100" onchange="updateIncomeDisplay()">
+                <input type="text" class="income-description" placeholder="Description (optional)">
+                <button type="button" class="remove-btn" onclick="removeIncomeSource(this)" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+        
+        function removeIncomeSource(button) {
+            const incomeItem = button.closest('.income-item');
+            const container = document.getElementById('otherIncomeList');
+            if (container.children.length > 1) {
+                incomeItem.remove();
+                updateIncomeDisplay();
+            }
+        }
+    </script>
+</body>
+</html>
