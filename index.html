@@ -236,6 +236,17 @@
             margin-bottom: 10px;
         }
         
+        .income-item {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 2fr 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
         .liability-item, .asset-item {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -411,7 +422,7 @@
                 grid-template-columns: 1fr;
             }
             
-            .goal-item, .liability-item, .asset-item {
+            .goal-item, .income-item, .liability-item, .asset-item {
                 grid-template-columns: 1fr;
             }
         }
@@ -621,6 +632,30 @@
                         <input type="number" id="income2Business" step="100" placeholder="$0" onchange="updateIncomeDisplay()">
                     </div>
                 </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>💼 Other Income Sources</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Add additional income sources beyond employment income</p>
+                <div id="otherIncomeList">
+                    <div class="income-item">
+                        <select class="income-type" onchange="updateIncomeDisplay()">
+                            <option value="rental">Rental Income</option>
+                            <option value="investment">Investment Income</option>
+                            <option value="vacation-rental">Vacation Rental</option>
+                            <option value="royalties">Royalties</option>
+                            <option value="pension">Pension Income</option>
+                            <option value="social-benefits">Social Benefits</option>
+                            <option value="freelance">Freelance/Contract</option>
+                            <option value="side-business">Side Business</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <input type="number" class="income-amount" placeholder="Monthly Amount ($)" step="100" onchange="updateIncomeDisplay()">
+                        <input type="text" class="income-description" placeholder="Description (optional)">
+                        <button type="button" class="remove-btn" onclick="removeIncomeSource(this)" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Remove</button>
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addIncomeSource()">+ Add Income Source</button>
             </div>
         </div>
         
@@ -1314,6 +1349,13 @@
                 
                 const annual2 = calculateAnnualIncome(rate2, frequency2, hours2) + (rental2 * 12) + (business2 * 12);
                 
+                // Calculate total from other income sources
+                let otherIncomeTotal = 0;
+                document.querySelectorAll('.income-item').forEach(item => {
+                    const amount = parseFloat(item.querySelector('.income-amount').value) || 0;
+                    otherIncomeTotal += amount * 12; // Convert monthly to annual
+                });
+                
                 // NEW: Get partner names for personalization
                 const partner1Name = document.getElementById('spouse1Name').value.trim();
                 const partner2Name = document.getElementById('spouse2Name').value.trim();
@@ -1321,6 +1363,9 @@
                 // NEW: Create personalized titles or fall back to generic ones
                 const income1Title = partner1Name ? `💰 ${partner1Name} Income` : '💰 Partner 1 Income';
                 const income2Title = partner2Name ? `💰 ${partner2Name} Income` : '💰 Partner 2 Income';
+                
+                // Calculate total household income including other sources
+                const totalHouseholdIncome = annual1 + annual2 + otherIncomeTotal;
                 
                 // Update titles with calculated amounts and personalized names
                 document.getElementById('partner1IncomeTitle').textContent = 
@@ -1507,14 +1552,28 @@
                     hours: parseFloat(document.getElementById('income2Hours').value) || 40,
                     rental: parseFloat(document.getElementById('income2Rental').value) || 0,
                     business: parseFloat(document.getElementById('income2Business').value) || 0
-                }
+                },
+                otherSources: []
             };
+            
+            // Collect other income sources
+            document.querySelectorAll('.income-item').forEach(item => {
+                const type = item.querySelector('.income-type').value;
+                const amount = parseFloat(item.querySelector('.income-amount').value) || 0;
+                const description = item.querySelector('.income-description').value;
+                
+                if (amount > 0) {
+                    income.otherSources.push({ type, amount, description });
+                }
+            });
             
             // Calculate total annual incomes for reference
             income.spouse1.annual = calculateAnnualIncome(income.spouse1.rate, income.spouse1.frequency, income.spouse1.hours) + 
                                 (income.spouse1.rental * 12) + (income.spouse1.business * 12);
             income.spouse2.annual = calculateAnnualIncome(income.spouse2.rate, income.spouse2.frequency, income.spouse2.hours) + 
                                 (income.spouse2.rental * 12) + (income.spouse2.business * 12);
+            income.otherSourcesAnnual = income.otherSources.reduce((total, source) => total + (source.amount * 12), 0);
+            income.totalAnnual = income.spouse1.annual + income.spouse2.annual + income.otherSourcesAnnual;
             
             // Collect assets from Assets tab
             const assets = [];
@@ -2867,3 +2926,38 @@
                     </div>
                 </div>
         }
+        
+        function addIncomeSource() {
+            const container = document.getElementById('otherIncomeList');
+            const div = document.createElement('div');
+            div.className = 'income-item';
+            div.innerHTML = `
+                <select class="income-type" onchange="updateIncomeDisplay()">
+                    <option value="rental">Rental Income</option>
+                    <option value="investment">Investment Income</option>
+                    <option value="vacation-rental">Vacation Rental</option>
+                    <option value="royalties">Royalties</option>
+                    <option value="pension">Pension Income</option>
+                    <option value="social-benefits">Social Benefits</option>
+                    <option value="freelance">Freelance/Contract</option>
+                    <option value="side-business">Side Business</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="number" class="income-amount" placeholder="Monthly Amount ($)" step="100" onchange="updateIncomeDisplay()">
+                <input type="text" class="income-description" placeholder="Description (optional)">
+                <button type="button" class="remove-btn" onclick="removeIncomeSource(this)" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+        
+        function removeIncomeSource(button) {
+            const incomeItem = button.closest('.income-item');
+            const container = document.getElementById('otherIncomeList');
+            if (container.children.length > 1) {
+                incomeItem.remove();
+                updateIncomeDisplay();
+            }
+        }
+    </script>
+</body>
+</html>
