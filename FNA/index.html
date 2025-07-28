@@ -3928,8 +3928,8 @@
                 inflationRate: parsePercentageValue(document.getElementById('inflationRate').value) / 100 || 0.028,
                 preRetireRate: parsePercentageValue(document.getElementById('preRetireRate').value) / 100 || 0.065,
                 postRetireRate: parsePercentageValue(document.getElementById('postRetireRate').value) / 100 || 0.04,
-                survivorYears: parseInt(document.getElementById('survivorYears').value) || 5,
-                retirementIncome: parseFloat(document.getElementById('retirementIncome').value) || 0,
+                widowReduction: parsePercentageValue(document.getElementById('widowReduction').value) / 100 || 0.70,
+                retirementIncomePercent: parsePercentageValue(document.getElementById('retirementIncomePercent').value) / 100 || 0.70,
                 currentHousing: document.getElementById('currentHousing').value,
                 retirementHousing: document.getElementById('retirementHousing').value,
                 downsizeIntent: document.getElementById('downsizeIntent').value === 'yes',
@@ -4102,8 +4102,8 @@
             const govBenefits = (data.assumptions.cpp1 + data.assumptions.oas1 + 
                                data.assumptions.cpp2 + data.assumptions.oas2) * 12;
             
-            // Calculate required retirement income
-            const requiredAnnualIncome = data.assumptions.retirementIncome * 12;
+            // Calculate required retirement income based on percentage of current income
+            const requiredAnnualIncome = calculations.totalAnnualIncome * data.assumptions.retirementIncomePercent;
             const incomeShortfall = Math.max(0, requiredAnnualIncome - govBenefits);
             calculations.monthlyShortfall = incomeShortfall / 12;
             
