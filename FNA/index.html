@@ -2597,11 +2597,28 @@
                 const finalExpenses = parseFloat(finalExpensesStr) || 15000;
                 const incomeReplacementYears = parseInt(document.getElementById(replacementId).value) || 10;
                 
-                // Calculate DIME components
+                // Calculate DIME components with inflation adjustments
                 const D = finalExpenses; // Debt (final expenses)
-                const I = partnerIncome * incomeReplacementYears; // Income replacement
+                
+                // Income replacement with inflation - calculate present value of inflating income stream
+                const inflationRate = data.assumptions.inflationRate || 0.03;
+                const discountRate = data.assumptions.postRetireRate || 0.04; // Discount rate for present value
+                
+                let I = 0;
+                if (incomeReplacementYears > 0 && partnerIncome > 0) {
+                    if (Math.abs(discountRate - inflationRate) < 0.0001) {
+                        // If discount rate equals inflation rate, use simple sum with inflation
+                        I = partnerIncome * incomeReplacementYears * Math.pow(1 + inflationRate, incomeReplacementYears / 2);
+                    } else {
+                        // Present value of growing annuity (income growing with inflation)
+                        const growthFactor = 1 + inflationRate;
+                        const discountFactor = 1 + discountRate;
+                        I = partnerIncome * (1 - Math.pow(growthFactor / discountFactor, incomeReplacementYears)) / (discountRate - inflationRate);
+                    }
+                }
+                
                 const M = totalLiabilities; // Mortgage/debt
-                const E = totalEducationCosts; // Education
+                const E = totalEducationCosts; // Education (already inflation-adjusted)
                 
                 const totalNeed = D + I + M + E;
                 const roundedNeed = Math.ceil(totalNeed / 10000) * 10000; // Round up to nearest 10k
@@ -2626,7 +2643,7 @@
                             <span>$${D.toLocaleString()}</span>
                         </div>
                         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 10px;">
-                            <strong style="color: #c9a96e;">I - Income Replacement (${incomeReplacementYears} years):</strong>
+                            <strong style="color: #c9a96e;">I - Income Replacement (${incomeReplacementYears} years @ ${(inflationRate*100).toFixed(1)}% inflation):</strong>
                             <span>$${I.toLocaleString()}</span>
                         </div>
                         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 10px;">
@@ -2689,11 +2706,28 @@
                 const finalExpenses = parseFloat(finalExpensesStr) || 15000;
                 const incomeReplacementYears = parseInt(document.getElementById(incomeReplacementId).value) || 10;
                 
-                // Calculate DIME components
+                // Calculate DIME components with inflation adjustments
                 const D = finalExpenses; // Debt (final expenses)
-                const I = partnerIncome * incomeReplacementYears; // Income replacement
+                
+                // Income replacement with inflation - calculate present value of inflating income stream
+                const inflationRate = data.assumptions.inflationRate || 0.03;
+                const discountRate = data.assumptions.postRetireRate || 0.04; // Discount rate for present value
+                
+                let I = 0;
+                if (incomeReplacementYears > 0 && partnerIncome > 0) {
+                    if (Math.abs(discountRate - inflationRate) < 0.0001) {
+                        // If discount rate equals inflation rate, use simple sum with inflation
+                        I = partnerIncome * incomeReplacementYears * Math.pow(1 + inflationRate, incomeReplacementYears / 2);
+                    } else {
+                        // Present value of growing annuity (income growing with inflation)
+                        const growthFactor = 1 + inflationRate;
+                        const discountFactor = 1 + discountRate;
+                        I = partnerIncome * (1 - Math.pow(growthFactor / discountFactor, incomeReplacementYears)) / (discountRate - inflationRate);
+                    }
+                }
+                
                 const M = totalLiabilities; // Mortgage/debt
-                const E = totalEducationCosts; // Education
+                const E = totalEducationCosts; // Education (already inflation-adjusted)
                 
                 const totalNeed = D + I + M + E;
                 const roundedNeed = Math.ceil(totalNeed / 10000) * 10000; // Round up to nearest 10k
@@ -2751,7 +2785,7 @@
                             <span>$${D.toLocaleString()}</span>
                         </div>
                         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 10px;">
-                            <strong style="color: #c9a96e;">I - Income Replacement (${incomeReplacementYears} years):</strong>
+                            <strong style="color: #c9a96e;">I - Income Replacement (${incomeReplacementYears} years @ ${(inflationRate*100).toFixed(1)}% inflation):</strong>
                             <span>$${I.toLocaleString()}</span>
                         </div>
                         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 10px;">
