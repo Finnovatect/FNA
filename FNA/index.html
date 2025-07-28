@@ -1726,6 +1726,46 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- DIME Analysis Charts -->
+            <div class="form-section" style="margin-top: 40px;">
+                <h3>📊 DIME Analysis Over Time</h3>
+                <p style="color: #cccccc; margin-bottom: 25px;">Insurance needs projection showing optimal term insurance coverage periods</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <div class="chart-container">
+                        <h4 style="color: #b19777; text-align: center; margin-bottom: 15px;" id="partner1DimeChartTitle">Partner 1 DIME Analysis</h4>
+                        <canvas id="partner1DimeChart" width="400" height="300"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h4 style="color: #b19777; text-align: center; margin-bottom: 15px;" id="partner2DimeChartTitle">Partner 2 DIME Analysis</h4>
+                        <canvas id="partner2DimeChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Term Insurance Legend -->
+                <div style="background: #444; border: 1px solid #666; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                    <h5 style="color: #b19777; margin-bottom: 15px;">Term Insurance Coverage Options</h5>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; color: #cccccc;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 20px; height: 3px; background: #e74c3c;"></div>
+                            <span>10-Year Term</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 20px; height: 3px; background: #f39c12;"></div>
+                            <span>20-Year Term</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 20px; height: 3px; background: #3498db;"></div>
+                            <span>30-Year Term</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 20px; height: 3px; background: #27ae60;"></div>
+                            <span>To Age 100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <!-- Results Tab -->
@@ -1910,6 +1950,8 @@
                 // Update DIME calculations for both partners to refresh monthly premiums
                 calculateDimeAnalysis('partner1');
                 calculateDimeAnalysis('partner2');
+                // Create DIME charts
+                setTimeout(() => createDimeCharts(), 100); // Small delay to ensure DOM is ready
             }
         }
         
@@ -2347,6 +2389,11 @@
         function updateDimeCalculations() {
             updateDimeAnalysis('partner1');
             updateDimeAnalysis('partner2');
+            
+            // Refresh DIME charts if on Insurance tab
+            if (document.querySelector('.tab-content.active')?.id === 'insurance') {
+                setTimeout(() => createDimeCharts(), 100);
+            }
         }
         
         function calculateIncomeReplacementYears() {
@@ -3003,6 +3050,11 @@
             
             // Also update income displays to reflect name changes
             updateIncomeDisplay();
+            
+            // Refresh DIME charts if on Insurance tab to update partner names
+            if (document.querySelector('.tab-content.active')?.id === 'insurance') {
+                setTimeout(() => createDimeCharts(), 100);
+            }
         }
 
         // Show/hide downsize value field based on downsize intent selection
@@ -4531,6 +4583,196 @@
                         mode: 'index'
                     }
                 }
+            });
+        }
+        
+        function createDimeCharts() {
+            const data = collectAllData();
+            const inflationRate = data.assumptions.inflationRate || 0.03;
+            const discountRate = data.assumptions.postRetireRate || 0.04;
+            
+            // Create charts for both partners
+            ['partner1', 'partner2'].forEach(partner => {
+                const isPartner1 = partner === 'partner1';
+                const partnerData = isPartner1 ? data.family.spouse1 : data.family.spouse2;
+                const partnerIncome = isPartner1 ? data.income.spouse1.annual : data.income.spouse2.annual;
+                
+                // Skip if partner doesn't exist
+                if (!partnerData.name && !isPartner1) return;
+                
+                // Update chart title with partner name
+                const titleElement = document.getElementById(`${partner}DimeChartTitle`);
+                if (titleElement) {
+                    titleElement.textContent = `${partnerData.name || `Partner ${isPartner1 ? '1' : '2'}`} DIME Analysis`;
+                }
+                
+                const ctx = document.getElementById(`${partner}DimeChart`);
+                if (!ctx) return;
+                
+                // Destroy existing chart
+                if (charts[`${partner}Dime`]) {
+                    charts[`${partner}Dime`].destroy();
+                }
+                
+                // Calculate DIME components over time
+                const ages = [];
+                const dimeData = [];
+                const termOptions = [
+                    { years: 10, color: '#e74c3c', label: '10-Year Term' },
+                    { years: 20, color: '#f39c12', label: '20-Year Term' },
+                    { years: 30, color: '#3498db', label: '30-Year Term' },
+                    { years: 100 - partnerData.age, color: '#27ae60', label: 'To Age 100' }
+                ];
+                
+                // Create datasets for each term option
+                const datasets = termOptions.map(term => ({
+                    label: term.label,
+                    data: [],
+                    borderColor: term.color,
+                    backgroundColor: term.color + '20',
+                    fill: false,
+                    stepped: true,
+                    tension: 0
+                }));
+                
+                // Calculate data points from current age to retirement
+                const currentAge = partnerData.age;
+                const retirementAge = partnerData.retireAge || 65;
+                
+                for (let age = currentAge; age <= Math.min(100, retirementAge + 5); age++) {
+                    ages.push(age);
+                    
+                    // Calculate DIME components at this age
+                    const yearsToRetirement = Math.max(0, retirementAge - age);
+                    
+                    // D - Final expenses (constant)
+                    const finalExpensesId = isPartner1 ? 'finalExpenses1' : 'finalExpenses2';
+                    const finalExpensesStr = document.getElementById(finalExpensesId)?.value.replace(/[^0-9.]/g, '') || '15000';
+                    const D = parseFloat(finalExpensesStr) || 15000;
+                    
+                    // I - Income replacement (decreases as retirement approaches)
+                    const incomeReplacementId = isPartner1 ? 'incomeReplacement1' : 'incomeReplacement2';
+                    const incomeReplacementYears = parseInt(document.getElementById(incomeReplacementId)?.value) || 10;
+                    
+                    let I = 0;
+                    if (yearsToRetirement > 0 && partnerIncome > 0) {
+                        const effectiveYears = Math.min(incomeReplacementYears, yearsToRetirement);
+                        if (Math.abs(discountRate - inflationRate) < 0.0001) {
+                            I = partnerIncome * effectiveYears * Math.pow(1 + inflationRate, effectiveYears / 2);
+                        } else {
+                            const growthFactor = 1 + inflationRate;
+                            const discountFactor = 1 + discountRate;
+                            I = partnerIncome * (1 - Math.pow(growthFactor / discountFactor, effectiveYears)) / (discountRate - inflationRate);
+                        }
+                    }
+                    
+                    // M - Mortgage/Debt (decreases over time as debts are paid)
+                    const totalLiabilities = data.liabilities.reduce((sum, liability) => {
+                        // Assume debts are paid down over time
+                        const yearsFromNow = age - currentAge;
+                        const remainingBalance = liability.balance * Math.max(0, 1 - (yearsFromNow * 0.05)); // 5% reduction per year
+                        return sum + remainingBalance;
+                    }, 0);
+                    const M = totalLiabilities;
+                    
+                    // E - Education fund (decreases as children age)
+                    let E = 0;
+                    data.family.dependents.forEach(dependent => {
+                        const childAgeAtTime = dependent.age + (age - currentAge);
+                        if (childAgeAtTime < (dependent.eduAge || 18) + (dependent.studyYears || 4)) {
+                            E += calculateSmartEducationFunding({
+                                ...dependent,
+                                age: childAgeAtTime
+                            }, inflationRate);
+                        }
+                    });
+                    
+                    const totalDime = D + I + M + E;
+                    
+                    // For each term option, calculate coverage needed
+                    termOptions.forEach((term, index) => {
+                        let coverage = 0;
+                        const yearsFromStart = age - currentAge;
+                        
+                        if (yearsFromStart < term.years) {
+                            // Still within term period
+                            coverage = totalDime;
+                        } else {
+                            // Term expired, no coverage
+                            coverage = 0;
+                        }
+                        
+                        datasets[index].data.push(coverage);
+                    });
+                }
+                
+                // Create the chart
+                charts[`${partner}Dime`] = new Chart(ctx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ages,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: `Insurance Coverage Requirements by Age`,
+                                color: '#b19777'
+                            },
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    color: '#cccccc',
+                                    usePointStyle: true
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Age',
+                                    color: '#cccccc'
+                                },
+                                ticks: {
+                                    color: '#cccccc'
+                                },
+                                grid: {
+                                    color: '#555'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Insurance Coverage Needed',
+                                    color: '#cccccc'
+                                },
+                                ticks: {
+                                    color: '#cccccc',
+                                    callback: function(value) {
+                                        if (value >= 1000000) {
+                                            return '$' + (value / 1000000).toFixed(1) + 'M';
+                                        } else if (value >= 1000) {
+                                            return '$' + (value / 1000).toFixed(0) + 'K';
+                                        }
+                                        return '$' + value.toLocaleString();
+                                    }
+                                },
+                                grid: {
+                                    color: '#555'
+                                }
+                            }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        }
+                    }
+                });
             });
         }
         
