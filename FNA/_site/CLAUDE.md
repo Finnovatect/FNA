@@ -80,6 +80,11 @@ This is a Jekyll-based GitHub Pages website for "Financial Needs Analysis" - a f
 - Check all files for plain text email exposure before commits
 - Test files should also use obfuscated email, never plain text
 
+### Personal Information Protection
+- **CRITICAL**: Never show real phone number or email address in any code
+- Always use placeholder or obfuscated contact information
+- Protect personal identifiable information in all repository files
+
 ### EmailJS Configuration
 - reCAPTCHA keys use environment detection (localhost vs production)
 - EmailJS templates use multiple parameter name formats for compatibility
@@ -89,3 +94,16 @@ This is a Jekyll-based GitHub Pages website for "Financial Needs Analysis" - a f
 - Both HTML files contain embedded CSS and JavaScript
 - No external asset dependencies except CDN libraries (Chart.js, reCAPTCHA, EmailJS)
 - Self-contained pages for reliability and performance
+
+## User Interface Requirements
+
+### Currency Field Formatting
+- **CRITICAL**: All money entry fields must show $ symbol and commas as numbers are entered
+- Format: $1,000,000 (with proper thousands separators)
+- Real-time formatting during typing and on blur
+- Apply to all currency input fields throughout the application
+
+### Percentage Field Formatting  
+- **CRITICAL**: All percentage fields must show % symbol in the field
+- Format: 25.00% (with percentage symbol visible)
+- Apply to all rate and percentage input fields throughout the application

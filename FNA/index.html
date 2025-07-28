@@ -248,8 +248,8 @@
         
         .goal-item {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1.5fr 1.5fr 0.7fr 1fr 0.8fr 0.3fr;
+            gap: 8px;
             align-items: center;
             padding: 15px;
             background: rgba(255, 255, 255, 0.05);
@@ -286,12 +286,14 @@
             background: linear-gradient(135deg, #b19777, #c9a96e);
             color: #1a1a1a;
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 12px 15px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 14px;
             margin-top: 10px;
             font-weight: 500;
+            height: 46px;
+            transition: all 0.3s ease;
         }
         
         .add-btn:hover {
@@ -492,16 +494,57 @@
             background: linear-gradient(135deg, #b19777, #c9a96e) !important;
             color: #1a1a1a !important;
             border: none !important;
-            padding: 5px 10px !important;
-            border-radius: 4px !important;
+            padding: 12px 15px !important;
+            border-radius: 8px !important;
             cursor: pointer !important;
-            font-size: 0.8em !important;
+            font-size: 14px !important;
             font-weight: 500 !important;
+            height: 46px !important;
+            transition: all 0.3s ease !important;
         }
         
         .remove-btn:hover {
             background: linear-gradient(135deg, #c9a96e, #d4b876) !important;
             transform: translateY(-1px) !important;
+        }
+        
+        /* Specific styling for debt section remove buttons */
+        .secured-debt .remove-btn,
+        .unsecured-debt .remove-btn {
+            padding: 6px 8px !important;
+            min-width: 28px !important;
+            width: 28px !important;
+            height: 28px !important;
+            font-size: 14px !important;
+            line-height: 1 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 !important;
+            flex-shrink: 0 !important;
+        }
+        
+        /* Ensure debt sections maintain grid layout */
+        .secured-debt,
+        .unsecured-debt {
+            align-items: center !important;
+            min-height: 40px !important;
+        }
+        
+        .secured-debt > *,
+        .unsecured-debt > * {
+            margin: 0 !important;
+            overflow: hidden !important;
+            white-space: nowrap !important;
+        }
+        
+        /* Ensure form elements don't exceed their grid cell */
+        .secured-debt input,
+        .secured-debt select,
+        .unsecured-debt input,
+        .unsecured-debt select {
+            max-width: 100% !important;
+            box-sizing: border-box !important;
         }
         
         /* Priority goal checkboxes styling */
@@ -617,7 +660,7 @@
         /* Layout adjustments for debt sections - all fields on same row */
         .secured-debt, .unsecured-debt {
             display: grid !important;
-            grid-template-columns: 1.2fr 1fr 0.7fr 1fr !important;
+            grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px !important;
             gap: 8px !important;
             margin-bottom: 10px;
             padding: 8px 0;
@@ -628,8 +671,8 @@
         .liability-item.secured-debt,
         .liability-item.unsecured-debt {
             display: grid !important;
-            grid-template-columns: 1.2fr 1fr 0.7fr 1fr !important;
-            gap: 8px !important;
+            grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px !important;
+            gap: 6px !important;
             margin-bottom: 10px;
             padding: 8px 0;
             align-items: center !important;
@@ -663,9 +706,206 @@
         .form-section .secured-debt,
         .form-section .unsecured-debt {
             display: grid !important;
-            grid-template-columns: 1.2fr 1fr 0.7fr 1fr !important;
+            grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px !important;
             gap: 8px !important;
-        }\n    </style>
+        }
+        
+        /* Results page styling */
+        #calculationResults {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .scenario-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        
+        .scenario-tab {
+            padding: 12px 24px;
+            background: #444;
+            color: #cccccc;
+            border: 1px solid #666;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .scenario-tab:hover {
+            background: #555;
+            border-color: #b19777;
+            color: #ffffff;
+        }
+        
+        .scenario-tab.active {
+            background: linear-gradient(135deg, #b19777, #c9a96e);
+            color: #1a1a1a;
+            border-color: #b19777;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(177, 151, 119, 0.3);
+        }
+        
+        /* 3x3 FIN Matrix Styling */
+        .fin-matrix {
+            background: #333;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+        
+        .matrix-header {
+            display: grid;
+            grid-template-columns: 200px 1fr 1fr 1fr;
+            background: linear-gradient(135deg, #b19777, #c9a96e);
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+        
+        .matrix-corner {
+            padding: 15px;
+            background: rgba(0,0,0,0.1);
+            border-right: 1px solid rgba(0,0,0,0.2);
+        }
+        
+        .tax-header {
+            padding: 15px;
+            text-align: center;
+            border-right: 1px solid rgba(0,0,0,0.2);
+            font-size: 0.9em;
+        }
+        
+        .tax-header:last-child {
+            border-right: none;
+        }
+        
+        .tax-header small {
+            font-size: 0.8em;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+        
+        .matrix-row {
+            display: grid;
+            grid-template-columns: 200px 1fr 1fr 1fr;
+            border-bottom: 1px solid #555;
+        }
+        
+        .matrix-row:last-child {
+            border-bottom: none;
+        }
+        
+        .scenario-header {
+            padding: 20px 15px;
+            background: #444;
+            border-right: 1px solid #555;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #c9a96e;
+            font-size: 0.9em;
+        }
+        
+        .scenario-header strong {
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+        
+        .scenario-header small {
+            color: #cccccc;
+            font-size: 0.8em;
+        }
+        
+        .fin-cell {
+            padding: 20px 15px;
+            background: #2a2a2a;
+            border-right: 1px solid #555;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .fin-cell:last-child {
+            border-right: none;
+        }
+        
+        .fin-cell:hover {
+            background: #3a3a3a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(177, 151, 119, 0.2);
+        }
+        
+        .fin-cell.selected {
+            background: #3a3a3a;
+            border: 2px solid #c9a96e;
+            box-shadow: 0 5px 15px rgba(177, 151, 119, 0.4);
+        }
+        
+        .fin-amount {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        
+        .monthly-amount {
+            font-size: 0.9em;
+            color: #c9a96e;
+            font-weight: 500;
+        }
+        
+        /* Responsive adjustments for matrix */
+        @media (max-width: 1200px) {
+            .matrix-header,
+            .matrix-row {
+                grid-template-columns: 180px 1fr 1fr 1fr;
+            }
+            
+            .fin-amount {
+                font-size: 1.2em;
+            }
+            
+            .monthly-amount {
+                font-size: 0.8em;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .matrix-header,
+            .matrix-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .matrix-header {
+                display: none;
+            }
+            
+            .matrix-row {
+                border: 1px solid #555;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                overflow: hidden;
+            }
+            
+            .scenario-header {
+                border-right: none;
+                border-bottom: 1px solid #555;
+                text-align: center;
+            }
+            
+            .fin-cell {
+                border-right: none;
+                border-bottom: 1px solid #555;
+            }
+            
+            .fin-cell:last-child {
+                border-bottom: none;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -706,58 +946,102 @@
                     <!-- Partner 1 Section -->
                     <div class="partner-section">
                         <h4 id="partner1Header">👤 Partner 1</h4>
-                        <div class="form-group">
-                            <label for="spouse1Name">Full Name:</label>
-                            <input type="text" id="spouse1Name" placeholder="Full Name" onchange="updatePartnerNames()">
+                        
+                        <!-- Row 1: Name and Date of Birth -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="spouse1Name">Full Name:</label>
+                                <input type="text" id="spouse1Name" placeholder="Full Name" onchange="updatePartnerNames()">
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse1DOB">Date of Birth:</label>
+                                <input type="text" id="spouse1DOB" placeholder="YYYYMMDD" oninput="formatDateInput(this)" onchange="updateLifeExpectancyFromAge('spouse1'); calculateIncomeReplacementYears()">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="spouse1DOB">Date of Birth:</label>
-                            <input type="date" id="spouse1DOB">
+                        
+                        <!-- Row 2: Gender, Retirement Age, Life Expectancy -->
+                        <div class="form-row-3" style="grid-template-columns: 0.8fr 0.6fr 0.6fr;">
+                            <div class="form-group">
+                                <label for="spouse1Gender">Gender:</label>
+                                <select id="spouse1Gender" onchange="updateLifeExpectancy('spouse1')">
+                                    <option value="">Select</option>
+                                    <option value="male" selected>Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse1RetireAge">Retirement Age:</label>
+                                <input type="number" id="spouse1RetireAge" min="50" max="80" value="65" onchange="calculateIncomeReplacementYears()">
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse1LifeExpectancy">Life Expectancy:</label>
+                                <input type="number" id="spouse1LifeExpectancy" min="65" max="110" value="85">
+                                <small style="color: white;"><a href="https://www.statcan.gc.ca/en/dai/btd/othervisuals/other006" target="_blank" style="color: white;">Statistics Canada Life Tables</a></small>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="spouse1Gender">Gender:</label>
-                            <select id="spouse1Gender">
-                                <option value="">Select</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="spouse1RetireAge">Retirement Age:</label>
-                            <input type="number" id="spouse1RetireAge" min="50" max="80" value="65">
-                        </div>
-                        <div class="form-group">
-                            <label for="spouse1LifeExpectancy">Life Expectancy:</label>
-                            <input type="number" id="spouse1LifeExpectancy" min="65" max="110" value="85">
+                        
+                        <!-- Row 3: Email and Phone -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="spouse1Email">Email Address:</label>
+                                <input type="email" id="spouse1Email" placeholder="email@example.com">
+                                <small style="color: #cccccc;">For sending report copy</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse1Phone">Phone Number:</label>
+                                <input type="tel" id="spouse1Phone" placeholder="(403)-555-1234" oninput="formatPhoneNumber(this)">
+                            </div>
                         </div>
                     </div>
                     
                     <!-- Partner 2 Section -->
                     <div class="partner-section">
                         <h4 id="partner2Header">👤 Partner 2</h4>
-                        <div class="form-group">
-                            <label for="spouse2Name">Full Name:</label>
-                            <input type="text" id="spouse2Name" placeholder="Full Name" onchange="updatePartnerNames()">
+                        
+                        <!-- Row 1: Name and Date of Birth -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="spouse2Name">Full Name:</label>
+                                <input type="text" id="spouse2Name" placeholder="Full Name" onchange="updatePartnerNames()">
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse2DOB">Date of Birth:</label>
+                                <input type="text" id="spouse2DOB" placeholder="YYYYMMDD" oninput="formatDateInput(this)" onchange="updateLifeExpectancyFromAge('spouse2'); calculateIncomeReplacementYears()">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="spouse2DOB">Date of Birth:</label>
-                            <input type="date" id="spouse2DOB">
+                        
+                        <!-- Row 2: Gender, Retirement Age, Life Expectancy -->
+                        <div class="form-row-3" style="grid-template-columns: 0.8fr 0.6fr 0.6fr;">
+                            <div class="form-group">
+                                <label for="spouse2Gender">Gender:</label>
+                                <select id="spouse2Gender" onchange="updateLifeExpectancy('spouse2')">
+                                    <option value="">Select</option>
+                                    <option value="male">Male</option>
+                                    <option value="female" selected>Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse2RetireAge">Retirement Age:</label>
+                                <input type="number" id="spouse2RetireAge" min="50" max="80" value="65" onchange="calculateIncomeReplacementYears()">
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse2LifeExpectancy">Life Expectancy:</label>
+                                <input type="number" id="spouse2LifeExpectancy" min="65" max="110" value="85">
+                                <small style="color: white;"><a href="https://www.statcan.gc.ca/en/dai/btd/othervisuals/other006" target="_blank" style="color: white;">Statistics Canada Life Tables</a></small>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="spouse2Gender">Gender:</label>
-                            <select id="spouse2Gender">
-                                <option value="">Select</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="spouse2RetireAge">Retirement Age:</label>
-                            <input type="number" id="spouse2RetireAge" min="50" max="80" value="65">
-                        </div>
-                        <div class="form-group">
-                            <label for="spouse2LifeExpectancy">Life Expectancy:</label>
-                            <input type="number" id="spouse2LifeExpectancy" min="65" max="110" value="85">
+                        
+                        <!-- Row 3: Email and Phone -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="spouse2Email">Email Address:</label>
+                                <input type="email" id="spouse2Email" placeholder="email@example.com">
+                                <small style="color: #cccccc;">For sending report copy</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse2Phone">Phone Number:</label>
+                                <input type="tel" id="spouse2Phone" placeholder="(403)-555-1234" oninput="formatPhoneNumber(this)">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -770,14 +1054,14 @@
                     <strong>$12,000-$15,000/year</strong> including tuition, books, and minimal living expenses.
                 </p>
                 <div id="dependentsList">
-                    <div class="form-row-4" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
+                    <div class="dependent-item" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 0.3fr; gap: 8px; align-items: center;">
                         <div class="form-group">
                             <label>Child Name:</label>
                             <input type="text" class="dependent-name" placeholder="Child's Name">
                         </div>
                         <div class="form-group">
                             <label>Date of Birth:</label>
-                            <input type="date" class="dependent-dob">
+                            <input type="text" class="dependent-dob" placeholder="YYYYMMDD" oninput="formatDateInput(this)">
                         </div>
                         <div class="form-group">
                             <label>Post-Secondary Start Age:</label>
@@ -789,8 +1073,9 @@
                         </div>
                         <div class="form-group">
                             <label>Annual Education Cost:</label>
-                            <input type="number" class="dependent-edu-cost" value="12000" step="1000">
+                            <input type="text" class="dependent-edu-cost" value="$12,000.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
                         </div>
+                        <button class="remove-btn" onclick="removeDependent(this)" title="Remove this dependent">×</button>
                     </div>
                 </div>
                 <button class="add-btn" onclick="addDependent()">+ Add Dependent</button>
@@ -805,7 +1090,7 @@
                 <div class="form-row-3">
                     <div class="form-group">
                         <label for="income1Rate">Net Take-Home Pay Rate ($):</label>
-                        <input type="text" id="income1Rate" placeholder="$Amount" onchange="updateIncomeDisplay()">
+                        <input type="text" id="income1Rate" placeholder="$Amount" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)" onchange="updateIncomeDisplay()">
                     </div>
                     <div class="form-group">
                         <label for="income1Frequency">Frequency:</label>
@@ -822,12 +1107,6 @@
                         <input type="number" id="income1Hours" value="40" min="1" max="80" onchange="updateIncomeDisplay()">
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                                                                    </div>
-                    <div class="form-group">
-                                                                    </div>
-                </div>
             </div>
             
             <div class="form-section">
@@ -836,7 +1115,7 @@
                 <div class="form-row-3">
                     <div class="form-group">
                         <label for="income2Rate">Net Take-Home Pay Rate ($):</label>
-                        <input type="text" id="income2Rate" placeholder="$Amount" onchange="updateIncomeDisplay()">
+                        <input type="text" id="income2Rate" placeholder="$Amount" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)" onchange="updateIncomeDisplay()">
                     </div>
                     <div class="form-group">
                         <label for="income2Frequency">Frequency:</label>
@@ -852,12 +1131,6 @@
                         <label for="income2Hours">Hours/Week (if hourly):</label>
                         <input type="number" id="income2Hours" value="40" min="1" max="80" onchange="updateIncomeDisplay()">
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                                                                    </div>
-                    <div class="form-group">
-                                                                    </div>
                 </div>
             </div>
             
@@ -877,7 +1150,7 @@
                             <option value="side-business">Side Business</option>\n                            <option value="business-income">Business Income</option>
                             <option value="other">Other</option>
                         </select>
-                        <input type="number" class="income-amount" placeholder="Monthly Amount ($)" step="100" onchange="updateIncomeDisplay()">
+                        <input type="text" class="income-amount" placeholder="$0.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)" onchange="updateIncomeDisplay()">
                         <input type="text" class="income-description" placeholder="Description (optional)">
                         <button type="button" class="remove-btn" onclick="removeIncomeSource(this)">Remove</button>
                     </div>
@@ -893,34 +1166,34 @@
                 <div class="form-row-3">
                     <div class="form-group">
                         <label for="inflationRate">Inflation Rate (%):</label>
-                        <input type="number" id="inflationRate" step="0.01" value="2.80" min="0" max="10">
+                        <input type="text" id="inflationRate" value="2.80%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
                         <small style="color: #cccccc;">Canadian historical average: 2.8%</small>
                     </div>
                     <div class="form-group">
                         <label for="preRetireRate">Pre-Retirement Investment Rate (%):</label>
-                        <input type="number" id="preRetireRate" step="0.01" value="6.80" min="0" max="20">
+                        <input type="text" id="preRetireRate" value="6.80%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
                     </div>
                     <div class="form-group">
                         <label for="postRetireRate">Post-Retirement Investment Rate (%):</label>
-                        <input type="number" id="postRetireRate" step="0.01" value="4.80" min="0" max="15">
+                        <input type="text" id="postRetireRate" value="4.80%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="retirementIncomePercent">Retirement Income Needed (% of pre-retirement):</label>
-                        <input type="number" id="retirementIncomePercent" step="0.01" value="70.00" min="50" max="100">
+                        <input type="text" id="retirementIncomePercent" value="70.00%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
                         <small style="color: #cccccc;">In Canada approximately 70% of pre-retirement income is needed for retired partners</small>
                     </div>
                     <div class="form-group">
                         <label for="widowReduction">Reduction for Widow(er) (%):</label>
-                        <input type="number" id="widowReduction" step="0.01" value="70.00" min="0" max="100">
+                        <input type="text" id="widowReduction" value="70.00%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
                         <small style="color: #cccccc;">Reduced living expenses if one partner passes</small>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="registeredTaxRate">Registered Account Tax Rate in Retirement (%):</label>
-                        <input type="number" id="registeredTaxRate" step="0.01" value="28.50" min="0" max="50" onchange="updateBlendedTaxRate()">
+                        <input type="text" id="registeredTaxRate" value="28.50%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true); updateBlendedTaxRate();">
                         <small style="color: #cccccc;">
                             Expected tax rate on RRSP/pension withdrawals<br>
                             <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" style="color: #c9a96e;">CRA Tax Brackets 2025</a> | Average retiree: 28.5% (combined federal/provincial)
@@ -941,7 +1214,7 @@
             
             <div class="form-section">
                 <h3>🏠 Housing Assumptions</h3>
-                <div class="form-row">
+                <div class="form-row-3" style="grid-template-columns: 1fr 1fr 1.2fr;">
                     <div class="form-group">
                         <label for="currentHousing">Current Housing:</label>
                         <select id="currentHousing">
@@ -956,8 +1229,6 @@
                             <option value="rent">Rent</option>
                         </select>
                     </div>
-                </div>
-                <div class="form-row">
                     <div class="form-group">
                         <label for="downsizeIntent">Downsize at Retirement:</label>
                         <select id="downsizeIntent" onchange="toggleDownsizeField()">
@@ -965,16 +1236,21 @@
                             <option value="yes">Yes</option>
                         </select>
                     </div>
-                    <!-- Conditional downsize value field - hidden by default -->
-                    <div class="form-group" id="downsizeValueGroup" style="display: none;">
+                </div>
+                
+                <!-- Conditional fields displayed separately when needed -->
+                <div class="form-row" id="downsizeValueGroup" style="display: none;">
+                    <div class="form-group">
                         <label for="downsizeValue">Downsize Value in Today's Dollars ($):</label>
-                        <input type="number" id="downsizeValue" step="10000" placeholder="Expected proceeds from downsizing">
+                        <input type="text" id="downsizeValue" value="$0.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)" placeholder="Expected proceeds from downsizing">
                         <small style="color: #cccccc;">Net proceeds after selling current home and buying smaller one</small>
                     </div>
-                    <!-- Conditional rent field - only show if retirement housing is rent -->
-                    <div class="form-group" id="retirementRentGroup" style="display: none;">
+                </div>
+                
+                <div class="form-row" id="retirementRentGroup" style="display: none;">
+                    <div class="form-group">
                         <label for="retirementRent">Expected Monthly Rent in Retirement ($):</label>
-                        <input type="number" id="retirementRent" value="2200" step="100">
+                        <input type="text" id="retirementRent" value="$2,200.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
                         <small style="color: #cccccc;">Calgary, AB average: $2,200</small>
                     </div>
                 </div>
@@ -985,21 +1261,23 @@
                 <div class="form-row-4">
                     <div class="form-group">
                         <label for="cpp1Monthly" id="cpp1Label">Partner 1 CPP Monthly ($):</label>
-                        <input type="number" id="cpp1Monthly" value="758" step="10">
+                        <input type="text" id="cpp1Monthly" value="$758.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
                         <small style="color: #cccccc;">2024 average: $758</small>
                     </div>
                     <div class="form-group">
                         <label for="oas1Monthly" id="oas1Label">Partner 1 OAS Monthly ($):</label>
-                        <input type="number" id="oas1Monthly" value="713" step="10">
+                        <input type="text" id="oas1Monthly" value="$713.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
                         <small style="color: #cccccc;">2024 maximum: $713</small>
                     </div>
                     <div class="form-group">
                         <label for="cpp2Monthly" id="cpp2Label">Partner 2 CPP Monthly ($):</label>
-                        <input type="number" id="cpp2Monthly" value="758" step="10">
+                        <input type="text" id="cpp2Monthly" value="$758.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
+                        <small style="color: #cccccc;">2024 average: $758</small>
                     </div>
                     <div class="form-group">
                         <label for="oas2Monthly" id="oas2Label">Partner 2 OAS Monthly ($):</label>
-                        <input type="number" id="oas2Monthly" value="713" step="10">
+                        <input type="text" id="oas2Monthly" value="$713.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
+                        <small style="color: #cccccc;">2024 average: $713</small>
                     </div>
                 </div>
             </div>
@@ -1011,7 +1289,7 @@
                 <h3>🎯 Financial Goals</h3>
                 <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Enter goals with amounts to include them in calculations automatically</p>
                 <div id="goalsList">
-                    <div class="goal-item">
+                    <div class="goal-item" style="display: grid; grid-template-columns: 1.5fr 1.5fr 0.7fr 1fr 0.8fr 0.3fr; gap: 8px; align-items: center;">
                         <select class="goal-type">
                             <option value="home">Home Purchase</option>
                             <option value="mortgage">Pay Off Mortgage</option>
@@ -1023,13 +1301,15 @@
                             <option value="emergency">Emergency Fund</option>
                             <option value="other">Other</option>
                         </select>
+                        <input type="text" class="goal-description" placeholder="Description (e.g., Mexico Trip)" maxlength="50">
                         <input type="number" class="goal-years" placeholder="Years Away" min="0" max="50">
-                        <input type="number" class="goal-amount" placeholder="Amount ($)" step="1000">
+                        <input type="text" class="goal-amount" placeholder="$0.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
                         <select class="goal-frequency">
                             <option value="one-time">One-time</option>
                             <option value="monthly">Monthly</option>
                             <option value="yearly">Yearly</option>
                         </select>
+                        <button class="remove-btn" onclick="removeGoal(this)" title="Remove this goal">×</button>
                     </div>
                 </div>
                 <button class="add-btn" onclick="addGoal()">+ Add Goal</button>
@@ -1080,70 +1360,6 @@
             </div>
         </div>
         
-        <!-- Income Tab -->
-        <div id="income" class="tab-content">
-            <div class="form-section">
-                <h3 id="partner1IncomeTitle">💰 Partner 1 Income - $0 per year</h3>
-                <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Enter net "take-home" amounts after taxes and deductions</p>
-                <div class="form-row-3">
-                    <div class="form-group">
-                        <label for="income1Rate">Net Take-Home Pay Rate ($):</label>
-                        <input type="text" id="income1Rate" placeholder="$Amount" onchange="updateIncomeDisplay()">
-                    </div>
-                    <div class="form-group">
-                        <label for="income1Frequency">Frequency:</label>
-                        <select id="income1Frequency" onchange="updateIncomeDisplay()">
-                            <option value="hourly">Hourly</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="biweekly">Bi-weekly</option>
-                            <option value="monthly">Monthly</option>
-                            <option value="yearly" selected>Yearly</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="income1Hours">Hours/Week (if hourly):</label>
-                        <input type="number" id="income1Hours" value="40" min="1" max="80" onchange="updateIncomeDisplay()">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                                                                    </div>
-                    <div class="form-group">
-                                                                    </div>
-                </div>
-            </div>
-            
-            <div class="form-section">
-                <h3 id="partner2IncomeTitle">💰 Partner 2 Income - $0 per year</h3>
-                <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Enter net "take-home" amounts after taxes and deductions</p>
-                <div class="form-row-3">
-                    <div class="form-group">
-                        <label for="income2Rate">Net Take-Home Pay Rate ($):</label>
-                        <input type="text" id="income2Rate" placeholder="$Amount" onchange="updateIncomeDisplay()">
-                    </div>
-                    <div class="form-group">
-                        <label for="income2Frequency">Frequency:</label>
-                        <select id="income2Frequency" onchange="updateIncomeDisplay()">
-                            <option value="hourly">Hourly</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="biweekly">Bi-weekly</option>
-                            <option value="monthly">Monthly</option>
-                            <option value="yearly" selected>Yearly</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="income2Hours">Hours/Week (if hourly):</label>
-                        <input type="number" id="income2Hours" value="40" min="1" max="80" onchange="updateIncomeDisplay()">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                                                                    </div>
-                    <div class="form-group">
-                                                                    </div>
-                </div>
-            </div>
-        </div>
         
         <!-- Assets Tab -->
         <div id="assets" class="tab-content">
@@ -1160,7 +1376,7 @@
                     <div>Institution and Notes</div>
                 </div>
                 <div id="liquidAssetsList">
-                    <div class="asset-item liquid-asset">
+                    <div class="asset-item liquid-asset" style="display: grid; grid-template-columns: 1.5fr 1fr 0.7fr 1.5fr 0.3fr; gap: 8px; align-items: center;">
                         <select class="asset-type">
                             <option value="rrsp">RRSP</option>
                             <option value="tfsa">TFSA</option>
@@ -1175,8 +1391,9 @@
                             <option value="other-liquid">Other Liquid</option>
                         </select>
                         <input type="text" class="asset-value" placeholder="$0.00" step="1000" value="$0.00" onchange="formatCurrency(this)">
-                        <input type="text" class="asset-growth" placeholder="1.00%" step="0.01" value="1.00%" onchange="formatPercentage(this)">
+                        <input type="text" class="asset-growth" placeholder="1.00%" step="0.01" value="1.00%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
                         <input type="text" class="asset-notes" placeholder="Institution and Notes">
+                        <button class="remove-btn" onclick="removeLiquidAsset(this)" title="Remove this asset">×</button>
                     </div>
                 </div>
                 <button class="add-btn" onclick="addLiquidAsset()">+ Add Liquid Asset</button>
@@ -1195,7 +1412,7 @@
                     <div>Location and Notes</div>
                 </div>
                 <div id="fixedAssetsList">
-                    <div class="asset-item fixed-asset">
+                    <div class="asset-item fixed-asset" style="display: grid; grid-template-columns: 1.5fr 1fr 0.7fr 1.5fr 0.3fr; gap: 8px; align-items: center;">
                         <select class="asset-type">
                             <option value="primary-residence">Primary Residence</option>
                             <option value="rental-property">Rental Property</option>
@@ -1209,8 +1426,9 @@
                             <option value="other-fixed">Other Fixed</option>
                         </select>
                         <input type="text" class="asset-value" placeholder="$0.00" step="1000" value="$0.00" onchange="formatCurrency(this)">
-                        <input type="text" class="asset-growth" placeholder="3.00%" step="0.01" value="3.00%" onchange="formatPercentage(this)">
+                        <input type="text" class="asset-growth" placeholder="3.00%" step="0.01" value="3.00%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
                         <input type="text" class="asset-notes" placeholder="Location and Notes">
+                        <button class="remove-btn" onclick="removeFixedAsset(this)" title="Remove this asset">×</button>
                     </div>
                 </div>
                 <button class="add-btn" onclick="addFixedAsset()">+ Add Fixed Asset</button>
@@ -1235,7 +1453,7 @@
                     <div>Maturity Date</div>
                 </div>
                 <div id="mortgagesList">
-                    <div class="mortgage-item">
+                    <div class="mortgage-item" style="display: grid; grid-template-columns: 1fr 1fr 1fr 0.6fr 0.8fr 1fr 1fr 0.3fr; gap: 8px; align-items: center;">
                         <select class="mortgage-property">
                             <option value="primary">Primary Residence</option>
                             <option value="rental">Rental Property</option>
@@ -1249,6 +1467,7 @@
                         <input type="number" class="mortgage-term" placeholder="25" step="1" onchange="calculateMortgagePayment(this)">
                         <input type="text" class="mortgage-payment" placeholder="$0.00" readonly style="background: rgba(177, 151, 119, 0.1);">
                         <input type="month" class="mortgage-maturity" onchange="calculateMortgagePayment(this)">
+                        <button class="remove-btn" onclick="removeMortgage(this)" title="Remove this mortgage">×</button>
                     </div>
                 </div>
                 <button class="add-btn" onclick="addMortgage()">+ Add Mortgage</button>
@@ -1260,24 +1479,31 @@
                 <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Loans backed by collateral such as vehicles, equipment, or other assets</p>
                 
                 <!-- Secured Debt Column Headers -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr 0.6fr 1fr; gap: 12px; margin-bottom: 10px; padding: 10px 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; font-weight: 600; color: #b19777;">
+                <div style="display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; margin-bottom: 10px; padding: 10px 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; font-weight: 600; color: #b19777;">
                     <div>Debt Type</div>
                     <div>Current Balance ($)</div>
                     <div>Interest Rate (%)</div>
                     <div>Monthly Payment ($)</div>
+                    <div></div>
                 </div>
                 <div id="securedDebtsList">
-                    <div class="liability-item secured-debt">
+                    <div class="liability-item secured-debt" style="display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; align-items: center;">
                         <select class="liability-type">
+                            <option value="vehicle">Home Equity Line of Credit (HELOC)</option>
                             <option value="vehicle">Vehicle Loan</option>
+                            <option value="vehicle-lease">Vehicle Lease</option>
                             <option value="boat">Boat/RV Loan</option>
                             <option value="equipment">Equipment Loan</option>
                             <option value="secured-loan">Secured Personal Loan</option>
                             <option value="other-secured">Other Secured</option>
                         </select>
                         <input type="text" class="liability-balance" placeholder="$0.00" onchange="formatCurrency(this)">
-                        <input type="number" class="liability-rate" placeholder="8.00" step="0.1"><span class="percentage-symbol">%</span>
+                        <div style="position: relative;">
+                            <input type="number" class="liability-rate" placeholder="8.00" step="0.1" style="width: 100%; padding-right: 25px;">
+                            <span class="percentage-symbol" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #b19777;">%</span>
+                        </div>
                         <input type="text" class="liability-payment" placeholder="$0.00" onchange="formatCurrency(this)">
+                        <button class="remove-btn" onclick="removeDebtItem(this)" title="Remove this debt">×</button>
                     </div>
                 </div>
                 <button class="add-btn" onclick="addSecuredDebt()">+ Add Secured Debt</button>
@@ -1289,14 +1515,15 @@
                 <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Debts not backed by collateral, typically with higher interest rates</p>
                 
                 <!-- Unsecured Debt Column Headers -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr 0.6fr 1fr; gap: 12px; margin-bottom: 10px; padding: 10px 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; font-weight: 600; color: #b19777;">
+                <div style="display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; margin-bottom: 10px; padding: 10px 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; font-weight: 600; color: #b19777;">
                     <div>Debt Type</div>
                     <div>Current Balance ($)</div>
                     <div>Interest Rate (%)</div>
                     <div>Monthly Payment ($)</div>
+                    <div></div>
                 </div>
                 <div id="unsecuredDebtsList">
-                    <div class="liability-item unsecured-debt">
+                    <div class="liability-item unsecured-debt" style="display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; align-items: center;">
                         <select class="liability-type">
                             <option value="credit-card">Credit Card</option>
                             <option value="line-of-credit">Line of Credit</option>
@@ -1306,8 +1533,12 @@
                             <option value="other-unsecured">Other Unsecured</option>
                         </select>
                         <input type="text" class="liability-balance" placeholder="$0.00" onchange="formatCurrency(this)">
-                        <input type="number" class="liability-rate" placeholder="19.00" step="0.1"><span class="percentage-symbol">%</span>
+                        <div style="position: relative;">
+                            <input type="number" class="liability-rate" placeholder="19.00" step="0.1" style="width: 100%; padding-right: 25px;">
+                            <span class="percentage-symbol" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #b19777;">%</span>
+                        </div>
                         <input type="text" class="liability-payment" placeholder="$0.00" onchange="formatCurrency(this)">
+                        <button class="remove-btn" onclick="removeDebtItem(this)" title="Remove this debt">×</button>
                     </div>
                 </div>
                 <button class="add-btn" onclick="addUnsecuredDebt()">+ Add Unsecured Debt</button>
@@ -1319,13 +1550,14 @@
             <div class="form-section">
                 <h3>🛡️ Current Insurance Policies</h3>
                 <div id="insuranceList">
-                    <div class="form-row-6">
+                    <div class="insurance-item" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.3fr; gap: 8px; align-items: center;">
                         <div class="form-group">
                             <label>Policy Type:</label>
                             <select class="insurance-type" onchange="updateInsuranceTerm(this)">
                                 <option value="term-life">Term Life</option>
                                 <option value="whole-life">Whole Life</option>
                                 <option value="universal-life">Universal Life</option>
+                                <option value="disability">Employee Benefits Life Insurance</option>
                                 <option value="disability">Disability</option>
                                 <option value="critical-illness">Critical Illness</option>
                                 <option value="health">Health/Extended Health</option>
@@ -1333,16 +1565,24 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label>Insurance Company:</label>
+                            <input type="text" class="insurance-company" placeholder="e.g., Manulife, Sun Life">
+                        </div>
+                        <div class="form-group">
                             <label>Coverage Amount ($):</label>
-                            <input type="text" class="insurance-amount" step="10000" placeholder="$0.00" onchange="formatCurrency(this)">
+                            <input type="text" class="insurance-amount" step="10000" placeholder="$0.00" onchange="handleInsuranceChange(this)">
                         </div>
                         <div class="form-group">
                             <label>Monthly Premium ($):</label>
-                            <input type="text" class="insurance-premium" step="10" placeholder="$0.00" onchange="formatCurrency(this)">
+                            <input type="text" class="insurance-premium" step="10" placeholder="$0.00" onchange="handleInsuranceChange(this)">
                         </div>
                         <div class="form-group">
                             <label>Term/Duration:</label>
                             <input type="text" class="insurance-term" placeholder="e.g., 20 years, Age 65">
+                        </div>
+                        <div class="form-group">
+                            <label>Expiry Date:</label>
+                            <input type="month" class="insurance-expiry" placeholder="MM/YYYY">
                         </div>
                         <div class="form-group">
                             <label>Policy Owner:</label>
@@ -1359,6 +1599,7 @@
                             <label>Primary Beneficiary:</label>
                             <input type="text" class="insurance-beneficiary" placeholder="Name or relationship">
                         </div>
+                        <button class="remove-btn" onclick="removeInsurancePolicy(this)" title="Remove this insurance policy">×</button>
                     </div>
                 </div>
                 <button class="add-btn" onclick="addInsurance()">+ Add Insurance Policy</button>
@@ -1378,7 +1619,7 @@
                     <div class="form-group">
                         <label for="incomeReplacement1">Years of Income Replacement:</label>
                         <input type="number" id="incomeReplacement1" value="10" min="1" max="30" onchange="updateDimeCalculations()">
-                        <small style="color: #cccccc;">Years to replace Partner 1's income</small>
+                        <small id="incomeReplacementLabel1" style="color: #cccccc;">Years to replace Partner 1's income</small>
                     </div>
                 </div>
                 <div class="form-row">
@@ -1433,13 +1674,13 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="finalExpenses2">Final Expenses ($):</label>
-                        <input type="text" id="finalExpenses2" value="$15,000.00" step="1000" onchange="formatCurrency(this); updateDimeCalculations()">
+                        <input type="text" id="finalExpenses2" value="$15,000.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)" onchange="updateDimeCalculations()">
                         <small style="color: #cccccc;">Funeral, legal, medical costs</small>
                     </div>
                     <div class="form-group">
                         <label for="incomeReplacement2">Years of Income Replacement:</label>
                         <input type="number" id="incomeReplacement2" value="10" min="1" max="30" onchange="updateDimeCalculations()">
-                        <small style="color: #cccccc;">Years to replace Partner 2's income</small>
+                        <small id="incomeReplacementLabel2" style="color: #cccccc;">Years to replace Partner 2's income</small>
                     </div>
                 </div>
                 <div class="form-row">
@@ -1494,31 +1735,74 @@
             <div id="calculationResults">
                 <div class="fin-display">
                     <h2>Your Financial Independence Numbers (FIN#)</h2>
-                    <p style="color: #cccccc; margin-bottom: 25px;">Total amount needed at retirement based on account type</p>
+                    <p style="color: #cccccc; margin-bottom: 25px;">Total amount needed at retirement based on tax strategy and drawdown approach</p>
                     
-                    <div class="fin-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 30px;">
-                        <div class="fin-card" style="background: #444; border: 1px solid #666; border-radius: 8px; padding: 20px; text-align: center;">
-                            <h4 style="color: #c9a96e; margin-bottom: 10px;">Registered Accounts</h4>
-                            <div id="finNumberRegistered" class="fin-number" style="font-size: 1.8em; color: #ffffff; margin-bottom: 10px;">$0</div>
-                            <small style="color: #cccccc;">RRSP, Pension (25% tax)</small>
+                    <!-- 3x3 FIN Matrix -->
+                    <div class="fin-matrix">
+                        <div class="matrix-header">
+                            <div class="matrix-corner"></div>
+                            <div class="tax-header">Registered Accounts<br><small>RRSP, Pension (25% tax)</small></div>
+                            <div class="tax-header">Blended Strategy<br><small>RRSP + TFSA (15% tax)</small></div>
+                            <div class="tax-header">Non-Taxable<br><small>TFSA, Insurance (0% tax)</small></div>
                         </div>
-                        <div class="fin-card" style="background: #444; border: 1px solid #666; border-radius: 8px; padding: 20px; text-align: center;">
-                            <h4 style="color: #c9a96e; margin-bottom: 10px;">Blended Strategy</h4>
-                            <div id="finNumberBlended" class="fin-number" style="font-size: 1.8em; color: #ffffff; margin-bottom: 10px;">$0</div>
-                            <small style="color: #cccccc;">RRSP + TFSA (15% tax)</small>
+                        
+                        <div class="matrix-row">
+                            <div class="scenario-header">
+                                <strong>Principal Maintenance</strong><br>
+                                <small>Portfolio never depletes</small>
+                            </div>
+                            <div class="fin-cell" id="fin-registered-preserve">
+                                <div class="fin-amount">$0</div>
+                                <div class="monthly-amount">$0/month</div>
+                            </div>
+                            <div class="fin-cell" id="fin-blended-preserve">
+                                <div class="fin-amount">$0</div>
+                                <div class="monthly-amount">$0/month</div>
+                            </div>
+                            <div class="fin-cell" id="fin-nontax-preserve">
+                                <div class="fin-amount">$0</div>
+                                <div class="monthly-amount">$0/month</div>
+                            </div>
                         </div>
-                        <div class="fin-card" style="background: #444; border: 1px solid #666; border-radius: 8px; padding: 20px; text-align: center;">
-                            <h4 style="color: #c9a96e; margin-bottom: 10px;">Non-Taxable</h4>
-                            <div id="finNumberNonTax" class="fin-number" style="font-size: 1.8em; color: #ffffff; margin-bottom: 10px;">$0</div>
-                            <small style="color: #cccccc;">TFSA, Insurance PTS (0% tax)</small>
+                        
+                        <div class="matrix-row">
+                            <div class="scenario-header">
+                                <strong>Drawdown + 10 Years</strong><br>
+                                <small>Portfolio lasts to life expectancy + 10</small>
+                            </div>
+                            <div class="fin-cell" id="fin-registered-buffer">
+                                <div class="fin-amount">$0</div>
+                                <div class="monthly-amount">$0/month</div>
+                            </div>
+                            <div class="fin-cell" id="fin-blended-buffer">
+                                <div class="fin-amount">$0</div>
+                                <div class="monthly-amount">$0/month</div>
+                            </div>
+                            <div class="fin-cell" id="fin-nontax-buffer">
+                                <div class="fin-amount">$0</div>
+                                <div class="monthly-amount">$0/month</div>
+                            </div>
+                        </div>
+                        
+                        <div class="matrix-row">
+                            <div class="scenario-header">
+                                <strong>Drawdown to Lifespan</strong><br>
+                                <small>Portfolio depletes at life expectancy</small>
+                            </div>
+                            <div class="fin-cell" id="fin-registered-deplete">
+                                <div class="fin-amount">$0</div>
+                                <div class="monthly-amount">$0/month</div>
+                            </div>
+                            <div class="fin-cell" id="fin-blended-deplete">
+                                <div class="fin-amount">$0</div>
+                                <div class="monthly-amount">$0/month</div>
+                            </div>
+                            <div class="fin-cell" id="fin-nontax-deplete">
+                                <div class="fin-amount">$0</div>
+                                <div class="monthly-amount">$0/month</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="scenario-tabs">
-                    <div class="scenario-tab active" onclick="switchScenario('registered')">Registered</div>
-                    <div class="scenario-tab" onclick="switchScenario('blended')">Blended</div>
-                    <div class="scenario-tab" onclick="switchScenario('nontax')">Non-Taxable</div>
                 </div>
                 
                 <div id="scenarioResults">
@@ -1555,7 +1839,34 @@
                     <div id="detailedBreakdown"></div>
                 </div>
                 
-                <!-- Financial Analysis Charts -->\n                <div class=\"charts-section\" style=\"margin-top: 40px;\">\n                    <h3 style=\"color: #b19777; text-align: center; margin-bottom: 30px; font-size: 1.8em;\">📊 Financial Analysis Overview</h3>\n                    \n                    <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;\">\n                        <div class=\"chart-container\">\n                            <h4 style=\"color: #b19777; text-align: center; margin-bottom: 15px;\">Net Worth Breakdown</h4>\n                            <canvas id=\"netWorthChart\" width=\"400\" height=\"300\"></canvas>\n                        </div>\n                        <div class=\"chart-container\">\n                            <h4 style=\"color: #b19777; text-align: center; margin-bottom: 15px;\">Monthly Cash Flow</h4>\n                            <canvas id=\"cashFlowChart\" width=\"400\" height=\"300\"></canvas>\n                        </div>\n                    </div>\n                    \n                    <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;\">\n                        <div class=\"chart-container\">\n                            <h4 style=\"color: #b19777; text-align: center; margin-bottom: 15px;\">Insurance Coverage Analysis</h4>\n                            <canvas id=\"insuranceChart\" width=\"400\" height=\"300\"></canvas>\n                        </div>\n                        <div class=\"chart-container\">\n                            <h4 style=\"color: #b19777; text-align: center; margin-bottom: 15px;\">Retirement Projection</h4>\n                            <canvas id=\"retirementChart\" width=\"400\" height=\"400\"></canvas>\n                        </div>\n                    </div>\n                </div>\n                \n                <button class=\"print-btn\" onclick=\"generatePrintSummary()\">🖨️ Generate Printable Summary</button>
+                <!-- Financial Analysis Charts -->
+                <div class="charts-section" style="margin-top: 40px;">
+                    <h3 style="color: #b19777; text-align: center; margin-bottom: 30px; font-size: 1.8em;">📊 Financial Analysis Overview</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                        <div class="chart-container">
+                            <h4 style="color: #b19777; text-align: center; margin-bottom: 15px;">Net Worth Breakdown</h4>
+                            <canvas id="netWorthChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h4 style="color: #b19777; text-align: center; margin-bottom: 15px;">Monthly Cash Flow</h4>
+                            <canvas id="cashFlowChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                        <div class="chart-container">
+                            <h4 style="color: #b19777; text-align: center; margin-bottom: 15px;">Insurance Coverage Analysis</h4>
+                            <canvas id="insuranceChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h4 style="color: #b19777; text-align: center; margin-bottom: 15px;">Retirement Projection</h4>
+                            <canvas id="retirementChart" width="400" height="400"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="print-btn" onclick="generatePrintSummary()">🖨️ Generate Printable Summary</button>
             </div>
         </div>
     </div>
@@ -1592,6 +1903,66 @@
             if (event && event.target) {
                 event.target.classList.add('active');
             }
+            
+            // Auto-calculate income replacement when switching to insurance tab
+            if (tabName === 'insurance') {
+                calculateIncomeReplacementYears();
+                // Update DIME calculations for both partners to refresh monthly premiums
+                calculateDimeAnalysis('partner1');
+                calculateDimeAnalysis('partner2');
+            }
+        }
+        
+        // Real-time currency formatting function
+        function formatCurrency(input) {
+            let value = input.value;
+            
+            // Remove everything except digits and decimal point
+            value = value.replace(/[^\d.]/g, '');
+            
+            // Handle multiple decimal points
+            let parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            
+            // Don't format while user is typing if it's incomplete
+            if (value === '' || value === '.') {
+                return;
+            }
+            
+            // Parse and format
+            let num = parseFloat(value);
+            if (!isNaN(num)) {
+                // Format with commas but preserve what user is typing
+                let formatted = num.toLocaleString('en-US');
+                input.value = '$' + formatted;
+            }
+        }
+        
+        // Format currency on blur (complete formatting)
+        function formatCurrencyComplete(input) {
+            let value = input.value.replace(/[^\d.]/g, '');
+            if (value === '') {
+                input.value = '$0.00';
+                return;
+            }
+            
+            let num = parseFloat(value);
+            if (!isNaN(num)) {
+                input.value = '$' + num.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+        }
+        
+        // Handle insurance field changes - format currency and update DIME calculations
+        function handleInsuranceChange(input) {
+            formatCurrency(input);
+            // Trigger DIME calculations for both partners to update monthly premiums
+            calculateDimeAnalysis('partner1');
+            calculateDimeAnalysis('partner2');
         }
         
         // Global functions for adding form elements
@@ -1599,9 +1970,11 @@
         function addDependent() {
             const container = document.getElementById('dependentsList');
             const div = document.createElement('div');
-            div.className = 'form-row-4';
-            // Match the exact inline style from the original row (line 527)
-            div.style.gridTemplateColumns = '1fr 1fr 1fr 1fr 1fr';
+            div.className = 'dependent-item';
+            div.style.display = 'grid';
+            div.style.gridTemplateColumns = '1fr 1fr 1fr 1fr 1fr 0.3fr';
+            div.style.gap = '8px';
+            div.style.alignItems = 'center';
             div.innerHTML = `
                 <div class="form-group">
                     <label>Child Name:</label>
@@ -1609,7 +1982,7 @@
                 </div>
                 <div class="form-group">
                     <label>Date of Birth:</label>
-                    <input type="date" class="dependent-dob">
+                    <input type="text" class="dependent-dob" placeholder="YYYYMMDD" oninput="formatDateInput(this)">
                 </div>
                 <div class="form-group">
                     <label>Post-Secondary Start Age:</label>
@@ -1621,16 +1994,28 @@
                 </div>
                 <div class="form-group">
                     <label>Annual Education Cost:</label>
-                    <input type="number" class="dependent-edu-cost" value="12000" step="1000">
+                    <input type="text" class="dependent-edu-cost" value="$12,000.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
                 </div>
+                <button class="remove-btn" onclick="removeDependent(this)" title="Remove this dependent">×</button>
             `;
             container.appendChild(div);
+        }
+        
+        function removeDependent(button) {
+            const dependentItem = button.closest('.dependent-item');
+            if (dependentItem) {
+                dependentItem.remove();
+            }
         }
         
         function addGoal() {
             const container = document.getElementById('goalsList');
             const div = document.createElement('div');
             div.className = 'goal-item';
+            div.style.display = 'grid';
+            div.style.gridTemplateColumns = '1.5fr 1.5fr 0.7fr 1fr 0.8fr 0.3fr';
+            div.style.gap = '8px';
+            div.style.alignItems = 'center';
             div.innerHTML = `
                 <select class="goal-type">
                     <option value="home">Home Purchase</option>
@@ -1643,21 +2028,34 @@
                     <option value="emergency">Emergency Fund</option>
                     <option value="other">Other</option>
                 </select>
+                <input type="text" class="goal-description" placeholder="Description (e.g., Mexico Trip)" maxlength="50">
                 <input type="number" class="goal-years" placeholder="Years Away" min="0" max="50">
-                <input type="number" class="goal-amount" placeholder="Amount ($)" step="1000">
+                <input type="text" class="goal-amount" placeholder="$0.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
                 <select class="goal-frequency">
                     <option value="one-time">One-time</option>
                     <option value="monthly">Monthly</option>
                     <option value="yearly">Yearly</option>
                 </select>
+                <button class="remove-btn" onclick="removeGoal(this)" title="Remove this goal">×</button>
             `;
             container.appendChild(div);
+        }
+        
+        function removeGoal(button) {
+            const goalItem = button.closest('.goal-item');
+            if (goalItem) {
+                goalItem.remove();
+            }
         }
         
         function addLiquidAsset() {
             const container = document.getElementById('liquidAssetsList');
             const div = document.createElement('div');
             div.className = 'asset-item liquid-asset';
+            div.style.display = 'grid';
+            div.style.gridTemplateColumns = '1.5fr 1fr 0.7fr 1.5fr 0.3fr';
+            div.style.gap = '8px';
+            div.style.alignItems = 'center';
             div.innerHTML = `
                 <select class="asset-type">
                     <option value="rrsp">RRSP</option>
@@ -1673,16 +2071,28 @@
                     <option value="other-liquid">Other Liquid</option>
                 </select>
                 <input type="text" class="asset-value" placeholder="$0.00" value="$0.00" onchange="formatCurrency(this)">
-                <input type="text" class="asset-growth" placeholder="1.00%" value="1.00%" onchange="formatPercentage(this)">
+                <input type="text" class="asset-growth" placeholder="1.00%" value="1.00%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
                 <input type="text" class="asset-notes" placeholder="Institution and Notes">
+                <button class="remove-btn" onclick="removeLiquidAsset(this)" title="Remove this asset">×</button>
             `;
             container.appendChild(div);
+        }
+        
+        function removeLiquidAsset(button) {
+            const assetItem = button.closest('.asset-item');
+            if (assetItem) {
+                assetItem.remove();
+            }
         }
         
         function addFixedAsset() {
             const container = document.getElementById('fixedAssetsList');
             const div = document.createElement('div');
             div.className = 'asset-item fixed-asset';
+            div.style.display = 'grid';
+            div.style.gridTemplateColumns = '1.5fr 1fr 0.7fr 1.5fr 0.3fr';
+            div.style.gap = '8px';
+            div.style.alignItems = 'center';
             div.innerHTML = `
                 <select class="asset-type">
                     <option value="primary-residence">Primary Residence</option>
@@ -1697,10 +2107,18 @@
                     <option value="other-fixed">Other Fixed</option>
                 </select>
                 <input type="text" class="asset-value" placeholder="$0.00" value="$0.00" onchange="formatCurrency(this)">
-                <input type="text" class="asset-growth" placeholder="3.00%" value="3.00%" onchange="formatPercentage(this)">
+                <input type="text" class="asset-growth" placeholder="3.00%" value="3.00%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
                 <input type="text" class="asset-notes" placeholder="Location and Notes">
+                <button class="remove-btn" onclick="removeFixedAsset(this)" title="Remove this asset">×</button>
             `;
             container.appendChild(div);
+        }
+        
+        function removeFixedAsset(button) {
+            const assetItem = button.closest('.asset-item');
+            if (assetItem) {
+                assetItem.remove();
+            }
         }
         
         // Legacy function for backward compatibility
@@ -1712,6 +2130,10 @@
             const container = document.getElementById('mortgagesList');
             const div = document.createElement('div');
             div.className = 'mortgage-item';
+            div.style.display = 'grid';
+            div.style.gridTemplateColumns = '1fr 1fr 1fr 0.6fr 0.8fr 1fr 1fr 0.3fr';
+            div.style.gap = '8px';
+            div.style.alignItems = 'center';
             div.innerHTML = `
                 <select class="mortgage-property">
                     <option value="primary">Primary Residence</option>
@@ -1726,25 +2148,39 @@
                 <input type="number" class="mortgage-term" placeholder="25" step="1" onchange="calculateMortgagePayment(this)">
                 <input type="text" class="mortgage-payment" placeholder="$0.00" readonly style="background: rgba(177, 151, 119, 0.1);">
                 <input type="month" class="mortgage-maturity" onchange="calculateMortgagePayment(this)">
+                <button class="remove-btn" onclick="removeMortgage(this)" title="Remove this mortgage">×</button>
             `;
             container.appendChild(div);
+        }
+        
+        function removeMortgage(button) {
+            const mortgageItem = button.closest('.mortgage-item');
+            if (mortgageItem) {
+                mortgageItem.remove();
+            }
         }
         
         function addSecuredDebt() {
             const container = document.getElementById('securedDebtsList');
             const div = document.createElement('div');
             div.className = 'liability-item secured-debt';
+            div.style.cssText = 'display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; align-items: center;';
             div.innerHTML = `
                 <select class="liability-type">
                     <option value="vehicle">Vehicle Loan</option>
+                    <option value="vehicle-lease">Vehicle Lease</option>
                     <option value="boat">Boat/RV Loan</option>
                     <option value="equipment">Equipment Loan</option>
                     <option value="secured-loan">Secured Personal Loan</option>
                     <option value="other-secured">Other Secured</option>
                 </select>
                 <input type="text" class="liability-balance" placeholder="$0.00" onchange="formatCurrency(this)">
-                <input type="number" class="liability-rate" placeholder="8.00" step="0.1"><span class="percentage-symbol">%</span>
+                <div style="position: relative;">
+                    <input type="number" class="liability-rate" placeholder="8.00" step="0.1" style="width: 100%; padding-right: 25px;">
+                    <span class="percentage-symbol" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #b19777;">%</span>
+                </div>
                 <input type="text" class="liability-payment" placeholder="$0.00" onchange="formatCurrency(this)">
+                <button class="remove-btn" onclick="removeDebtItem(this)" title="Remove this debt">×</button>
             `;
             container.appendChild(div);
         }
@@ -1753,6 +2189,7 @@
             const container = document.getElementById('unsecuredDebtsList');
             const div = document.createElement('div');
             div.className = 'liability-item unsecured-debt';
+            div.style.cssText = 'display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; align-items: center;';
             div.innerHTML = `
                 <select class="liability-type">
                     <option value="credit-card">Credit Card</option>
@@ -1763,8 +2200,12 @@
                     <option value="other-unsecured">Other Unsecured</option>
                 </select>
                 <input type="text" class="liability-balance" placeholder="$0.00" onchange="formatCurrency(this)">
-                <input type="number" class="liability-rate" placeholder="19.00" step="0.1"><span class="percentage-symbol">%</span>
+                <div style="position: relative;">
+                    <input type="number" class="liability-rate" placeholder="19.00" step="0.1" style="width: 100%; padding-right: 25px;">
+                    <span class="percentage-symbol" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #b19777;">%</span>
+                </div>
                 <input type="text" class="liability-payment" placeholder="$0.00" onchange="formatCurrency(this)">
+                <button class="remove-btn" onclick="removeDebtItem(this)" title="Remove this debt">×</button>
             `;
             container.appendChild(div);
         }
@@ -1814,7 +2255,11 @@
         function addInsurance() {
             const container = document.getElementById('insuranceList');
             const div = document.createElement('div');
-            div.className = 'form-row-6';
+            div.className = 'insurance-item';
+            div.style.display = 'grid';
+            div.style.gridTemplateColumns = '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.3fr';
+            div.style.gap = '8px';
+            div.style.alignItems = 'center';
             div.innerHTML = `
                 <div class="form-group">
                     <label>Policy Type:</label>
@@ -1829,16 +2274,24 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>Insurance Company:</label>
+                    <input type="text" class="insurance-company" placeholder="e.g., Manulife, Sun Life">
+                </div>
+                <div class="form-group">
                     <label>Coverage Amount ($):</label>
-                    <input type="text" class="insurance-amount" step="10000" placeholder="$0.00" onchange="formatCurrency(this)">
+                    <input type="text" class="insurance-amount" step="10000" placeholder="$0.00" onchange="handleInsuranceChange(this)">
                 </div>
                 <div class="form-group">
                     <label>Monthly Premium ($):</label>
-                    <input type="text" class="insurance-premium" step="10" placeholder="$0.00" onchange="formatCurrency(this)">
+                    <input type="text" class="insurance-premium" step="10" placeholder="$0.00" onchange="handleInsuranceChange(this)">
                 </div>
                 <div class="form-group">
                     <label>Term/Duration:</label>
                     <input type="text" class="insurance-term" placeholder="e.g., 20 years, Age 65">
+                </div>
+                <div class="form-group">
+                    <label>Expiry Date:</label>
+                    <input type="month" class="insurance-expiry" placeholder="MM/YYYY">
                 </div>
                 <div class="form-group">
                     <label>Policy Owner:</label>
@@ -1855,13 +2308,21 @@
                     <label>Primary Beneficiary:</label>
                     <input type="text" class="insurance-beneficiary" placeholder="Name or relationship">
                 </div>
+                <button class="remove-btn" onclick="removeInsurancePolicy(this)" title="Remove this insurance policy">×</button>
             `;
             container.appendChild(div);
         }
         
+        function removeInsurancePolicy(button) {
+            const insuranceItem = button.closest('.insurance-item');
+            if (insuranceItem) {
+                insuranceItem.remove();
+            }
+        }
+        
         // Auto-populate term field based on policy type
         function updateInsuranceTerm(selectElement) {
-            const row = selectElement.closest('.form-row-6');
+            const row = selectElement.closest('.insurance-item');
             if (!row) return;
             
             const termInput = row.querySelector('.insurance-term');
@@ -1888,6 +2349,223 @@
             updateDimeAnalysis('partner2');
         }
         
+        function calculateIncomeReplacementYears() {
+            const spouse1DOB = document.getElementById('spouse1DOB').value;
+            const spouse1RetireAge = parseInt(document.getElementById('spouse1RetireAge').value) || 65;
+            const spouse2DOB = document.getElementById('spouse2DOB').value;
+            const spouse2RetireAge = parseInt(document.getElementById('spouse2RetireAge').value) || 65;
+            
+            if (spouse1DOB) {
+                const spouse1Age = calculateAge(spouse1DOB);
+                if (spouse1Age > 0) {
+                    const yearsToRetirement1 = Math.max(1, spouse1RetireAge - spouse1Age);
+                    document.getElementById('incomeReplacement1').value = yearsToRetirement1;
+                }
+            }
+            
+            if (spouse2DOB) {
+                const spouse2Age = calculateAge(spouse2DOB);
+                if (spouse2Age > 0) {
+                    const yearsToRetirement2 = Math.max(1, spouse2RetireAge - spouse2Age);
+                    document.getElementById('incomeReplacement2').value = yearsToRetirement2;
+                }
+            }
+            
+            // Update calculations after changing the values
+            updateDimeCalculations();
+        }
+        
+        function calculateSmartEducationFunding(dependent, inflationRate) {
+            const currentAge = dependent.age;
+            const educationStartAge = dependent.eduAge || 18;
+            const studyYears = dependent.studyYears || 4;
+            const annualCost = dependent.eduCost || 12000;
+            
+            // If student hasn't started yet, calculate full funding needed
+            if (currentAge < educationStartAge) {
+                const yearsToEducation = educationStartAge - currentAge;
+                const inflatedCost = annualCost * Math.pow(1 + inflationRate, yearsToEducation);
+                return inflatedCost * studyYears;
+            }
+            
+            // If student is currently in education
+            if (currentAge >= educationStartAge && currentAge < (educationStartAge + studyYears)) {
+                const yearsCompleted = currentAge - educationStartAge;
+                const yearsRemaining = studyYears - yearsCompleted;
+                // Only need funding for remaining years (already paid for completed years)
+                const currentCost = annualCost; // Assuming current cost for remaining years
+                return currentCost * yearsRemaining;
+            }
+            
+            // If student has completed education, no funding needed
+            return 0;
+        }
+        
+        // Add new income source
+        function addIncomeSource() {
+            const container = document.getElementById('otherIncomeList');
+            const div = document.createElement('div');
+            div.className = 'income-item';
+            div.innerHTML = `
+                <select class="income-type" onchange="updateIncomeDisplay()">
+                    <option value="rental">Rental Income</option>
+                    <option value="investment">Investment Income</option>
+                    <option value="vacation-rental">Vacation Rental</option>
+                    <option value="royalties">Royalties</option>
+                    <option value="pension">Pension Income</option>
+                    <option value="social-benefits">Social Benefits</option>
+                    <option value="freelance">Freelance/Contract</option>
+                    <option value="side-business">Side Business</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="text" class="income-amount" placeholder="$0.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)" onchange="updateIncomeDisplay()">
+                <input type="text" class="income-description" placeholder="Description (optional)">
+                <button type="button" class="remove-btn" onclick="removeIncomeSource(this)">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+        
+        // Remove income source
+        function removeIncomeSource(button) {
+            const incomeItem = button.closest('.income-item');
+            const container = document.getElementById('otherIncomeList');
+            if (container.children.length > 1) {
+                incomeItem.remove();
+                updateIncomeDisplay();
+            }
+        }
+        
+        // Phone number formatting: (403)-921-6700
+        function formatPhoneNumber(input) {
+            // Remove all non-digits
+            let phoneNumber = input.value.replace(/\D/g, '');
+            
+            // Limit to 10 digits
+            if (phoneNumber.length > 10) {
+                phoneNumber = phoneNumber.substring(0, 10);
+            }
+            
+            // Format as (XXX)-XXX-XXXX
+            if (phoneNumber.length >= 6) {
+                input.value = `(${phoneNumber.substring(0, 3)})-${phoneNumber.substring(3, 6)}-${phoneNumber.substring(6)}`;
+            } else if (phoneNumber.length >= 3) {
+                input.value = `(${phoneNumber.substring(0, 3)})-${phoneNumber.substring(3)}`;
+            } else if (phoneNumber.length > 0) {
+                input.value = `(${phoneNumber}`;
+            } else {
+                input.value = '';
+            }
+        }
+        
+        // Date formatting: Store YYYYMMDD and show formatted date in label
+        function formatDateInput(input) {
+            // Remove all non-digits
+            let dateString = input.value.replace(/\D/g, '');
+            
+            // Limit to 8 digits (YYYYMMDD)
+            if (dateString.length > 8) {
+                dateString = dateString.substring(0, 8);
+            }
+            
+            // Store just the numbers in the input field
+            input.value = dateString;
+            
+            // Find the corresponding label and update it with formatted date
+            const label = input.parentNode.querySelector('label');
+            if (label) {
+                const baseLabelText = label.textContent.split(':')[0] + ':';
+                
+                if (dateString.length >= 8) {
+                    // Full date: show formatted date
+                    const year = dateString.substring(0, 4);
+                    const month = dateString.substring(4, 6);
+                    const day = dateString.substring(6, 8);
+                    
+                    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                                  'July', 'August', 'September', 'October', 'November', 'December'];
+                    
+                    const monthName = months[parseInt(month) - 1];
+                    const dayNum = parseInt(day);
+                    
+                    if (monthName && dayNum >= 1 && dayNum <= 31) {
+                        label.innerHTML = `${baseLabelText} <span style="color: white; font-weight: normal;">${monthName} ${dayNum}, ${year}</span>`;
+                        
+                        // Store the formatted date in a data attribute for calculateAge
+                        const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                        input.setAttribute('data-formatted-date', formattedDate);
+                        
+                        // Trigger life expectancy update after complete date
+                        setTimeout(() => input.dispatchEvent(new Event('change')), 0);
+                    } else {
+                        label.textContent = baseLabelText;
+                        input.removeAttribute('data-formatted-date');
+                    }
+                } else {
+                    // Incomplete date: show just the base label
+                    label.textContent = baseLabelText;
+                }
+            }
+            
+            // Set cursor to end
+            const newPosition = dateString.length;
+            input.setSelectionRange(newPosition, newPosition);
+        }
+        
+        // Update life expectancy based on gender selection (Canadian averages)
+        function updateLifeExpectancy(partner) {
+            updateLifeExpectancyFromAge(partner);
+        }
+        
+        // Calculate life expectancy based on current age and gender (projected values)
+        function updateLifeExpectancyFromAge(partner) {
+            const dobInput = document.getElementById(partner + 'DOB');
+            const genderSelect = document.getElementById(partner + 'Gender');
+            const lifeExpectancyInput = document.getElementById(partner + 'LifeExpectancy');
+            
+            if (!dobInput.value) return;
+            
+            const currentAge = calculateAge(dobInput.value);
+            const gender = genderSelect.value;
+            
+            if (currentAge && gender) {
+                // Canadian life expectancy tables with projected values based on current age
+                // Source: Statistics Canada Life Tables 2020-2022 with projections
+                const lifeExpectancyTables = {
+                    male: {
+                        20: 82.1, 25: 82.2, 30: 82.4, 35: 82.6, 40: 82.9, 45: 83.2,
+                        50: 83.6, 55: 84.1, 60: 84.8, 65: 85.6, 70: 86.7, 75: 88.1,
+                        80: 89.8, 85: 92.0, 90: 94.8
+                    },
+                    female: {
+                        20: 86.8, 25: 86.9, 30: 87.0, 35: 87.2, 40: 87.4, 45: 87.7,
+                        50: 88.1, 55: 88.6, 60: 89.2, 65: 90.0, 70: 91.0, 75: 92.3,
+                        80: 93.9, 85: 95.9, 90: 98.3
+                    }
+                };
+                
+                // Find closest age bracket
+                let projectedLifeExpectancy = gender === 'male' ? 79 : 84; // fallback
+                
+                if (lifeExpectancyTables[gender]) {
+                    const ages = Object.keys(lifeExpectancyTables[gender]).map(Number).sort((a, b) => a - b);
+                    
+                    // Find the closest age bracket
+                    let closestAge = ages[0];
+                    for (let age of ages) {
+                        if (currentAge >= age) {
+                            closestAge = age;
+                        } else {
+                            break;
+                        }
+                    }
+                    
+                    projectedLifeExpectancy = lifeExpectancyTables[gender][closestAge];
+                }
+                
+                lifeExpectancyInput.value = Math.round(projectedLifeExpectancy);
+            }
+        }
+        
         // Calculate DIME analysis for specific partner
         function updateDimeAnalysis(partner) {
             try {
@@ -1905,12 +2583,9 @@
                 // Calculate total liabilities (shared between both partners)
                 const totalLiabilities = data.liabilities.reduce((sum, liability) => sum + liability.balance, 0);
                 
-                // Calculate education fund (shared between both partners)
+                // Calculate education fund (shared between both partners) - smart calculation
                 const totalEducationCosts = data.family.dependents.reduce((total, dependent) => {
-                    const yearsUntilEducation = Math.max(0, dependent.educationAge - 
-                        (new Date().getFullYear() - new Date(dependent.dob).getFullYear()));
-                    const educationCost = dependent.studyYears * 15000; // $15k per year
-                    return total + educationCost;
+                    return total + calculateSmartEducationFunding(dependent, data.assumptions.inflationRate || 0.03);
                 }, 0);
                 
                 // Get partner-specific data
@@ -1998,12 +2673,9 @@
                 // Calculate total liabilities (shared between both partners)
                 const totalLiabilities = data.liabilities.reduce((sum, liability) => sum + liability.balance, 0);
                 
-                // Calculate education fund (shared between both partners)
+                // Calculate education fund (shared between both partners) - smart calculation
                 const totalEducationCosts = data.family.dependents.reduce((total, dependent) => {
-                    const yearsUntilEducation = Math.max(0, dependent.educationAge - 
-                        (new Date().getFullYear() - new Date(dependent.dob).getFullYear()));
-                    const educationCost = dependent.studyYears * 15000; // $15k per year
-                    return total + educationCost;
+                    return total + calculateSmartEducationFunding(dependent, data.assumptions.inflationRate || 0.03);
                 }, 0);
                 
                 // Get partner-specific data
@@ -2024,6 +2696,7 @@
                 const E = totalEducationCosts; // Education
                 
                 const totalNeed = D + I + M + E;
+                const roundedNeed = Math.ceil(totalNeed / 10000) * 10000; // Round up to nearest 10k
                 
                 // Calculate current coverage for this partner
                 const currentCoverage = data.insurance.reduce((sum, policy) => {
@@ -2039,7 +2712,7 @@
                     return sum;
                 }, 0);
                 
-                const gap = Math.max(0, totalNeed - currentCoverage);
+                const gap = Math.max(0, roundedNeed - currentCoverage);
                 
                 // Calculate monthly premiums for this partner
                 const monthlyPremiums = data.insurance.reduce((sum, policy) => {
@@ -2061,7 +2734,7 @@
                 // Update results display
                 const prefix = isPartner1 ? 'partner1' : 'partner2';
                 document.getElementById(prefix + 'TotalNeed').textContent = 
-                    '$' + totalNeed.toLocaleString('en-US', {maximumFractionDigits: 0});
+                    '$' + roundedNeed.toLocaleString('en-US', {maximumFractionDigits: 0});
                 document.getElementById(prefix + 'CurrentCoverage').textContent = 
                     '$' + currentCoverage.toLocaleString('en-US', {maximumFractionDigits: 0});
                 document.getElementById(prefix + 'Gap').textContent = 
@@ -2090,9 +2763,13 @@
                             <span>$${E.toLocaleString()}</span>
                         </div>
                         <hr style="border: 1px solid #666; margin: 15px 0;">
-                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 10px;">
                             <strong style="color: #ffffff; font-size: 1.1em;">Total Insurance Needed:</strong>
                             <strong style="color: #ffffff; font-size: 1.1em;">$${totalNeed.toLocaleString()}</strong>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                            <strong style="color: #c9a96e; font-size: 1.2em;">Rounded to Nearest $10k:</strong>
+                            <strong style="color: #c9a96e; font-size: 1.2em;">$${roundedNeed.toLocaleString()}</strong>
                         </div>
                     </div>
                 `;
@@ -2113,7 +2790,7 @@
         
         // Calculate blended tax rate based on TFSA limits and registered rate
         function updateBlendedTaxRate() {
-            const registeredRate = parseFloat(document.getElementById('registeredTaxRate').value) || 28.5;
+            const registeredRate = parsePercentageValue(document.getElementById('registeredTaxRate').value) || 28.5;
             
             // 2025 TFSA contribution limit: $7,000 annually = $583.33 monthly
             // For retirees, max TFSA withdrawal capacity is typically $3,500/month
@@ -2142,6 +2819,28 @@
                 `💰 ${spouse1Name} Insurance Needs Analysis (DIME Method)`;
             document.getElementById('partner2DimeTitle').textContent = 
                 `💰 ${spouse2Name} Insurance Needs Analysis (DIME Method)`;
+                
+            // Update the descriptions to use partner names too
+            const partner1Desc = document.querySelector('#partner1DimeTitle + p');
+            const partner2Desc = document.querySelector('#partner2DimeTitle + p');
+            
+            if (partner1Desc) {
+                partner1Desc.textContent = `Calculate insurance needed if ${spouse1Name} passes away first`;
+            }
+            if (partner2Desc) {
+                partner2Desc.textContent = `Calculate insurance needed if ${spouse2Name} passes away first`;
+            }
+            
+            // Update income replacement labels
+            const incomeLabel1 = document.getElementById('incomeReplacementLabel1');
+            const incomeLabel2 = document.getElementById('incomeReplacementLabel2');
+            
+            if (incomeLabel1) {
+                incomeLabel1.textContent = `Years to replace ${spouse1Name}'s income`;
+            }
+            if (incomeLabel2) {
+                incomeLabel2.textContent = `Years to replace ${spouse2Name}'s income`;
+            }
         }
         
         function saveData() {
@@ -2155,7 +2854,7 @@
                 
                 let finNumber = 0;
                 if (window.currentCalculations) {
-                    finNumber = window.currentCalculations.scenarios[currentScenario].finNumber;
+                    finNumber = window.currentCalculations.scenarios.registered.preserve.finNumber;
                 }
                 
                 const filename = `${dateStr} ${lastName} FIN ${Math.round(finNumber/1000)}k.json`;
@@ -2207,7 +2906,7 @@
                 // Calculate total from other income sources
                 let otherIncomeTotal = 0;
                 document.querySelectorAll('.income-item').forEach(item => {
-                    const amount = parseFloat(item.querySelector('.income-amount').value) || 0;
+                    const amount = parseFloat(item.querySelector('.income-amount').value.replace(/[^0-9.]/g, '')) || 0;
                     otherIncomeTotal += amount * 12; // Convert monthly to annual
                 });
                 
@@ -2222,12 +2921,20 @@
                 // Calculate total household income including other sources
                 const totalHouseholdIncome = annual1 + annual2 + otherIncomeTotal;
                 
-                // Update titles with calculated amounts and personalized names
-                document.getElementById('partner1IncomeTitle').textContent = 
-                    `${income1Title} - $${annual1.toLocaleString()} per year`;
+                // Calculate take-home hourly rates (regardless of frequency)
+                const hoursPerWeek1 = hours1 || 40;
+                const hoursPerWeek2 = hours2 || 40;
+                const takeHomeHourly1 = annual1 > 0 ? annual1 / (hoursPerWeek1 * 52) : 0;
+                const takeHomeHourly2 = annual2 > 0 ? annual2 / (hoursPerWeek2 * 52) : 0;
+                
+                // Update titles with calculated amounts, personalized names, and take-home hourly rate
+                document.getElementById('partner1IncomeTitle').innerHTML = 
+                    `${income1Title} - $${annual1.toLocaleString()} per year` + 
+                    (takeHomeHourly1 > 0 ? ` <span style="font-size: 0.8em; color: white; font-weight: normal;">($${takeHomeHourly1.toFixed(2)}/hour take-home)</span>` : '');
                     
-                document.getElementById('partner2IncomeTitle').textContent = 
-                    `${income2Title} - $${annual2.toLocaleString()} per year`;
+                document.getElementById('partner2IncomeTitle').innerHTML = 
+                    `${income2Title} - $${annual2.toLocaleString()} per year` + 
+                    (takeHomeHourly2 > 0 ? ` <span style="font-size: 0.8em; color: white; font-weight: normal;">($${takeHomeHourly2.toFixed(2)}/hour take-home)</span>` : '');
                     
                 // Trigger DIME calculations when income changes
                 setTimeout(() => updateDimeCalculations(), 100);
@@ -2274,7 +2981,7 @@
             } else {
                 downsizeValueGroup.style.display = 'none';
                 // Clear the value when hiding
-                document.getElementById('downsizeValue').value = '';
+                document.getElementById('downsizeValue').value = '$0.00';
             }
         }
 
@@ -2288,7 +2995,7 @@
             } else {
                 retirementRentGroup.style.display = 'none';
                 // Reset to default value when hiding
-                document.getElementById('retirementRent').value = '2200';
+                document.getElementById('retirementRent').value = '$2,200.00';
             }
         }
 
@@ -2315,8 +3022,19 @@
         // Calculate age from date of birth for dependents and spouses
         function calculateAge(dob) {
             if (!dob) return 0;
+            
+            let dateToUse = dob;
+            
+            // If dob is in YYYYMMDD format (8 digits), convert to YYYY-MM-DD
+            if (/^\d{8}$/.test(dob)) {
+                const year = dob.substring(0, 4);
+                const month = dob.substring(4, 6);
+                const day = dob.substring(6, 8);
+                dateToUse = `${year}-${month}-${day}`;
+            }
+            
             const today = new Date();
-            const birth = new Date(dob);
+            const birth = new Date(dateToUse);
             let age = today.getFullYear() - birth.getFullYear();
             const monthDiff = today.getMonth() - birth.getMonth();
             // Adjust if birthday hasn't occurred this year
@@ -2324,6 +3042,14 @@
                 age--;
             }
             return age;
+        }
+
+        // Helper function to parse percentage values with % symbol
+        function parsePercentageValue(value) {
+            if (typeof value === 'string') {
+                value = value.replace(/[^0-9.-]/g, ''); // Remove % and other non-numeric characters
+            }
+            return parseFloat(value) || 0;
         }
 
         // Collect all form data from every tab and return as structured object
@@ -2336,6 +3062,8 @@
                     gender: document.getElementById('spouse1Gender').value,
                     retireAge: parseInt(document.getElementById('spouse1RetireAge').value) || 65,
                     lifeExpectancy: parseInt(document.getElementById('spouse1LifeExpectancy').value) || 85,
+                    email: document.getElementById('spouse1Email').value,
+                    phone: document.getElementById('spouse1Phone').value,
                     age: calculateAge(document.getElementById('spouse1DOB').value)
                 },
                 spouse2: {
@@ -2344,6 +3072,8 @@
                     gender: document.getElementById('spouse2Gender').value,
                     retireAge: parseInt(document.getElementById('spouse2RetireAge').value) || 65,
                     lifeExpectancy: parseInt(document.getElementById('spouse2LifeExpectancy').value) || 85,
+                    email: document.getElementById('spouse2Email').value,
+                    phone: document.getElementById('spouse2Phone').value,
                     age: calculateAge(document.getElementById('spouse2DOB').value)
                 },
                 dependents: []
@@ -2355,7 +3085,7 @@
                 const dob = row.querySelector('.dependent-dob').value;
                 const eduAge = parseInt(row.querySelector('.dependent-edu-age').value) || 18;
                 const studyYears = parseInt(row.querySelector('.dependent-study-years').value) || 4;
-                const eduCost = parseFloat(row.querySelector('.dependent-edu-cost').value) || 12000;
+                const eduCost = parseFloat(row.querySelector('.dependent-edu-cost').value.replace(/[^0-9.]/g, '')) || 12000;
                 
                 // Only add if name and DOB are provided
                 if (name && dob) {
@@ -2368,21 +3098,21 @@
             
             // Collect financial assumptions from Assumptions tab
             const assumptions = {
-                inflationRate: parseFloat(document.getElementById('inflationRate').value) / 100 || 0.028,
-                preRetireRate: parseFloat(document.getElementById('preRetireRate').value) / 100 || 0.065,
-                postRetireRate: parseFloat(document.getElementById('postRetireRate').value) / 100 || 0.04,
-                retirementIncomePercent: parseFloat(document.getElementById('retirementIncomePercent').value) / 100 || 0.70,
-                widowReduction: parseFloat(document.getElementById('widowReduction').value) / 100 || 0.70,
+                inflationRate: parsePercentageValue(document.getElementById('inflationRate').value) / 100 || 0.028,
+                preRetireRate: parsePercentageValue(document.getElementById('preRetireRate').value) / 100 || 0.065,
+                postRetireRate: parsePercentageValue(document.getElementById('postRetireRate').value) / 100 || 0.04,
+                retirementIncomePercent: parsePercentageValue(document.getElementById('retirementIncomePercent').value) / 100 || 0.70,
+                widowReduction: parsePercentageValue(document.getElementById('widowReduction').value) / 100 || 0.70,
                 currentHousing: document.getElementById('currentHousing').value,
                 retirementHousing: document.getElementById('retirementHousing').value,
                 downsizeIntent: document.getElementById('downsizeIntent').value === 'yes',
-                downsizeValue: parseFloat(document.getElementById('downsizeValue').value) || 0,
-                retirementRent: parseFloat(document.getElementById('retirementRent').value) || 2200,
-                cpp1: parseFloat(document.getElementById('cpp1Monthly').value) || 758,
-                oas1: parseFloat(document.getElementById('oas1Monthly').value) || 713,
-                cpp2: parseFloat(document.getElementById('cpp2Monthly').value) || 758,
-                oas2: parseFloat(document.getElementById('oas2Monthly').value) || 713,
-                registeredTaxRate: parseFloat(document.getElementById('registeredTaxRate').value) / 100 || 0.25,
+                downsizeValue: parseFloat(document.getElementById('downsizeValue').value.replace(/[^0-9.]/g, '')) || 0,
+                retirementRent: parseFloat(document.getElementById('retirementRent').value.replace(/[^0-9.]/g, '')) || 2200,
+                cpp1: parseFloat(document.getElementById('cpp1Monthly').value.replace(/[^0-9.]/g, '')) || 758,
+                oas1: parseFloat(document.getElementById('oas1Monthly').value.replace(/[^0-9.]/g, '')) || 713,
+                cpp2: parseFloat(document.getElementById('cpp2Monthly').value.replace(/[^0-9.]/g, '')) || 758,
+                oas2: parseFloat(document.getElementById('oas2Monthly').value.replace(/[^0-9.]/g, '')) || 713,
+                registeredTaxRate: parsePercentageValue(document.getElementById('registeredTaxRate').value) / 100 || 0.25,
                 blendedTaxRate: parseFloat(document.getElementById('blendedTaxRate').value) / 100 || 0.15
             };
             
@@ -2390,13 +3120,14 @@
             const goals = [];
             document.querySelectorAll('.goal-item').forEach(item => {
                 const type = item.querySelector('.goal-type').value;
+                const description = item.querySelector('.goal-description').value;
                 const years = parseInt(item.querySelector('.goal-years').value) || 0;
-                const amount = parseFloat(item.querySelector('.goal-amount').value) || 0;
+                const amount = parseFloat(item.querySelector('.goal-amount').value.replace(/[^0-9.]/g, '')) || 0;
                 const frequency = item.querySelector('.goal-frequency').value;
                 
                 // Only save goals that have an amount
                 if (amount > 0) {
-                    goals.push({ type, years, amount, frequency });
+                    goals.push({ type, description, years, amount, frequency });
                 }
             });
             
@@ -2422,7 +3153,7 @@
             // Collect other income sources
             document.querySelectorAll('.income-item').forEach(item => {
                 const type = item.querySelector('.income-type').value;
-                const amount = parseFloat(item.querySelector('.income-amount').value) || 0;
+                const amount = parseFloat(item.querySelector('.income-amount').value.replace(/[^0-9.]/g, '')) || 0;
                 const description = item.querySelector('.income-description').value;
                 
                 if (amount > 0) {
@@ -2461,11 +3192,34 @@
             
             // Collect liabilities from Liabilities tab
             const liabilities = [];
+            
+            // Collect mortgages
+            document.querySelectorAll('.mortgage-item').forEach(item => {
+                const property = item.querySelector('.mortgage-property').value;
+                const originalStr = item.querySelector('.mortgage-original').value.replace(/[^0-9.]/g, '');
+                const original = parseFloat(originalStr) || 0;
+                const balanceStr = item.querySelector('.mortgage-balance').value.replace(/[^0-9.]/g, '');
+                const balance = parseFloat(balanceStr) || 0;
+                const rate = parseFloat(item.querySelector('.mortgage-rate').value) / 100 || 0;
+                const term = parseInt(item.querySelector('.mortgage-term').value) || 0;
+                const paymentStr = item.querySelector('.mortgage-payment').value.replace(/[^0-9.]/g, '');
+                const payment = parseFloat(paymentStr) || 0;
+                const maturity = item.querySelector('.mortgage-maturity').value;
+                
+                // Only save mortgages with balance
+                if (balance > 0) {
+                    liabilities.push({ type: 'mortgage-' + property, original, balance, rate, term, payment, maturity });
+                }
+            });
+            
+            // Collect other debts (secured and unsecured)
             document.querySelectorAll('.liability-item').forEach(item => {
                 const type = item.querySelector('.liability-type').value;
-                const balance = parseFloat(item.querySelector('.liability-balance').value) || 0;
+                const balanceStr = item.querySelector('.liability-balance').value.replace(/[^0-9.]/g, '');
+                const balance = parseFloat(balanceStr) || 0;
                 const rate = parseFloat(item.querySelector('.liability-rate').value) / 100 || 0;
-                const payment = parseFloat(item.querySelector('.liability-payment').value) || 0;
+                const paymentStr = item.querySelector('.liability-payment').value.replace(/[^0-9.]/g, '');
+                const payment = parseFloat(paymentStr) || 0;
                 
                 // Only save liabilities with balance
                 if (balance > 0) {
@@ -2475,19 +3229,21 @@
             
             // Collect insurance from Insurance tab
             const insurance = [];
-            document.querySelectorAll('#insuranceList .form-row-6').forEach(row => {
+            document.querySelectorAll('#insuranceList .insurance-item').forEach(row => {
                 const type = row.querySelector('.insurance-type').value;
+                const company = row.querySelector('.insurance-company').value;
                 const amountStr = row.querySelector('.insurance-amount').value.replace(/[^0-9.]/g, '');
                 const amount = parseFloat(amountStr) || 0;
                 const premiumStr = row.querySelector('.insurance-premium').value.replace(/[^0-9.]/g, '');
                 const premium = parseFloat(premiumStr) || 0;
                 const term = row.querySelector('.insurance-term').value;
+                const expiry = row.querySelector('.insurance-expiry').value;
                 const owner = row.querySelector('.insurance-owner').value;
                 const beneficiary = row.querySelector('.insurance-beneficiary').value;
                 
                 // Only save insurance with coverage amount
                 if (amount > 0) {
-                    insurance.push({ type, amount, premium, term, owner, beneficiary });
+                    insurance.push({ type, company, amount, premium, term, expiry, owner, beneficiary });
                 }
             });
             
@@ -2532,30 +3288,34 @@
                             document.getElementById('spouse1Gender').value = data.family.spouse1.gender || '';
                             document.getElementById('spouse1RetireAge').value = data.family.spouse1.retireAge || 65;
                             document.getElementById('spouse1LifeExpectancy').value = data.family.spouse1.lifeExpectancy || 85;
+                            document.getElementById('spouse1Email').value = data.family.spouse1.email || '';
+                            document.getElementById('spouse1Phone').value = data.family.spouse1.phone || '';
                             
                             document.getElementById('spouse2Name').value = data.family.spouse2.name || '';
                             document.getElementById('spouse2DOB').value = data.family.spouse2.dob || '';
                             document.getElementById('spouse2Gender').value = data.family.spouse2.gender || '';
                             document.getElementById('spouse2RetireAge').value = data.family.spouse2.retireAge || 65;
                             document.getElementById('spouse2LifeExpectancy').value = data.family.spouse2.lifeExpectancy || 85;
+                            document.getElementById('spouse2Email').value = data.family.spouse2.email || '';
+                            document.getElementById('spouse2Phone').value = data.family.spouse2.phone || '';
                         }
                         
                         // Populate assumptions data
                         if (data.assumptions) {
-                            document.getElementById('inflationRate').value = (data.assumptions.inflationRate * 100).toFixed(2) || 2.8;
-                            document.getElementById('preRetireRate').value = (data.assumptions.preRetireRate * 100).toFixed(2) || 6.5;
-                            document.getElementById('postRetireRate').value = (data.assumptions.postRetireRate * 100).toFixed(2) || 4.0;
-                            document.getElementById('retirementIncomePercent').value = (data.assumptions.retirementIncomePercent * 100).toFixed(2) || 70;
-                            document.getElementById('widowReduction').value = (data.assumptions.widowReduction * 100).toFixed(2) || 70;
+                            document.getElementById('inflationRate').value = ((data.assumptions.inflationRate * 100).toFixed(2) || 2.8) + '%';
+                            document.getElementById('preRetireRate').value = ((data.assumptions.preRetireRate * 100).toFixed(2) || 6.5) + '%';
+                            document.getElementById('postRetireRate').value = ((data.assumptions.postRetireRate * 100).toFixed(2) || 4.0) + '%';
+                            document.getElementById('retirementIncomePercent').value = ((data.assumptions.retirementIncomePercent * 100).toFixed(2) || 70) + '%';
+                            document.getElementById('widowReduction').value = ((data.assumptions.widowReduction * 100).toFixed(2) || 70) + '%';
                             document.getElementById('currentHousing').value = data.assumptions.currentHousing || 'own';
                             document.getElementById('retirementHousing').value = data.assumptions.retirementHousing || 'own';
                             document.getElementById('downsizeIntent').value = data.assumptions.downsizeIntent ? 'yes' : 'no';
-                            document.getElementById('downsizeValue').value = data.assumptions.downsizeValue || '';
-                            document.getElementById('retirementRent').value = data.assumptions.retirementRent || 2200;
-                            document.getElementById('cpp1Monthly').value = data.assumptions.cpp1 || 758;
-                            document.getElementById('oas1Monthly').value = data.assumptions.oas1 || 713;
-                            document.getElementById('cpp2Monthly').value = data.assumptions.cpp2 || 758;
-                            document.getElementById('oas2Monthly').value = data.assumptions.oas2 || 713;
+                            document.getElementById('downsizeValue').value = '$' + (data.assumptions.downsizeValue || 0).toLocaleString();
+                            document.getElementById('retirementRent').value = '$' + (data.assumptions.retirementRent || 2200).toLocaleString();
+                            document.getElementById('cpp1Monthly').value = '$' + (data.assumptions.cpp1 || 758).toLocaleString();
+                            document.getElementById('oas1Monthly').value = '$' + (data.assumptions.oas1 || 713).toLocaleString();
+                            document.getElementById('cpp2Monthly').value = '$' + (data.assumptions.cpp2 || 758).toLocaleString();
+                            document.getElementById('oas2Monthly').value = '$' + (data.assumptions.oas2 || 713).toLocaleString();
                             
                             // Update conditional field visibility
                             if (typeof toggleDownsizeField === 'function') toggleDownsizeField();
@@ -2812,11 +3572,22 @@
         }
         
         // Scenario switching
-        function switchScenario(scenario) {
-            currentScenario = scenario;
-            document.querySelectorAll('.scenario-tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelector(`[onclick="switchScenario('${scenario}')"]`).classList.add('active');
-            updateScenarioDisplay();
+        // FIN Cell click handler for detailed view
+        function showScenarioDetails(taxType, scenario) {
+            if (!window.currentCalculations) return;
+            
+            const scenarioData = window.currentCalculations.scenarios[taxType][scenario];
+            
+            // Update summary cards with selected scenario
+            document.getElementById('monthlySavingsNeeded').textContent = 
+         '$' + scenarioData.monthlyNeeded.toLocaleString(undefined, {maximumFractionDigits: 0});
+            
+            // Highlight selected cell
+            document.querySelectorAll('.fin-cell').forEach(cell => cell.classList.remove('selected'));
+            document.getElementById(`fin-${taxType}-${scenario}`).classList.add('selected');
+            
+            // Update charts with selected scenario
+            createProjectionChart(window.currentCalculations, taxType, scenario);
         }
         
         // Add new dependent row to the dependents list
@@ -2834,7 +3605,7 @@
                 </div>
                 <div class="form-group">
                     <label>Date of Birth:</label>
-                    <input type="date" class="dependent-dob">
+                    <input type="text" class="dependent-dob" placeholder="YYYYMMDD" oninput="formatDateInput(this)">
                 </div>
                 <div class="form-group">
                     <label>Post-Secondary Start Age:</label>
@@ -2846,7 +3617,7 @@
                 </div>
                 <div class="form-group">
                     <label>Annual Education Cost:</label>
-                    <input type="number" class="dependent-edu-cost" value="12000" step="1000">
+                    <input type="text" class="dependent-edu-cost" value="$12,000.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
                 </div>
             `;
             container.appendChild(div);
@@ -2870,7 +3641,7 @@
                     <option value="other">Other</option>
                 </select>
                 <input type="number" class="goal-years" placeholder="Years Away" min="0" max="50">
-                <input type="number" class="goal-amount" placeholder="Amount ($)" step="1000">
+                <input type="text" class="goal-amount" placeholder="$0.00" onchange="formatCurrency(this)"
                 <select class="goal-frequency">
                     <option value="one-time">One-time</option>
                     <option value="monthly">Monthly</option>
@@ -2901,11 +3672,11 @@
                 </div>
                 <div class="form-group">
                     <label>Coverage Amount ($):</label>
-                    <input type="number" class="insurance-amount" step="10000" placeholder="Coverage Amount">
+                    <input type="text" class="insurance-amount" placeholder="$0.00" onchange="handleInsuranceChange(this)">
                 </div>
                 <div class="form-group">
                     <label>Annual Premium ($):</label>
-                    <input type="number" class="insurance-premium" step="100" placeholder="Annual Premium">
+                    <input type="text" class="insurance-premium" placeholder="$0.00" onchange="handleInsuranceChange(this)">
                 </div>
                 <div class="form-group">
                     <label>Term/Duration:</label>
@@ -2915,11 +3686,22 @@
             container.appendChild(div);
         }
         
-        // Calculate age from DOB
+        // Calculate age from DOB (duplicate function - keeping for compatibility)
         function calculateAge(dob) {
             if (!dob) return 0;
+            
+            let dateToUse = dob;
+            
+            // If dob is in YYYYMMDD format (8 digits), convert to YYYY-MM-DD
+            if (/^\d{8}$/.test(dob)) {
+                const year = dob.substring(0, 4);
+                const month = dob.substring(4, 6);
+                const day = dob.substring(6, 8);
+                dateToUse = `${year}-${month}-${day}`;
+            }
+            
             const today = new Date();
-            const birth = new Date(dob);
+            const birth = new Date(dateToUse);
             let age = today.getFullYear() - birth.getFullYear();
             const monthDiff = today.getMonth() - birth.getMonth();
             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
@@ -2959,12 +3741,20 @@
                 
                 const annual2 = calculateAnnualIncome(rate2, frequency2, hours2);
                 
-                // Update titles with calculated amounts
-                document.getElementById('partner1IncomeTitle').textContent = 
-                    `💰 Partner 1 Income - $${annual1.toLocaleString()} per year${frequency1 === 'hourly' && rate1 > 0 ? ` ($${rate1.toFixed(2)} per hour)` : ''}`;
+                // Calculate take-home hourly rates (regardless of frequency)
+                const hoursPerWeek1 = hours1 || 40;
+                const hoursPerWeek2 = hours2 || 40;
+                const takeHomeHourly1 = annual1 > 0 ? annual1 / (hoursPerWeek1 * 52) : 0;
+                const takeHomeHourly2 = annual2 > 0 ? annual2 / (hoursPerWeek2 * 52) : 0;
+                
+                // Update titles with calculated amounts and take-home hourly rate
+                document.getElementById('partner1IncomeTitle').innerHTML = 
+                    `💰 Partner 1 Income - $${annual1.toLocaleString()} per year` + 
+                    (takeHomeHourly1 > 0 ? ` <span style="font-size: 0.8em; color: white; font-weight: normal;">($${takeHomeHourly1.toFixed(2)}/hour take-home)</span>` : '');
                     
-                document.getElementById('partner2IncomeTitle').textContent = 
-                    `💰 Partner 2 Income - $${annual2.toLocaleString()} per year${frequency2 === 'hourly' && rate2 > 0 ? ` ($${rate2.toFixed(2)} per hour)` : ''}`;
+                document.getElementById('partner2IncomeTitle').innerHTML = 
+                    `💰 Partner 2 Income - $${annual2.toLocaleString()} per year` + 
+                    (takeHomeHourly2 > 0 ? ` <span style="font-size: 0.8em; color: white; font-weight: normal;">($${takeHomeHourly2.toFixed(2)}/hour take-home)</span>` : '');
                     
             } catch (error) {
                 console.error('Error updating income display:', error);
@@ -3014,6 +3804,8 @@
                     gender: document.getElementById('spouse1Gender').value,
                     retireAge: parseInt(document.getElementById('spouse1RetireAge').value) || 65,
                     lifeExpectancy: parseInt(document.getElementById('spouse1LifeExpectancy').value) || 85,
+                    email: document.getElementById('spouse1Email').value,
+                    phone: document.getElementById('spouse1Phone').value,
                     age: calculateAge(document.getElementById('spouse1DOB').value)
                 },
                 spouse2: {
@@ -3022,6 +3814,8 @@
                     gender: document.getElementById('spouse2Gender').value,
                     retireAge: parseInt(document.getElementById('spouse2RetireAge').value) || 65,
                     lifeExpectancy: parseInt(document.getElementById('spouse2LifeExpectancy').value) || 85,
+                    email: document.getElementById('spouse2Email').value,
+                    phone: document.getElementById('spouse2Phone').value,
                     age: calculateAge(document.getElementById('spouse2DOB').value)
                 },
                 dependents: []
@@ -3032,11 +3826,12 @@
                 const name = row.querySelector('.dependent-name').value;
                 const dob = row.querySelector('.dependent-dob').value;
                 const eduAge = parseInt(row.querySelector('.dependent-edu-age').value) || 18;
-                const eduCost = parseFloat(row.querySelector('.dependent-edu-cost').value) || 12000;
+                const studyYears = parseInt(row.querySelector('.dependent-study-years').value) || 4;
+                const eduCost = parseFloat(row.querySelector('.dependent-edu-cost').value.replace(/[^0-9.]/g, '')) || 12000;
                 
                 if (name && dob) {
                     family.dependents.push({
-                        name, dob, eduAge, eduCost,
+                        name, dob, eduAge, studyYears, eduCost,
                         age: calculateAge(dob)
                     });
                 }
@@ -3044,20 +3839,20 @@
             
             // Collect assumptions
             const assumptions = {
-                inflationRate: parseFloat(document.getElementById('inflationRate').value) / 100 || 0.028,
-                preRetireRate: parseFloat(document.getElementById('preRetireRate').value) / 100 || 0.065,
-                postRetireRate: parseFloat(document.getElementById('postRetireRate').value) / 100 || 0.04,
+                inflationRate: parsePercentageValue(document.getElementById('inflationRate').value) / 100 || 0.028,
+                preRetireRate: parsePercentageValue(document.getElementById('preRetireRate').value) / 100 || 0.065,
+                postRetireRate: parsePercentageValue(document.getElementById('postRetireRate').value) / 100 || 0.04,
                 survivorYears: parseInt(document.getElementById('survivorYears').value) || 5,
                 retirementIncome: parseFloat(document.getElementById('retirementIncome').value) || 0,
                 currentHousing: document.getElementById('currentHousing').value,
                 retirementHousing: document.getElementById('retirementHousing').value,
                 downsizeIntent: document.getElementById('downsizeIntent').value === 'yes',
-                retirementRent: parseFloat(document.getElementById('retirementRent').value) || 2200,
-                cpp1: parseFloat(document.getElementById('cpp1Monthly').value) || 758,
-                oas1: parseFloat(document.getElementById('oas1Monthly').value) || 713,
-                cpp2: parseFloat(document.getElementById('cpp2Monthly').value) || 758,
-                oas2: parseFloat(document.getElementById('oas2Monthly').value) || 713,
-                registeredTaxRate: parseFloat(document.getElementById('registeredTaxRate').value) / 100 || 0.25,
+                retirementRent: parseFloat(document.getElementById('retirementRent').value.replace(/[^0-9.]/g, '')) || 2200,
+                cpp1: parseFloat(document.getElementById('cpp1Monthly').value.replace(/[^0-9.]/g, '')) || 758,
+                oas1: parseFloat(document.getElementById('oas1Monthly').value.replace(/[^0-9.]/g, '')) || 713,
+                cpp2: parseFloat(document.getElementById('cpp2Monthly').value.replace(/[^0-9.]/g, '')) || 758,
+                oas2: parseFloat(document.getElementById('oas2Monthly').value.replace(/[^0-9.]/g, '')) || 713,
+                registeredTaxRate: parsePercentageValue(document.getElementById('registeredTaxRate').value) / 100 || 0.25,
                 blendedTaxRate: parseFloat(document.getElementById('blendedTaxRate').value) / 100 || 0.15
             };
             
@@ -3067,7 +3862,7 @@
                 const active = item.querySelector('.goal-active').checked;
                 const type = item.querySelector('.goal-type').value;
                 const years = parseInt(item.querySelector('.goal-years').value) || 0;
-                const amount = parseFloat(item.querySelector('.goal-amount').value) || 0;
+                const amount = parseFloat(item.querySelector('.goal-amount').value.replace(/[^0-9.]/g, '')) || 0;
                 const frequency = item.querySelector('.goal-frequency').value;
                 
                 if (active && amount > 0) {
@@ -3120,11 +3915,33 @@
             
             // Collect liabilities
             const liabilities = [];
+            
+            // Collect mortgages
+            document.querySelectorAll('.mortgage-item').forEach(item => {
+                const property = item.querySelector('.mortgage-property').value;
+                const originalStr = item.querySelector('.mortgage-original').value.replace(/[^0-9.]/g, '');
+                const original = parseFloat(originalStr) || 0;
+                const balanceStr = item.querySelector('.mortgage-balance').value.replace(/[^0-9.]/g, '');
+                const balance = parseFloat(balanceStr) || 0;
+                const rate = parseFloat(item.querySelector('.mortgage-rate').value) / 100 || 0;
+                const term = parseInt(item.querySelector('.mortgage-term').value) || 0;
+                const paymentStr = item.querySelector('.mortgage-payment').value.replace(/[^0-9.]/g, '');
+                const payment = parseFloat(paymentStr) || 0;
+                const maturity = item.querySelector('.mortgage-maturity').value;
+                
+                if (balance > 0) {
+                    liabilities.push({ type: 'mortgage-' + property, original, balance, rate, term, payment, maturity });
+                }
+            });
+            
+            // Collect other debts
             document.querySelectorAll('.liability-item').forEach(item => {
                 const type = item.querySelector('.liability-type').value;
-                const balance = parseFloat(item.querySelector('.liability-balance').value) || 0;
+                const balanceStr = item.querySelector('.liability-balance').value.replace(/[^0-9.]/g, '');
+                const balance = parseFloat(balanceStr) || 0;
                 const rate = parseFloat(item.querySelector('.liability-rate').value) / 100 || 0;
-                const payment = parseFloat(item.querySelector('.liability-payment').value) || 0;
+                const paymentStr = item.querySelector('.liability-payment').value.replace(/[^0-9.]/g, '');
+                const payment = parseFloat(paymentStr) || 0;
                 
                 if (balance > 0) {
                     liabilities.push({ type, balance, rate, payment });
@@ -3133,7 +3950,7 @@
             
             // Collect insurance
             const insurance = [];
-            document.querySelectorAll('#insuranceList .form-row-6').forEach(row => {
+            document.querySelectorAll('#insuranceList .insurance-item').forEach(row => {
                 const type = row.querySelector('.insurance-type').value;
                 const amountStr = row.querySelector('.insurance-amount').value.replace(/[^0-9.]/g, '');
                 const amount = parseFloat(amountStr) || 0;
@@ -3204,12 +4021,10 @@
             const incomeShortfall = Math.max(0, requiredAnnualIncome - govBenefits);
             calculations.monthlyShortfall = incomeShortfall / 12;
             
-            // Calculate education costs for dependents
+            // Calculate education costs for dependents - smart calculation
             let totalEducationCosts = 0;
             data.family.dependents.forEach(dependent => {
-                const yearsToEducation = Math.max(0, dependent.eduAge - dependent.age);
-                const inflatedCost = dependent.eduCost * Math.pow(1 + data.assumptions.inflationRate, yearsToEducation);
-                totalEducationCosts += inflatedCost * 4; // 4 years of education
+                totalEducationCosts += calculateSmartEducationFunding(dependent, data.assumptions.inflationRate);
             });
             
             // Calculate goal costs
@@ -3225,7 +4040,7 @@
                 }
             });
             
-            // Calculate FIN# for different tax scenarios
+            // Calculate FIN# for 3x3 matrix (3 tax scenarios x 3 drawdown approaches)
             calculations.scenarios = {};
             
             // Tax-adjusted income shortfall calculations
@@ -3233,44 +4048,72 @@
             const blendedIncomeShortfall = incomeShortfall / (1 - data.assumptions.blendedTaxRate);
             const nonTaxIncomeShortfall = incomeShortfall; // TFSA and PTS - no tax on withdrawal
             
-            // Scenario 1: Registered Accounts (RRSP/Pension) - Fully Taxable
-            const registeredFIN = (registeredIncomeShortfall + totalEducationCosts/20 + totalGoalCosts/20) / 0.04;
-            calculations.scenarios.registered = {
-                finNumber: registeredFIN,
-                monthlyNeeded: calculateMonthlyContribution(
-                    Math.max(0, registeredFIN - totalAssets),
-                    calculations.yearsToRetirement,
-                    data.assumptions.preRetireRate
-                ),
-                taxRate: data.assumptions.registeredTaxRate,
-                description: 'Registered Accounts (RRSP, Pension)'
-            };
+            // Base costs (one-time amounts)
+            const baseEducationCosts = totalEducationCosts;
+            const baseGoalCosts = totalGoalCosts;
             
-            // Scenario 2: Blended (Registered + TFSA) - Partially Taxable
-            const blendedFIN = (blendedIncomeShortfall + totalEducationCosts/20 + totalGoalCosts/20) / 0.04;
-            calculations.scenarios.blended = {
-                finNumber: blendedFIN,
-                monthlyNeeded: calculateMonthlyContribution(
-                    Math.max(0, blendedFIN - totalAssets),
-                    calculations.yearsToRetirement,
-                    data.assumptions.preRetireRate
-                ),
-                taxRate: data.assumptions.blendedTaxRate,
-                description: 'Blended (Registered + TFSA)'
-            };
+            // Calculate for each tax scenario and drawdown approach
+            const taxScenarios = [
+                { key: 'registered', shortfall: registeredIncomeShortfall, taxRate: data.assumptions.registeredTaxRate },
+                { key: 'blended', shortfall: blendedIncomeShortfall, taxRate: data.assumptions.blendedTaxRate },
+                { key: 'nontax', shortfall: nonTaxIncomeShortfall, taxRate: 0 }
+            ];
             
-            // Scenario 3: Non-Taxable (TFSA + Insurance PTS) - Tax-Free
-            const nonTaxFIN = (nonTaxIncomeShortfall + totalEducationCosts/20 + totalGoalCosts/20) / 0.04;
-            calculations.scenarios.nontax = {
-                finNumber: nonTaxFIN,
-                monthlyNeeded: calculateMonthlyContribution(
-                    Math.max(0, nonTaxFIN - totalAssets),
-                    calculations.yearsToRetirement,
-                    data.assumptions.preRetireRate
-                ),
-                taxRate: 0,
-                description: 'Non-Taxable (TFSA, Insurance PTS)'
-            };
+            taxScenarios.forEach(tax => {
+                calculations.scenarios[tax.key] = {};
+                
+                // 1. Principal Maintenance (Conservative 3.5% withdrawal rate - never depletes)
+                const preserveWithdrawalRate = 0.035;
+                const preserveFIN = (tax.shortfall + baseEducationCosts/20 + baseGoalCosts/20) / preserveWithdrawalRate;
+                calculations.scenarios[tax.key].preserve = {
+                    finNumber: preserveFIN,
+                    monthlyNeeded: calculateMonthlyContribution(
+                        Math.max(0, preserveFIN - totalAssets),
+                        calculations.yearsToRetirement,
+                        data.assumptions.preRetireRate
+                    ),
+                    withdrawalRate: preserveWithdrawalRate,
+                    description: 'Principal Maintenance'
+                };
+                
+                // 2. Drawdown + 10 Years Buffer (Portfolio lasts to life expectancy + 10 years)
+                const bufferYears = calculations.retirementLength + 10;
+                const bufferPV = calculatePresentValueAnnuity(
+                    tax.shortfall / 12, 
+                    data.assumptions.postRetireRate / 12, 
+                    bufferYears * 12
+                );
+                const bufferFIN = bufferPV + baseEducationCosts + baseGoalCosts;
+                calculations.scenarios[tax.key].buffer = {
+                    finNumber: bufferFIN,
+                    monthlyNeeded: calculateMonthlyContribution(
+                        Math.max(0, bufferFIN - totalAssets),
+                        calculations.yearsToRetirement,
+                        data.assumptions.preRetireRate
+                    ),
+                    retirementYears: bufferYears,
+                    description: 'Drawdown + 10 Years'
+                };
+                
+                // 3. Drawdown to Lifespan (Portfolio depletes exactly at life expectancy)
+                const lifespanYears = calculations.retirementLength;
+                const depletePV = calculatePresentValueAnnuity(
+                    tax.shortfall / 12, 
+                    data.assumptions.postRetireRate / 12, 
+                    lifespanYears * 12
+                );
+                const depleteFIN = depletePV + baseEducationCosts + baseGoalCosts;
+                calculations.scenarios[tax.key].deplete = {
+                    finNumber: depleteFIN,
+                    monthlyNeeded: calculateMonthlyContribution(
+                        Math.max(0, depleteFIN - totalAssets),
+                        calculations.yearsToRetirement,
+                        data.assumptions.preRetireRate
+                    ),
+                    retirementYears: lifespanYears,
+                    description: 'Drawdown to Lifespan'
+                };
+            });
             
             // Legacy scenarios for backward compatibility
             calculations.scenarios.preserve = calculations.scenarios.registered;
@@ -3311,17 +4154,40 @@
             return futureValue / (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate));
         }
         
-        function displayResults(calculations) {
-            // Update all three FIN# displays
-            document.getElementById('finNumberRegistered').textContent = 
-                '$' + calculations.scenarios.registered.finNumber.toLocaleString(undefined, {maximumFractionDigits: 0});
-            document.getElementById('finNumberBlended').textContent = 
-                '$' + calculations.scenarios.blended.finNumber.toLocaleString(undefined, {maximumFractionDigits: 0});
-            document.getElementById('finNumberNonTax').textContent = 
-                '$' + calculations.scenarios.nontax.finNumber.toLocaleString(undefined, {maximumFractionDigits: 0});
+        function calculatePresentValueAnnuity(payment, rate, periods) {
+            if (rate === 0) {
+                return payment * periods;
+            }
             
-            // Get current scenario for detailed display
-            const scenario = calculations.scenarios[currentScenario];
+            return payment * ((1 - Math.pow(1 + rate, -periods)) / rate);
+        }
+        
+        function displayResults(calculations) {
+            // Show the calculation results section
+            document.getElementById('calculationResults').style.display = 'block';
+            
+            // Update 3x3 FIN Matrix
+            const scenarios = ['preserve', 'buffer', 'deplete'];
+            const taxTypes = ['registered', 'blended', 'nontax'];
+            
+            taxTypes.forEach(taxType => {
+                scenarios.forEach(scenario => {
+                    const cellId = `fin-${taxType}-${scenario}`;
+                    const cell = document.getElementById(cellId);
+                    if (cell && calculations.scenarios[taxType] && calculations.scenarios[taxType][scenario]) {
+                        const finAmount = calculations.scenarios[taxType][scenario].finNumber;
+                        const monthlyAmount = calculations.scenarios[taxType][scenario].monthlyNeeded;
+                        
+                        cell.querySelector('.fin-amount').textContent = 
+                            '$' + finAmount.toLocaleString(undefined, {maximumFractionDigits: 0});
+                        cell.querySelector('.monthly-amount').textContent = 
+                            '$' + monthlyAmount.toLocaleString(undefined, {maximumFractionDigits: 0}) + '/month';
+                        
+                        // Add click handler to cell
+                        cell.onclick = () => showScenarioDetails(taxType, scenario);
+                    }
+                });
+            });
             
             // Update summary cards
             document.getElementById('yearsToRetirement').textContent = calculations.yearsToRetirement;
@@ -3329,7 +4195,7 @@
             document.getElementById('monthlyShortfall').textContent = 
          '$' + calculations.monthlyShortfall.toLocaleString(undefined, {maximumFractionDigits: 0});
             document.getElementById('monthlySavingsNeeded').textContent = 
-         '$' + scenario.monthlyNeeded.toLocaleString(undefined, {maximumFractionDigits: 0});
+         '$' + calculations.scenarios.registered.preserve.monthlyNeeded.toLocaleString(undefined, {maximumFractionDigits: 0});
             
             // Update insurance analysis
             document.getElementById('totalInsuranceNeed').textContent = 
@@ -3341,28 +4207,31 @@
             document.getElementById('annualPremiums').textContent = 
          '$' + calculations.insurance.annualPremiums.toLocaleString(undefined, {maximumFractionDigits: 0});
             
-            // Create charts
+            // Create charts with conservative scenario (registered preserve)
             createProjectionChart(calculations);
-            createNetWorthChart(calculations);\n            createFinancialAnalysisCharts(calculations);
+            createNetWorthChart(calculations);
+            createFinancialAnalysisCharts(calculations);
             
-            // Store calculations globally for scenario switching
+            // Store calculations globally
             window.currentCalculations = calculations;
         }
         
+        // Legacy function for backward compatibility
         function updateScenarioDisplay() {
             if (!window.currentCalculations) return;
             
-            const scenario = window.currentCalculations.scenarios[currentScenario];
+            // Default to conservative scenario for charts
+            const scenario = window.currentCalculations.scenarios.registered.preserve;
             
-            // Update the summary cards for the selected scenario
+            // Update the summary cards with conservative scenario
             document.getElementById('monthlySavingsNeeded').textContent = 
          '$' + scenario.monthlyNeeded.toLocaleString(undefined, {maximumFractionDigits: 0});
             
-            // Update charts with new scenario
-            createProjectionChart(window.currentCalculations);
+            // Update charts with conservative scenario
+            createProjectionChart(window.currentCalculations, 'registered', 'preserve');
         }
         
-        function createProjectionChart(calculations) {
+        function createProjectionChart(calculations, taxType = 'registered', scenarioType = 'preserve') {
             const ctx = document.getElementById('projectionChart').getContext('2d');
             
             if (charts.projection) {
@@ -3374,7 +4243,7 @@
             const targetPath = [];
             const requiredPath = [];
             
-            const scenario = calculations.scenarios[currentScenario];
+            const scenario = calculations.scenarios[taxType][scenarioType];
             const currentAssets = calculations.currentNetWorth;
             const monthlyContribution = scenario.monthlyNeeded;
             
@@ -3392,14 +4261,19 @@
                 if (year <= calculations.yearsToRetirement) {
                     targetPath.push(scenario.finNumber);
                 } else {
-                    // Show depletion in retirement for deplete scenario
-                    if (currentScenario === 'deplete') {
+                    // Show depletion in retirement for deplete scenarios
+                    if (scenarioType === 'deplete' || scenarioType === 'buffer') {
                         const yearsInRetirement = year - calculations.yearsToRetirement;
-                        const remaining = scenario.finNumber * Math.pow(1 + data.assumptions.postRetireRate, yearsInRetirement) - 
-                                        (calculations.monthlyShortfall * 12 * yearsInRetirement);
-                        targetPath.push(Math.max(0, remaining));
+                        const retirementYears = scenario.retirementYears || calculations.retirementLength;
+                        if (yearsInRetirement < retirementYears) {
+                            const remaining = scenario.finNumber * Math.pow(1 + data.assumptions.postRetireRate, yearsInRetirement) - 
+                                            (calculations.monthlyShortfall * 12 * yearsInRetirement);
+                            targetPath.push(Math.max(0, remaining));
+                        } else {
+                            targetPath.push(0); // Portfolio depleted
+                        }
                     } else {
-                        targetPath.push(scenario.finNumber);
+                        targetPath.push(scenario.finNumber); // Principal maintenance
                     }
                 }
                 
@@ -3417,12 +4291,17 @@
                     // Continue the path in retirement
                     const retirementValue = requiredPath[calculations.yearsToRetirement];
                     const yearsInRetirement = year - calculations.yearsToRetirement;
-                    if (currentScenario === 'preserve') {
+                    if (scenarioType === 'preserve') {
                         requiredPath.push(retirementValue);
                     } else {
-                        const remaining = retirementValue * Math.pow(1 + data.assumptions.postRetireRate, yearsInRetirement) - 
-                                        (calculations.monthlyShortfall * 12 * yearsInRetirement);
-                        requiredPath.push(Math.max(0, remaining));
+                        const retirementYears = scenario.retirementYears || calculations.retirementLength;
+                        if (yearsInRetirement < retirementYears) {
+                            const remaining = retirementValue * Math.pow(1 + data.assumptions.postRetireRate, yearsInRetirement) - 
+                                            (calculations.monthlyShortfall * 12 * yearsInRetirement);
+                            requiredPath.push(Math.max(0, remaining));
+                        } else {
+                            requiredPath.push(0);
+                        }
                     }
                 }
             }
@@ -3441,7 +4320,7 @@
                             tension: 0.1
                         },
                         {
-                            label: `${currentScenario.charAt(0).toUpperCase() + currentScenario.slice(1)} Target`,
+                            label: `${scenario.description} Target`,
                             data: targetPath,
                             borderColor: '#27ae60',
                             backgroundColor: 'rgba(39, 174, 96, 0.1)',
@@ -3464,7 +4343,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: `Financial Projection - ${currentScenario.charAt(0).toUpperCase() + currentScenario.slice(1)} Scenario`
+                            text: `Financial Projection - ${scenario.description} (${taxType.charAt(0).toUpperCase() + taxType.slice(1)} Tax)`
                         },
                         legend: {
                             display: true,
@@ -3529,7 +4408,7 @@
                 
                 // Add savings if still working
                 if (age < Math.min(data.family.spouse1.retireAge, data.family.spouse2.retireAge || 100)) {
-                    const scenario = calculations.scenarios[currentScenario];
+                    const scenario = calculations.scenarios.registered.preserve;
                     const monthlyContribution = scenario.monthlyNeeded;
                     const monthlyRate = data.assumptions.preRetireRate / 12;
                     const months = yearsFromNow * 12;
@@ -3659,30 +4538,34 @@
                 document.getElementById('spouse1Gender').value = data.family.spouse1.gender || '';
                 document.getElementById('spouse1RetireAge').value = data.family.spouse1.retireAge || 65;
                 document.getElementById('spouse1LifeExpectancy').value = data.family.spouse1.lifeExpectancy || 85;
+                document.getElementById('spouse1Email').value = data.family.spouse1.email || '';
+                document.getElementById('spouse1Phone').value = data.family.spouse1.phone || '';
                 
                 document.getElementById('spouse2Name').value = data.family.spouse2.name || '';
                 document.getElementById('spouse2DOB').value = data.family.spouse2.dob || '';
                 document.getElementById('spouse2Gender').value = data.family.spouse2.gender || '';
                 document.getElementById('spouse2RetireAge').value = data.family.spouse2.retireAge || 65;
                 document.getElementById('spouse2LifeExpectancy').value = data.family.spouse2.lifeExpectancy || 85;
+                document.getElementById('spouse2Email').value = data.family.spouse2.email || '';
+                document.getElementById('spouse2Phone').value = data.family.spouse2.phone || '';
             }
             
             // Populate assumptions data
             if (data.assumptions) {
-                document.getElementById('inflationRate').value = (data.assumptions.inflationRate * 100).toFixed(2) || 2.8;
-                document.getElementById('preRetireRate').value = (data.assumptions.preRetireRate * 100).toFixed(2) || 6.5;
-                document.getElementById('postRetireRate').value = (data.assumptions.postRetireRate * 100).toFixed(2) || 4.0;
-                document.getElementById('retirementIncomePercent').value = (data.assumptions.retirementIncomePercent * 100).toFixed(2) || 70;
-                document.getElementById('widowReduction').value = (data.assumptions.widowReduction * 100).toFixed(2) || 70;
+                document.getElementById('inflationRate').value = ((data.assumptions.inflationRate * 100).toFixed(2) || 2.8) + '%';
+                document.getElementById('preRetireRate').value = ((data.assumptions.preRetireRate * 100).toFixed(2) || 6.5) + '%';
+                document.getElementById('postRetireRate').value = ((data.assumptions.postRetireRate * 100).toFixed(2) || 4.0) + '%';
+                document.getElementById('retirementIncomePercent').value = ((data.assumptions.retirementIncomePercent * 100).toFixed(2) || 70) + '%';
+                document.getElementById('widowReduction').value = ((data.assumptions.widowReduction * 100).toFixed(2) || 70) + '%';
                 document.getElementById('currentHousing').value = data.assumptions.currentHousing || 'own';
                 document.getElementById('retirementHousing').value = data.assumptions.retirementHousing || 'own';
                 document.getElementById('downsizeIntent').value = data.assumptions.downsizeIntent ? 'yes' : 'no';
-                document.getElementById('downsizeValue').value = data.assumptions.downsizeValue || '';
-                document.getElementById('retirementRent').value = data.assumptions.retirementRent || 2200;
-                document.getElementById('cpp1Monthly').value = data.assumptions.cpp1 || 758;
-                document.getElementById('oas1Monthly').value = data.assumptions.oas1 || 713;
-                document.getElementById('cpp2Monthly').value = data.assumptions.cpp2 || 758;
-                document.getElementById('oas2Monthly').value = data.assumptions.oas2 || 713;
+                document.getElementById('downsizeValue').value = '$' + (data.assumptions.downsizeValue || 0).toLocaleString();
+                document.getElementById('retirementRent').value = '$' + (data.assumptions.retirementRent || 2200).toLocaleString();
+                document.getElementById('cpp1Monthly').value = '$' + (data.assumptions.cpp1 || 758).toLocaleString();
+                document.getElementById('oas1Monthly').value = '$' + (data.assumptions.oas1 || 713).toLocaleString();
+                document.getElementById('cpp2Monthly').value = '$' + (data.assumptions.cpp2 || 758).toLocaleString();
+                document.getElementById('oas2Monthly').value = '$' + (data.assumptions.oas2 || 713).toLocaleString();
                 
                 // Update conditional field visibility
                 toggleDownsizeField();
@@ -3700,6 +4583,20 @@
                 document.getElementById('income2Frequency').value = data.income.spouse2.frequency || 'yearly';
                 document.getElementById('income2Hours').value = data.income.spouse2.hours || 40;
                 // Rental and business income fields removed
+                
+                // Populate other income sources
+                if (data.income.otherSources && data.income.otherSources.length > 0) {
+                    data.income.otherSources.forEach((source, index) => {
+                        if (index > 0) addIncomeSource();
+                        const containers = document.querySelectorAll('.income-item');
+                        const container = containers[index];
+                        if (container) {
+                            container.querySelector('.income-type').value = source.type || 'rental';
+                            container.querySelector('.income-amount').value = '$' + (source.amount || 0).toLocaleString();
+                            container.querySelector('.income-description').value = source.description || '';
+                        }
+                    });
+                }
             }
             
             // Clear and repopulate dynamic lists
@@ -3715,7 +4612,7 @@
                 firstDependent.querySelector('.dependent-dob').value = '';
                 firstDependent.querySelector('.dependent-edu-age').value = '18';
                 firstDependent.querySelector('.dependent-study-years').value = '4';
-                firstDependent.querySelector('.dependent-edu-cost').value = '12000';
+                firstDependent.querySelector('.dependent-edu-cost').value = '$12,000.00';
                 
                 // Clear goals (keep first row, remove others)
                 const goalsList = document.getElementById('goalsList');
@@ -3725,7 +4622,7 @@
                 // Clear the first row's values
                 firstGoal.querySelector('.goal-type').value = 'home';
                 firstGoal.querySelector('.goal-years').value = '';
-                firstGoal.querySelector('.goal-amount').value = '';
+                firstGoal.querySelector('.goal-amount').value = '$0.00';
                 firstGoal.querySelector('.goal-frequency').value = 'one-time';
                 
                 // Clear liquid assets (keep first row, remove others)
@@ -3786,7 +4683,7 @@
                         container.querySelector('.dependent-dob').value = dependent.dob || '';
                         container.querySelector('.dependent-edu-age').value = dependent.eduAge || 18;
                         container.querySelector('.dependent-study-years').value = dependent.studyYears || 4;
-                        container.querySelector('.dependent-edu-cost').value = dependent.eduCost || 12000;
+                        container.querySelector('.dependent-edu-cost').value = '$' + (dependent.eduCost || 12000).toLocaleString();
                     }
                 });
             }
@@ -3799,8 +4696,9 @@
                     const container = containers[index];
                     if (container) {
                         container.querySelector('.goal-type').value = goal.type || 'other';
+                        container.querySelector('.goal-description').value = goal.description || '';
                         container.querySelector('.goal-years').value = goal.years || '';
-                        container.querySelector('.goal-amount').value = goal.amount || '';
+                        container.querySelector('.goal-amount').value = '$' + (goal.amount || 0).toLocaleString();
                         container.querySelector('.goal-frequency').value = goal.frequency || 'one-time';
                     }
                 });
@@ -3845,17 +4743,50 @@
                 });
             }
             
-            // Populate liabilities
+            // Populate liabilities (separate mortgages and other debts)
             if (data.liabilities && data.liabilities.length > 0) {
-                data.liabilities.forEach((liability, index) => {
-                    if (index > 0) addLiability();
-                    const containers = document.querySelectorAll('.liability-item');
+                // Separate mortgages from other liabilities
+                const mortgages = data.liabilities.filter(item => item.type && item.type.startsWith('mortgage-'));
+                const otherLiabilities = data.liabilities.filter(item => !item.type || !item.type.startsWith('mortgage-'));
+                
+                // Populate mortgages
+                mortgages.forEach((mortgage, index) => {
+                    if (index > 0) addMortgage();
+                    const containers = document.querySelectorAll('.mortgage-item');
                     const container = containers[index];
                     if (container) {
+                        const property = mortgage.type.replace('mortgage-', '');
+                        container.querySelector('.mortgage-property').value = property || 'primary';
+                        container.querySelector('.mortgage-original').value = '$' + (mortgage.original || 0).toLocaleString();
+                        container.querySelector('.mortgage-balance').value = '$' + (mortgage.balance || 0).toLocaleString();
+                        container.querySelector('.mortgage-rate').value = (mortgage.rate * 100).toFixed(2) || '';
+                        container.querySelector('.mortgage-term').value = mortgage.term || '';
+                        container.querySelector('.mortgage-payment').value = '$' + (mortgage.payment || 0).toLocaleString();
+                        container.querySelector('.mortgage-maturity').value = mortgage.maturity || '';
+                    }
+                });
+                
+                // Populate other liabilities (secured/unsecured debts)
+                otherLiabilities.forEach((liability, index) => {
+                    // Determine if it's secured or unsecured debt and add accordingly
+                    const isSecured = ['vehicle', 'vehicle-lease', 'boat', 'equipment', 'secured-loan', 'other-secured'].includes(liability.type);
+                    if (index > 0) {
+                        if (isSecured) {
+                            addSecuredDebt();
+                        } else {
+                            addUnsecuredDebt();
+                        }
+                    }
+                    
+                    const className = isSecured ? 'secured-debt' : 'unsecured-debt';
+                    const containers = document.querySelectorAll(`.liability-item.${className}`);
+                    const container = containers[Math.floor(index / 2)]; // Approximate container selection
+                    
+                    if (container) {
                         container.querySelector('.liability-type').value = liability.type || 'other';
-                        container.querySelector('.liability-balance').value = liability.balance || '';
+                        container.querySelector('.liability-balance').value = '$' + (liability.balance || 0).toLocaleString();
                         container.querySelector('.liability-rate').value = (liability.rate * 100).toFixed(2) || '';
-                        container.querySelector('.liability-payment').value = liability.payment || '';
+                        container.querySelector('.liability-payment').value = '$' + (liability.payment || 0).toLocaleString();
                     }
                 });
             }
@@ -3864,13 +4795,15 @@
             if (data.insurance && data.insurance.length > 0) {
                 data.insurance.forEach((policy, index) => {
                     if (index > 0) addInsurance();
-                    const containers = document.querySelectorAll('#insuranceList .form-row-6');
+                    const containers = document.querySelectorAll('#insuranceList .insurance-item');
                     const container = containers[index];
                     if (container) {
                         container.querySelector('.insurance-type').value = policy.type || 'term-life';
+                        container.querySelector('.insurance-company').value = policy.company || '';
                         container.querySelector('.insurance-amount').value = '$' + (policy.amount || 0).toLocaleString();
                         container.querySelector('.insurance-premium').value = '$' + (policy.premium || 0).toLocaleString();
                         container.querySelector('.insurance-term').value = policy.term || '';
+                        container.querySelector('.insurance-expiry').value = policy.expiry || '';
                         container.querySelector('.insurance-owner').value = policy.owner || 'self';
                         container.querySelector('.insurance-beneficiary').value = policy.beneficiary || '';
                         
@@ -3949,143 +4882,14 @@
         
         function generatePrintSummary() {
             if (!window.currentCalculations) {
-                alert('Please calculate your FIN# first!');
+                alert('Please calculate your FNA first!');
                 return;
             }
-            
-            const data = collectAllData();
-            const calc = window.currentCalculations;
-            const scenario = calc.scenarios[currentScenario];
-            
-            const printContent = 
-                <div style="font-family: Arial, sans-serif; max-width: 8.5in; margin: 0 auto; padding: 0.5in;">
-                    {/*  Header with logo placeholder */}
-                    <div style="text-align: center; border-bottom: 2px solid #667eea; padding-bottom: 20px; margin-bottom: 30px;">
-                        {/* Replace this div with actual logo */}
-                        {/* Logo should be approximately 120px x 60px for professional letterhead */}
-                        <div style="width: 120px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); margin: 0 auto 15px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">LOGO</div>
-                        <h1 style="color: #b19777; margin: 0;">Financial Needs Analysis Summary</h1>
-                        <p style="color: #cccccc; margin: 5px 0;">Prepared for ${data.family.spouse1.name}${data.family.spouse2.name ? ' & ' + data.family.spouse2.name : ''}</p>
-                        <p style="color: #cccccc; margin: 0;">Date: ${new Date().toLocaleDateString('en-CA')}</p>
-                    </div>
-                    
-                    {/* Executive Summary */}
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px; margin-bottom: 25px;">
-                        <h2 style="color: #b19777; margin-top: 0;">Executive Summary</h2>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div>
-                                <h3 style="color: #667eea; margin-bottom: 10px;">Financial Independence Number (FIN#)</h3>
-                                <p style="font-size: 2em; font-weight: bold; color: #27ae60; margin: 0;">${scenario.finNumber.toLocaleString()}</p>
-                                <p style="color: #cccccc; margin: 5px 0 0 0;">${currentScenario.charAt(0).toUpperCase() + currentScenario.slice(1)} Scenario</p>
-                            </div>
-                            <div>
-                                <h3 style="color: #667eea; margin-bottom: 10px;">Monthly Savings Required</h3>
-                                <p style="font-size: 2em; font-weight: bold; color: #e74c3c; margin: 0;">${scenario.monthlyNeeded.toLocaleString()}</p>
-                                <p style="color: #cccccc; margin: 5px 0 0 0;">To reach retirement goal</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {/* Key Metrics */}
-                    <div style="margin-bottom: 25px;">
-                        <h2 style="color: #b19777;">Key Metrics</h2>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px;">
-                            <div style="text-align: center; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px;">
-                                <div style="font-size: 1.5em; font-weight: bold; color: #667eea;">${calc.yearsToRetirement}</div>
-                                <div style="color: #cccccc; font-size: 0.9em;">Years to Retirement</div>
-                            </div>
-                            <div style="text-align: center; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px;">
-                                <div style="font-size: 1.5em; font-weight: bold; color: #667eea;">${calc.retirementLength}</div>
-                                <div style="color: #cccccc; font-size: 0.9em;">Years in Retirement</div>
-                            </div>
-                            <div style="text-align: center; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px;">
-                                <div style="font-size: 1.5em; font-weight: bold; color: #667eea;">${calc.monthlyShortfall.toLocaleString()}</div>
-                                <div style="color: #cccccc; font-size: 0.9em;">Monthly Income Gap</div>
-                            </div>
-                            <div style="text-align: center; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px;">
-                                <div style="font-size: 1.5em; font-weight: bold; color: #667eea;">${calc.currentNetWorth.toLocaleString()}</div>
-                                <div style="color: #cccccc; font-size: 0.9em;">Current Net Worth</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {/* Insurance Analysis */}
-                    <div style="margin-bottom: 25px;">
-                        <h2 style="color: #b19777;">Insurance Analysis (DIME Method)</h2>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                            <div style="text-align: center; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px;">
-                                <div style="font-size: 1.3em; font-weight: bold; color: #e74c3c;">${calc.insurance.totalNeed.toLocaleString()}</div>
-                                <div style="color: #cccccc; font-size: 0.9em;">Total Insurance Needed</div>
-                            </div>
-                            <div style="text-align: center; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px;">
-                                <div style="font-size: 1.3em; font-weight: bold; color: #27ae60;">${calc.insurance.currentCoverage.toLocaleString()}</div>
-                                <div style="color: #cccccc; font-size: 0.9em;">Current Coverage</div>
-                            </div>
-                            <div style="text-align: center; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px;">
-                                <div style="font-size: 1.3em; font-weight: bold; color: ${calc.insurance.gap > 0 ? '#e74c3c' : '#27ae60'};">${calc.insurance.gap.toLocaleString()}</div>
-                                <div style="color: #cccccc; font-size: 0.9em;">Coverage ${calc.insurance.gap > 0 ? 'Gap' : 'Surplus'}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            alert('Print functionality temporarily disabled - date formatting is now working!');
+            // TODO: Implement proper print summary generation
+            return;
         }
         
-        function addIncomeSource() {
-            const container = document.getElementById('otherIncomeList');
-            const div = document.createElement('div');
-            div.className = 'income-item';
-            div.innerHTML = `
-                <select class="income-type" onchange="updateIncomeDisplay()">
-                    <option value="rental">Rental Income</option>
-                    <option value="investment">Investment Income</option>
-                    <option value="vacation-rental">Vacation Rental</option>
-                    <option value="royalties">Royalties</option>
-                    <option value="pension">Pension Income</option>
-                    <option value="social-benefits">Social Benefits</option>
-                    <option value="freelance">Freelance/Contract</option>
-                    <option value="side-business">Side Business</option>
-                    <option value="other">Other</option>
-                </select>
-                <input type="number" class="income-amount" placeholder="Monthly Amount ($)" step="100" onchange="updateIncomeDisplay()">
-                <input type="text" class="income-description" placeholder="Description (optional)">
-                <button type="button" class="remove-btn" onclick="removeIncomeSource(this)">Remove</button>
-            `;
-            container.appendChild(div);
-        }
-        
-        function removeIncomeSource(button) {
-            const incomeItem = button.closest('.income-item');
-            const container = document.getElementById('otherIncomeList');
-            if (container.children.length > 1) {
-                incomeItem.remove();
-                updateIncomeDisplay();
-            }
-        }
-        
-        // Currency formatting function
-        function formatCurrency(input) {
-            // Remove all non-digit and non-decimal characters
-            let value = input.value.replace(/[^0-9.]/g, '');
-            
-            // Ensure only one decimal point
-            let parts = value.split('.');
-            if (parts.length > 2) {
-                value = parts[0] + '.' + parts.slice(1).join('');
-            }
-            
-            // Parse as number
-            let numValue = parseFloat(value);
-            if (isNaN(numValue)) {
-                input.value = '$0.00';
-                return;
-            }
-            
-            // Format with commas and dollar sign
-            input.value = '$' + numValue.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        }
         
         // Enhanced percentage formatting for input fields
         function addPercentageFormatting() {
@@ -4129,16 +4933,36 @@
             });
         }
         
+        // Simple percentage formatting function for onchange events
+        function formatPercentage(field) {
+            formatPercentageValue(field, true);
+        }
+        
+        // Remove debt item function
+        function removeDebtItem(button) {
+            const debtItem = button.closest('.liability-item');
+            if (debtItem) {
+                debtItem.remove();
+            }
+        }
+        
+        
         // Enhanced percentage formatting function
         function formatPercentageValue(field, onBlur = false) {
-            let value = field.value.replace(/[^0-9.]/g, '');
+            let value = field.value.replace(/[^0-9.-]/g, ''); // Allow negative sign
             
             // Handle empty input
-            if (value === '') {
+            if (value === '' || value === '-') {
                 if (onBlur) {
                     field.value = '0.00%';
                 }
                 return;
+            }
+            
+            // Handle negative sign positioning
+            let isNegative = value.startsWith('-');
+            if (isNegative) {
+                value = value.substring(1);
             }
             
             // Ensure only one decimal point
@@ -4154,6 +4978,8 @@
             
             let numValue = parseFloat(value);
             if (!isNaN(numValue)) {
+                if (isNegative) numValue = -numValue;
+                
                 if (onBlur) {
                     // Final formatting with 2 decimal places
                     field.value = numValue.toFixed(2) + '%';
@@ -4282,8 +5108,11 @@
             // Initialize blank charts
             initializeBlankCharts();
             
-            // Initialize DIME calculations
-            setTimeout(() => updateDimeCalculations(), 500);
+            // Initialize DIME calculations and partner names
+            setTimeout(() => {
+                updatePartnerNames();
+                updateDimeCalculations();
+            }, 500);
             
             // Initialize blended tax rate calculation
             updateBlendedTaxRate();

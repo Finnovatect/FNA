@@ -80,6 +80,11 @@ This is a Jekyll-based GitHub Pages website for "Financial Needs Analysis" - a f
 - Check all files for plain text email exposure before commits
 - Test files should also use obfuscated email, never plain text
 
+### Personal Information Protection
+- **CRITICAL**: Never show real phone number or email address in any code
+- Always use placeholder or obfuscated contact information
+- Protect personal identifiable information in all repository files
+
 ### EmailJS Configuration
 - reCAPTCHA keys use environment detection (localhost vs production)
 - EmailJS templates use multiple parameter name formats for compatibility

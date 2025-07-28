@@ -1,0 +1,98 @@
+FINANCIAL NEEDS ANALYSIS - INPUT FIELDS BY TAB
+==============================================
+
+FAMILY TAB:
+-----------
+1. Family > Partner 1 Name (spouse1Name)
+2. Family > Partner 1 Date of Birth (spouse1DOB)
+3. Family > Partner 1 Retirement Age (spouse1RetireAge)
+4. Family > Partner 1 Life Expectancy (spouse1LifeExpectancy)
+5. Family > Partner 2 Name (spouse2Name)
+6. Family > Partner 2 Date of Birth (spouse2DOB)
+7. Family > Partner 2 Retirement Age (spouse2RetireAge)
+8. Family > Partner 2 Life Expectancy (spouse2LifeExpectancy)
+9. Family > Child Name (dependent-name)
+10. Family > Child Date of Birth (dependent-dob)
+11. Family > Child Education Start Age (dependent-edu-age)
+12. Family > Child Study Years (dependent-study-years)
+13. Family > Child Annual Education Cost (dependent-edu-cost) [CURRENCY]
+
+INCOME TAB:
+-----------
+14. Income > Partner 1 Net Take-Home Pay Rate (income1Rate) [CURRENCY]
+15. Income > Partner 1 Hours/Week (income1Hours)
+16. Income > Partner 2 Net Take-Home Pay Rate (income2Rate) [CURRENCY]
+17. Income > Partner 2 Hours/Week (income2Hours)
+18. Income > Other Income Monthly Amount (income-amount) [CURRENCY]
+19. Income > Other Income Description (income-description)
+
+ASSUMPTIONS TAB:
+----------------
+20. Assumptions > Inflation Rate (inflationRate) [PERCENTAGE]
+21. Assumptions > Pre-Retirement Investment Rate (preRetireRate) [PERCENTAGE]
+22. Assumptions > Post-Retirement Investment Rate (postRetireRate) [PERCENTAGE]
+23. Assumptions > Retirement Income Percent (retirementIncomePercent) [PERCENTAGE]
+24. Assumptions > Widow Reduction (widowReduction) [PERCENTAGE]
+25. Assumptions > Registered Tax Rate (registeredTaxRate) [PERCENTAGE]
+26. Assumptions > Blended Tax Rate (blendedTaxRate) [PERCENTAGE]
+27. Assumptions > Downsize Value (downsizeValue) [CURRENCY]
+28. Assumptions > Retirement Rent (retirementRent) [CURRENCY]
+29. Assumptions > CPP Partner 1 Monthly (cpp1Monthly) [CURRENCY]
+30. Assumptions > OAS Partner 1 Monthly (oas1Monthly) [CURRENCY]
+31. Assumptions > CPP Partner 2 Monthly (cpp2Monthly) [CURRENCY]
+32. Assumptions > OAS Partner 2 Monthly (oas2Monthly) [CURRENCY]
+
+GOALS TAB:
+----------
+33. Goals > Goal Years Away (goal-years)
+34. Goals > Goal Amount (goal-amount) [CURRENCY]
+
+ASSETS TAB:
+-----------
+35. Assets > Liquid Asset Value (asset-value) [CURRENCY]
+36. Assets > Liquid Asset Growth Rate (asset-growth) [PERCENTAGE]
+37. Assets > Liquid Asset Notes (asset-notes)
+38. Assets > Fixed Asset Value (asset-value) [CURRENCY]
+39. Assets > Fixed Asset Growth Rate (asset-growth) [PERCENTAGE]
+40. Assets > Fixed Asset Notes (asset-notes)
+
+LIABILITIES TAB:
+----------------
+41. Liabilities > Mortgage Original Amount (mortgage-original) [CURRENCY]
+42. Liabilities > Mortgage Balance (mortgage-balance) [CURRENCY]
+43. Liabilities > Mortgage Rate (mortgage-rate) [PERCENTAGE]
+44. Liabilities > Mortgage Term (mortgage-term)
+45. Liabilities > Mortgage Payment (mortgage-payment) [CURRENCY READ-ONLY]
+46. Liabilities > Mortgage Maturity (mortgage-maturity)
+47. Liabilities > Secured Debt Balance (liability-balance) [CURRENCY]
+48. Liabilities > Secured Debt Rate (liability-rate) [PERCENTAGE]
+49. Liabilities > Secured Debt Payment (liability-payment) [CURRENCY]
+50. Liabilities > Unsecured Debt Balance (liability-balance) [CURRENCY]
+51. Liabilities > Unsecured Debt Rate (liability-rate) [PERCENTAGE]
+52. Liabilities > Unsecured Debt Payment (liability-payment) [CURRENCY]
+
+INSURANCE TAB:
+--------------
+53. Insurance > Coverage Amount (insurance-amount) [CURRENCY]
+54. Insurance > Annual Premium (insurance-premium) [CURRENCY]
+55. Insurance > Term (insurance-term)
+56. Insurance > Beneficiary (insurance-beneficiary)
+57. Insurance > Final Expenses Partner 1 (finalExpenses1) [CURRENCY]
+58. Insurance > Income Replacement Years Partner 1 (incomeReplacement1)
+59. Insurance > Mortgage Debt Partner 1 (mortgageDebt1) [CURRENCY READ-ONLY]
+60. Insurance > Education Fund Partner 1 (educationFund1) [CURRENCY READ-ONLY]
+61. Insurance > Final Expenses Partner 2 (finalExpenses2) [CURRENCY]
+62. Insurance > Income Replacement Years Partner 2 (incomeReplacement2)
+63. Insurance > Mortgage Debt Partner 2 (mortgageDebt2) [CURRENCY READ-ONLY]
+64. Insurance > Education Fund Partner 2 (educationFund2) [CURRENCY READ-ONLY]
+
+RESULTS TAB:
+------------
+[No input fields - display only]
+
+NOTES:
+======
+[CURRENCY] = Should show $ and commas (e.g., $1,000,000)
+[PERCENTAGE] = Should show % symbol (e.g., 25.00%)
+[READ-ONLY] = Auto-calculated fields
+Some fields appear multiple times due to dynamic form generation
