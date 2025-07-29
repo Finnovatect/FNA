@@ -209,7 +209,7 @@
         .form-group input, .form-group select {
             width: 100%;
             padding: 12px 15px;
-            border: 1px solid #666;
+            border: none;
             border-radius: 8px;
             font-size: 14px;
             transition: all 0.3s ease;
@@ -251,11 +251,7 @@
             grid-template-columns: 1.5fr 1.5fr 0.7fr 1fr 0.8fr 0.3fr;
             gap: 8px;
             align-items: center;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
             margin-bottom: 10px;
-            border: 1px solid #444;
         }
         
         .income-item {
@@ -263,23 +259,15 @@
             grid-template-columns: 2fr 1.5fr 2fr 1fr;
             gap: 15px;
             align-items: center;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
             margin-bottom: 10px;
-            border: 1px solid #444;
         }
         
-        .liability-item, .asset-item {
+        .asset-item {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: 15px;
             align-items: center;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
             margin-bottom: 10px;
-            border: 1px solid #444;
         }
         
         .add-btn {
@@ -389,7 +377,7 @@
             border-radius: 12px;
             margin: 20px 0;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            border: 1px solid #666;
+            border: none;
             height: 400px;
         }
         
@@ -406,7 +394,6 @@
             border-radius: 10px;
             text-align: center;
             border-left: 4px solid #b19777;
-            border: 1px solid #444;
         }
         
         .summary-card .value {
@@ -485,43 +472,61 @@
         }
         
         /* Specific layout for liability items with smaller interest rate field */
-        .liability-item {
-            grid-template-columns: 1fr 1fr 0.6fr 1fr !important;
-        }
         
-        /* Remove button styling */
+        /* Standardized remove button styling for all sections */
         .remove-btn {
             background: linear-gradient(135deg, #b19777, #c9a96e) !important;
             color: #1a1a1a !important;
             border: none !important;
-            padding: 12px 15px !important;
-            border-radius: 8px !important;
+            padding: 0 !important;
+            border-radius: 50% !important;
             cursor: pointer !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            height: 46px !important;
-            transition: all 0.3s ease !important;
-        }
-        
-        .remove-btn:hover {
-            background: linear-gradient(135deg, #c9a96e, #d4b876) !important;
-            transform: translateY(-1px) !important;
-        }
-        
-        /* Specific styling for debt section remove buttons */
-        .secured-debt .remove-btn,
-        .unsecured-debt .remove-btn {
-            padding: 6px 8px !important;
-            min-width: 28px !important;
-            width: 28px !important;
-            height: 28px !important;
-            font-size: 14px !important;
-            line-height: 1 !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            min-height: 32px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             margin: 0 !important;
             flex-shrink: 0 !important;
+            line-height: 1 !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .remove-btn:hover {
+            background: linear-gradient(135deg, #c9a96e, #d4b876) !important;
+            transform: translateY(-1px) scale(1.05) !important;
+        }
+
+        /* Force all buttons with remove functionality to be consistent */
+        button[onclick*="remove"], 
+        button[title*="Remove"],
+        .mortgage-item button,
+        .liability-item button,
+        .asset-item button,
+        .goal-item button {
+            background: linear-gradient(135deg, #b19777, #c9a96e) !important;
+            color: #1a1a1a !important;
+            border: none !important;
+            padding: 0 !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            min-height: 32px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 !important;
+            flex-shrink: 0 !important;
+            line-height: 1 !important;
+            transition: all 0.3s ease !important;
         }
         
         /* Ensure debt sections maintain grid layout */
@@ -552,7 +557,7 @@
             width: 18px !important;
             height: 18px !important;
             background: #444 !important;
-            border: 2px solid #666 !important;
+            border: none !important;
             border-radius: 4px !important;
             appearance: none !important;
             -webkit-appearance: none !important;
@@ -600,7 +605,7 @@
         .mortgage-item input, .mortgage-item select {
             background: #444 !important;
             color: #ffffff !important;
-            border: 1px solid #666 !important;
+            border: none !important;
             padding: 12px 15px !important;
             border-radius: 8px !important;
             font-size: 14px !important;
@@ -608,7 +613,6 @@
         
         .mortgage-item input:focus, .mortgage-item select:focus {
             background: #555 !important;
-            border-color: #b19777 !important;
             box-shadow: 0 0 0 3px rgba(177, 151, 119, 0.2) !important;
         }
         
@@ -623,7 +627,7 @@
         .unsecured-debt input, .unsecured-debt select {
             background: #444 !important;
             color: #ffffff !important;
-            border: 1px solid #666 !important;
+            border: none !important;
             padding: 12px 15px !important;
             border-radius: 8px !important;
             font-size: 14px !important;
@@ -632,7 +636,6 @@
         .secured-debt input:focus, .secured-debt select:focus,
         .unsecured-debt input:focus, .unsecured-debt select:focus {
             background: #555 !important;
-            border-color: #b19777 !important;
             box-shadow: 0 0 0 3px rgba(177, 151, 119, 0.2) !important;
         }
         
@@ -642,7 +645,7 @@
         .asset-item input, .asset-item select {
             background: #444 !important;
             color: #ffffff !important;
-            border: 1px solid #666 !important;
+            border: none !important;
             padding: 12px 15px !important;
             border-radius: 8px !important;
             font-size: 14px !important;
@@ -652,16 +655,96 @@
         .goal-item input:focus, .goal-item select:focus,
         .asset-item input:focus, .asset-item select:focus {
             background: #555 !important;
-            border-color: #b19777 !important;
             box-shadow: 0 0 0 3px rgba(177, 151, 119, 0.2) !important;
         }
         
+        /* Column header styling to prevent wrapping and align properly */
+        .form-section [style*="background: transparent"] > div {
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            align-self: end !important;
+            padding-bottom: 8px !important;
+        }
+        
+        /* Insurance section alignment improvements */
+        .insurance-item {
+            margin-bottom: 15px !important;
+            align-items: stretch !important;
+        }
+        
+        .insurance-item .form-group {
+            margin-bottom: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: flex-start !important;
+        }
+        
+        .insurance-item .form-group label {
+            font-size: 0.8em !important;
+            margin-bottom: 4px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+        
+        .insurance-item input,
+        .insurance-item select {
+            width: 100% !important;
+            padding: 8px 10px !important;
+            font-size: 0.85em !important;
+        }
+        
+        .insurance-item .remove-btn {
+            align-self: center !important;
+            justify-self: center !important;
+            margin: auto !important;
+        }
+        
+        /* Dependents section alignment improvements */
+        .dependent-item {
+            align-items: stretch !important;
+            margin-bottom: 15px !important;
+        }
+        
+        .dependent-item .form-group {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: flex-start !important;
+        }
+        
+        .dependent-item .remove-btn {
+            align-self: center !important;
+            justify-self: center !important;
+            margin: auto !important;
+        }
+        
+        /* Style dependent input fields to match other form fields */
+        .dependent-item input {
+            background: rgba(177, 151, 119, 0.1) !important;
+            border: 1px solid rgba(177, 151, 119, 0.3) !important;
+            border-radius: 6px !important;
+            color: #ffffff !important;
+            padding: 12px !important;
+            font-size: 16px !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .dependent-item input:focus {
+            border-color: #c9a96e !important;
+            box-shadow: 0 0 5px rgba(201, 169, 110, 0.5) !important;
+            outline: none !important;
+        }
+        
+        .dependent-item input::placeholder {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
         
         /* Layout adjustments for debt sections - all fields on same row */
         .secured-debt, .unsecured-debt {
             display: grid !important;
-            grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px !important;
-            gap: 8px !important;
+            grid-template-columns: minmax(150px, 1.2fr) minmax(120px, 1fr) minmax(90px, 0.6fr) minmax(120px, 1fr) minmax(30px, 40px) !important;
+            gap: 6px !important;
             margin-bottom: 10px;
             padding: 8px 0;
             align-items: center !important;
@@ -671,7 +754,7 @@
         .liability-item.secured-debt,
         .liability-item.unsecured-debt {
             display: grid !important;
-            grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px !important;
+            grid-template-columns: minmax(150px, 1.2fr) minmax(120px, 1fr) minmax(90px, 0.6fr) minmax(120px, 1fr) minmax(30px, 40px) !important;
             gap: 6px !important;
             margin-bottom: 10px;
             padding: 8px 0;
@@ -706,8 +789,8 @@
         .form-section .secured-debt,
         .form-section .unsecured-debt {
             display: grid !important;
-            grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px !important;
-            gap: 8px !important;
+            grid-template-columns: minmax(150px, 1.2fr) minmax(120px, 1fr) minmax(90px, 0.6fr) minmax(120px, 1fr) minmax(30px, 40px) !important;
+            gap: 6px !important;
         }
         
         /* Results page styling */
@@ -727,7 +810,7 @@
             padding: 12px 24px;
             background: #444;
             color: #cccccc;
-            border: 1px solid #666;
+            border: none;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -1053,28 +1136,24 @@
                     <strong>Note:</strong> Current average cost of university in Canada (living at home): 
                     <strong>$12,000-$15,000/year</strong> including tuition, books, and minimal living expenses.
                 </p>
+                
+                <!-- Column Headers -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 0.3fr; gap: 8px; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(177, 151, 119, 0.3);">
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;">Child Name</div>
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;">Date of Birth</div>
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;">Post-Secondary Start Age</div>
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;">Years of Study</div>
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;">Annual Cost</div>
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;"></div>
+                </div>
+                
                 <div id="dependentsList">
                     <div class="dependent-item" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 0.3fr; gap: 8px; align-items: center;">
-                        <div class="form-group">
-                            <label>Child Name:</label>
-                            <input type="text" class="dependent-name" placeholder="Child's Name">
-                        </div>
-                        <div class="form-group">
-                            <label>Date of Birth:</label>
-                            <input type="text" class="dependent-dob" placeholder="YYYYMMDD" oninput="formatDateInput(this)">
-                        </div>
-                        <div class="form-group">
-                            <label>Post-Secondary Start Age:</label>
-                            <input type="number" class="dependent-edu-age" value="18" min="16" max="25">
-                        </div>
-                        <div class="form-group">
-                            <label>Years of Study:</label>
-                            <input type="number" class="dependent-study-years" value="4" min="1" max="8">
-                        </div>
-                        <div class="form-group">
-                            <label>Annual Education Cost:</label>
-                            <input type="text" class="dependent-edu-cost" value="$12,000.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
-                        </div>
+                        <input type="text" class="dependent-name" placeholder="Child's Name">
+                        <input type="text" class="dependent-dob" placeholder="YYYYMMDD" oninput="formatDateInput(this)">
+                        <input type="number" class="dependent-edu-age" value="18" min="16" max="25">
+                        <input type="number" class="dependent-study-years" value="4" min="1" max="8">
+                        <input type="text" class="dependent-edu-cost" value="$12,000.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
                         <button class="remove-btn" onclick="removeDependent(this)" title="Remove this dependent">×</button>
                     </div>
                 </div>
@@ -1152,7 +1231,7 @@
                         </select>
                         <input type="text" class="income-amount" placeholder="$0.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)" onchange="updateIncomeDisplay()">
                         <input type="text" class="income-description" placeholder="Description (optional)">
-                        <button type="button" class="remove-btn" onclick="removeIncomeSource(this)">Remove</button>
+                        <button type="button" class="remove-btn" onclick="removeIncomeSource(this)">×</button>
                     </div>
                 </div>
                 <button class="add-btn" onclick="addIncomeSource()">+ Add Income Source</button>
@@ -1180,13 +1259,13 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="retirementIncomePercent">Retirement Income Needed (% of pre-retirement):</label>
-                        <input type="text" id="retirementIncomePercent" value="70.00%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
+                        <label for="retirementIncomePercent">Retirement Income Needed (% of pre-retirement): <span id="retirementIncomeAmount" style="color: white; font-weight: normal;">$0/mo</span></label>
+                        <input type="text" id="retirementIncomePercent" value="70.00%" oninput="formatPercentageValue(this, false); updateRetirementCalculations()" onblur="formatPercentageValue(this, true); updateRetirementCalculations()">
                         <small style="color: #cccccc;">In Canada approximately 70% of pre-retirement income is needed for retired partners</small>
                     </div>
                     <div class="form-group">
-                        <label for="widowReduction">Reduction for Widow(er) (%):</label>
-                        <input type="text" id="widowReduction" value="70.00%" oninput="formatPercentageValue(this, false)" onblur="formatPercentageValue(this, true)">
+                        <label for="widowReduction">Reduction for Widow(er) (%): <span id="widowReductionAmount" style="color: white; font-weight: normal;">$0/mo</span></label>
+                        <input type="text" id="widowReduction" value="70.00%" oninput="formatPercentageValue(this, false); updateRetirementCalculations()" onblur="formatPercentageValue(this, true); updateRetirementCalculations()">
                         <small style="color: #cccccc;">Reduced living expenses if one partner passes</small>
                     </div>
                 </div>
@@ -1280,6 +1359,9 @@
                         <small style="color: #cccccc;">2024 average: $713</small>
                     </div>
                 </div>
+                <div style="background-color: #2a2a2a; padding: 15px; border-radius: 5px; margin-top: 15px; width: 100%;">
+                    <small style="color: #f0c674;"><strong>Note:</strong> OAS benefits are excluded from FIN# calculations. The assumption is that with sufficient accumulated wealth, you may not be eligible for OAS due to income clawback provisions.</small>
+                </div>
             </div>
         </div>
         
@@ -1288,6 +1370,17 @@
             <div class="form-section">
                 <h3>🎯 Financial Goals</h3>
                 <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Enter goals with amounts to include them in calculations automatically</p>
+                
+                <!-- Column Headers -->
+                <div style="display: grid; grid-template-columns: 1.5fr 1.5fr 0.7fr 1fr 0.8fr 0.3fr; gap: 8px; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(177, 151, 119, 0.3);">
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;">Goal Type</div>
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;">Description</div>
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;">Years Away</div>
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;">Amount</div>
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;">Frequency</div>
+                    <div style="font-weight: bold; color: #b19777; font-size: 0.9em;"></div>
+                </div>
+                
                 <div id="goalsList">
                     <div class="goal-item" style="display: grid; grid-template-columns: 1.5fr 1.5fr 0.7fr 1fr 0.8fr 0.3fr; gap: 8px; align-items: center;">
                         <select class="goal-type">
@@ -1369,14 +1462,15 @@
                 <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Savings, investments, and retirement accounts that can be readily accessed</p>
                 
                 <!-- Column Headers -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr 0.6fr 1fr; gap: 12px; margin-bottom: 10px; padding: 10px 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; font-weight: 600; color: #b19777;">
+                <div style="display: grid; grid-template-columns: minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(80px, 0.6fr) minmax(150px, 1.5fr) minmax(30px, 40px); gap: 8px; margin-bottom: 10px; background: transparent; font-weight: 600; color: #b19777;">
                     <div>Asset Type</div>
-                    <div>Current Value ($)</div>
-                    <div>Rate of Return (%)</div>
-                    <div>Institution and Notes</div>
+                    <div>Current Value</div>
+                    <div>Return Rate</div>
+                    <div>Institution</div>
+                    <div></div> <!-- For remove button column -->
                 </div>
                 <div id="liquidAssetsList">
-                    <div class="asset-item liquid-asset" style="display: grid; grid-template-columns: 1.5fr 1fr 0.7fr 1.5fr 0.3fr; gap: 8px; align-items: center;">
+                    <div class="asset-item liquid-asset" style="display: grid; grid-template-columns: minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(80px, 0.6fr) minmax(150px, 1.5fr) minmax(30px, 40px); gap: 8px; align-items: center;">
                         <select class="asset-type">
                             <option value="rrsp">RRSP</option>
                             <option value="tfsa">TFSA</option>
@@ -1405,14 +1499,15 @@
                 <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Real estate, business interests, and physical assets that take time to convert to cash</p>
                 
                 <!-- Column Headers -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr 0.6fr 1fr; gap: 12px; margin-bottom: 10px; padding: 10px 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; font-weight: 600; color: #b19777;">
+                <div style="display: grid; grid-template-columns: minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(80px, 0.6fr) minmax(150px, 1.5fr) minmax(30px, 40px); gap: 8px; margin-bottom: 10px; background: transparent; font-weight: 600; color: #b19777;">
                     <div>Asset Type</div>
-                    <div>Current Value ($)</div>
-                    <div>Rate of Return (%)</div>
-                    <div>Location and Notes</div>
+                    <div>Current Value</div>
+                    <div>Return Rate</div>
+                    <div>Location</div>
+                    <div></div> <!-- For remove button column -->
                 </div>
                 <div id="fixedAssetsList">
-                    <div class="asset-item fixed-asset" style="display: grid; grid-template-columns: 1.5fr 1fr 0.7fr 1.5fr 0.3fr; gap: 8px; align-items: center;">
+                    <div class="asset-item fixed-asset" style="display: grid; grid-template-columns: minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(80px, 0.6fr) minmax(150px, 1.5fr) minmax(30px, 40px); gap: 8px; align-items: center;">
                         <select class="asset-type">
                             <option value="primary-residence">Primary Residence</option>
                             <option value="rental-property">Rental Property</option>
@@ -1443,17 +1538,18 @@
                 <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Detailed mortgage information with automatic payment calculations</p>
                 
                 <!-- Mortgage Column Headers -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; padding: 8px 12px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; font-weight: 600; color: #b19777; font-size: 0.85em;">
+                <div style="display: grid; grid-template-columns: minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(100px, 1fr) minmax(60px, 0.6fr) minmax(80px, 0.8fr) minmax(100px, 1fr) minmax(100px, 0.9fr) minmax(30px, 40px); gap: 8px; margin-bottom: 10px; background: transparent; font-weight: 600; color: #b19777; font-size: 0.85em;">
                     <div>Property</div>
-                    <div>Original Amount</div>
+                    <div>Original Amt</div>
                     <div>Balance</div>
-                    <div>Rate (%)</div>
-                    <div>Amortization Years</div>
-                    <div>Monthly Payment</div>
+                    <div>Rate</div>
+                    <div>Amort Years</div>
+                    <div>Mo Payment</div>
                     <div>Maturity Date</div>
+                    <div></div> <!-- For remove button column -->
                 </div>
                 <div id="mortgagesList">
-                    <div class="mortgage-item" style="display: grid; grid-template-columns: 1fr 1fr 1fr 0.6fr 0.8fr 1fr 1fr 0.3fr; gap: 8px; align-items: center;">
+                    <div class="mortgage-item" style="display: grid; grid-template-columns: minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(100px, 1fr) minmax(60px, 0.6fr) minmax(80px, 0.8fr) minmax(100px, 1fr) minmax(100px, 0.9fr) minmax(30px, 40px); gap: 8px; align-items: center;">
                         <select class="mortgage-property">
                             <option value="primary">Primary Residence</option>
                             <option value="rental">Rental Property</option>
@@ -1479,15 +1575,15 @@
                 <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Loans backed by collateral such as vehicles, equipment, or other assets</p>
                 
                 <!-- Secured Debt Column Headers -->
-                <div style="display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; margin-bottom: 10px; padding: 10px 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; font-weight: 600; color: #b19777;">
+                <div style="display: grid; grid-template-columns: minmax(150px, 1.2fr) minmax(120px, 1fr) minmax(90px, 0.6fr) minmax(120px, 1fr) minmax(30px, 40px); gap: 6px; margin-bottom: 10px; background: transparent; font-weight: 600; color: #b19777;">
                     <div>Debt Type</div>
-                    <div>Current Balance ($)</div>
-                    <div>Interest Rate (%)</div>
-                    <div>Monthly Payment ($)</div>
+                    <div>Balance</div>
+                    <div>Int Rate</div>
+                    <div>Mo Payment</div>
                     <div></div>
                 </div>
                 <div id="securedDebtsList">
-                    <div class="liability-item secured-debt" style="display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; align-items: center;">
+                    <div class="liability-item secured-debt" style="display: grid; grid-template-columns: minmax(150px, 1.2fr) minmax(120px, 1fr) minmax(90px, 0.6fr) minmax(120px, 1fr) minmax(30px, 40px); gap: 6px; align-items: center;">
                         <select class="liability-type">
                             <option value="vehicle">Home Equity Line of Credit (HELOC)</option>
                             <option value="vehicle">Vehicle Loan</option>
@@ -1515,15 +1611,15 @@
                 <p style="color: #cccccc; margin-bottom: 15px; font-size: 0.9em;">Debts not backed by collateral, typically with higher interest rates</p>
                 
                 <!-- Unsecured Debt Column Headers -->
-                <div style="display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; margin-bottom: 10px; padding: 10px 15px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; font-weight: 600; color: #b19777;">
+                <div style="display: grid; grid-template-columns: minmax(150px, 1.2fr) minmax(120px, 1fr) minmax(90px, 0.6fr) minmax(120px, 1fr) minmax(30px, 40px); gap: 6px; margin-bottom: 10px; background: transparent; font-weight: 600; color: #b19777;">
                     <div>Debt Type</div>
-                    <div>Current Balance ($)</div>
-                    <div>Interest Rate (%)</div>
-                    <div>Monthly Payment ($)</div>
+                    <div>Balance</div>
+                    <div>Int Rate</div>
+                    <div>Mo Payment</div>
                     <div></div>
                 </div>
                 <div id="unsecuredDebtsList">
-                    <div class="liability-item unsecured-debt" style="display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; align-items: center;">
+                    <div class="liability-item unsecured-debt" style="display: grid; grid-template-columns: minmax(150px, 1.2fr) minmax(120px, 1fr) minmax(90px, 0.6fr) minmax(120px, 1fr) minmax(30px, 40px); gap: 6px; align-items: center;">
                         <select class="liability-type">
                             <option value="credit-card">Credit Card</option>
                             <option value="line-of-credit">Line of Credit</option>
@@ -1619,7 +1715,7 @@
                     <div class="form-group">
                         <label for="incomeReplacement1">Years of Income Replacement:</label>
                         <input type="number" id="incomeReplacement1" value="10" min="1" max="30" onchange="updateDimeCalculations()">
-                        <small id="incomeReplacementLabel1" style="color: #cccccc;">Years to replace Partner 1's income</small>
+                        <small id="incomeReplacementLabel1" style="color: #cccccc;">Years to replace Partner 1's income prior to their retirement age</small>
                     </div>
                 </div>
                 <div class="form-row">
@@ -1641,10 +1737,7 @@
                         <div id="partner1TotalDisplay" style="font-size: 2.5em; font-weight: bold; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">$20,000</div>
                         <div style="color: #b19777; margin-top: 5px; font-size: 1.1em;">Total Insurance Needed (Rounded to nearest $10k)</div>
                     </div>
-                    <h4>Partner 1 Insurance Coverage Analysis</h4>
-                    <div id="partner1DimeTable" style="margin: 20px 0;">
-                        <!-- Partner 1 DIME calculation table will be populated by JavaScript -->
-                    </div>
+                    <h4 id="partner1CoverageAnalysisTitle">Partner 1 Insurance Coverage Analysis</h4>
                     <div class="summary-grid">
                         <div class="summary-card">
                             <div id="partner1TotalNeed" class="value">$0</div>
@@ -1680,7 +1773,7 @@
                     <div class="form-group">
                         <label for="incomeReplacement2">Years of Income Replacement:</label>
                         <input type="number" id="incomeReplacement2" value="10" min="1" max="30" onchange="updateDimeCalculations()">
-                        <small id="incomeReplacementLabel2" style="color: #cccccc;">Years to replace Partner 2's income</small>
+                        <small id="incomeReplacementLabel2" style="color: #cccccc;">Years to replace Partner 2's income prior to their retirement age</small>
                     </div>
                 </div>
                 <div class="form-row">
@@ -1702,10 +1795,7 @@
                         <div id="partner2TotalDisplay" style="font-size: 2.5em; font-weight: bold; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">$20,000</div>
                         <div style="color: #b19777; margin-top: 5px; font-size: 1.1em;">Total Insurance Needed (Rounded to nearest $10k)</div>
                     </div>
-                    <h4>Partner 2 Insurance Coverage Analysis</h4>
-                    <div id="partner2DimeTable" style="margin: 20px 0;">
-                        <!-- Partner 2 DIME calculation table will be populated by JavaScript -->
-                    </div>
+                    <h4 id="partner2CoverageAnalysisTitle">Partner 2 Insurance Coverage Analysis</h4>
                     <div class="summary-grid">
                         <div class="summary-card">
                             <div id="partner2TotalNeed" class="value">$0</div>
@@ -1765,12 +1855,28 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- DIME Breakdown Tables -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <div>
+                        <h5 style="color: #b19777; margin-bottom: 15px; text-align: center;" id="partner1DimeTableTitle">Partner 1 DIME Breakdown</h5>
+                        <div id="partner1DimeTable" style="background: #444; border: 1px solid #666; border-radius: 8px; padding: 20px;">
+                            <!-- Table will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div>
+                        <h5 style="color: #b19777; margin-bottom: 15px; text-align: center;" id="partner2DimeTableTitle">Partner 2 DIME Breakdown</h5>
+                        <div id="partner2DimeTable" style="background: #444; border: 1px solid #666; border-radius: 8px; padding: 20px;">
+                            <!-- Table will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
         <!-- Results Tab -->
         <div id="results" class="tab-content">
-            <button class="calculate-btn" onclick="calculateFinancialNeedsAnalysis()">🧮 Calculate Financial Needs Analysis</button>
+            <button class="calculate-btn" onclick="saveData()">💾 Save Financial Analysis</button>
             
             <div id="calculationResults">
                 <div class="fin-display">
@@ -1953,6 +2059,20 @@
                 // Create DIME charts
                 setTimeout(() => createDimeCharts(), 100); // Small delay to ensure DOM is ready
             }
+            
+            // Auto-calculate results when switching to results tab
+            if (tabName === 'results') {
+                setTimeout(() => {
+                    calculateFinancialNeedsAnalysis();
+                }, 100);
+            }
+            
+            // Update retirement calculations when switching to assumptions tab
+            if (tabName === 'assumptions') {
+                if (typeof updateRetirementCalculations === 'function') {
+                    setTimeout(() => updateRetirementCalculations(), 100);
+                }
+            }
         }
         
         // Real-time currency formatting function
@@ -2018,26 +2138,11 @@
             div.style.gap = '8px';
             div.style.alignItems = 'center';
             div.innerHTML = `
-                <div class="form-group">
-                    <label>Child Name:</label>
-                    <input type="text" class="dependent-name" placeholder="Child's Name">
-                </div>
-                <div class="form-group">
-                    <label>Date of Birth:</label>
-                    <input type="text" class="dependent-dob" placeholder="YYYYMMDD" oninput="formatDateInput(this)">
-                </div>
-                <div class="form-group">
-                    <label>Post-Secondary Start Age:</label>
-                    <input type="number" class="dependent-edu-age" value="18" min="16" max="25">
-                </div>
-                <div class="form-group">
-                    <label>Years of Study:</label>
-                    <input type="number" class="dependent-study-years" value="4" min="1" max="8">
-                </div>
-                <div class="form-group">
-                    <label>Annual Education Cost:</label>
-                    <input type="text" class="dependent-edu-cost" value="$12,000.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
-                </div>
+                <input type="text" class="dependent-name" placeholder="Child's Name">
+                <input type="text" class="dependent-dob" placeholder="YYYYMMDD" oninput="formatDateInput(this)">
+                <input type="number" class="dependent-edu-age" value="18" min="16" max="25">
+                <input type="number" class="dependent-study-years" value="4" min="1" max="8">
+                <input type="text" class="dependent-edu-cost" value="$12,000.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
                 <button class="remove-btn" onclick="removeDependent(this)" title="Remove this dependent">×</button>
             `;
             container.appendChild(div);
@@ -2095,7 +2200,7 @@
             const div = document.createElement('div');
             div.className = 'asset-item liquid-asset';
             div.style.display = 'grid';
-            div.style.gridTemplateColumns = '1.5fr 1fr 0.7fr 1.5fr 0.3fr';
+            div.style.gridTemplateColumns = 'minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(80px, 0.6fr) minmax(150px, 1.5fr) minmax(30px, 40px)';
             div.style.gap = '8px';
             div.style.alignItems = 'center';
             div.innerHTML = `
@@ -2132,7 +2237,7 @@
             const div = document.createElement('div');
             div.className = 'asset-item fixed-asset';
             div.style.display = 'grid';
-            div.style.gridTemplateColumns = '1.5fr 1fr 0.7fr 1.5fr 0.3fr';
+            div.style.gridTemplateColumns = 'minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(80px, 0.6fr) minmax(150px, 1.5fr) minmax(30px, 40px)';
             div.style.gap = '8px';
             div.style.alignItems = 'center';
             div.innerHTML = `
@@ -2173,7 +2278,7 @@
             const div = document.createElement('div');
             div.className = 'mortgage-item';
             div.style.display = 'grid';
-            div.style.gridTemplateColumns = '1fr 1fr 1fr 0.6fr 0.8fr 1fr 1fr 0.3fr';
+            div.style.gridTemplateColumns = 'minmax(120px, 1.2fr) minmax(100px, 1fr) minmax(100px, 1fr) minmax(60px, 0.6fr) minmax(80px, 0.8fr) minmax(100px, 1fr) minmax(100px, 0.9fr) minmax(30px, 40px)';
             div.style.gap = '8px';
             div.style.alignItems = 'center';
             div.innerHTML = `
@@ -2206,7 +2311,7 @@
             const container = document.getElementById('securedDebtsList');
             const div = document.createElement('div');
             div.className = 'liability-item secured-debt';
-            div.style.cssText = 'display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; align-items: center;';
+            div.style.cssText = 'display: grid; grid-template-columns: minmax(150px, 1.2fr) minmax(120px, 1fr) minmax(90px, 0.6fr) minmax(120px, 1fr) minmax(30px, 40px); gap: 6px; align-items: center;';
             div.innerHTML = `
                 <select class="liability-type">
                     <option value="vehicle">Vehicle Loan</option>
@@ -2231,7 +2336,7 @@
             const container = document.getElementById('unsecuredDebtsList');
             const div = document.createElement('div');
             div.className = 'liability-item unsecured-debt';
-            div.style.cssText = 'display: grid; grid-template-columns: 1.2fr 0.7fr 0.4fr 0.7fr 60px; gap: 6px; align-items: center;';
+            div.style.cssText = 'display: grid; grid-template-columns: minmax(150px, 1.2fr) minmax(120px, 1fr) minmax(90px, 0.6fr) minmax(120px, 1fr) minmax(30px, 40px); gap: 6px; align-items: center;';
             div.innerHTML = `
                 <select class="liability-type">
                     <option value="credit-card">Credit Card</option>
@@ -2467,7 +2572,7 @@
                 </select>
                 <input type="text" class="income-amount" placeholder="$0.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)" onchange="updateIncomeDisplay()">
                 <input type="text" class="income-description" placeholder="Description (optional)">
-                <button type="button" class="remove-btn" onclick="removeIncomeSource(this)">Remove</button>
+                <button type="button" class="remove-btn" onclick="removeIncomeSource(this)">×</button>
             `;
             container.appendChild(div);
         }
@@ -2501,6 +2606,62 @@
                 input.value = `(${phoneNumber}`;
             } else {
                 input.value = '';
+            }
+        }
+        
+        // Update retirement income calculations
+        function updateRetirementCalculations() {
+            try {
+                // Get current income values
+                const income1Rate = parseFloat(document.getElementById('income1Rate').value.replace(/[^0-9.]/g, '')) || 0;
+                const income1Frequency = document.getElementById('income1Frequency').value;
+                const income1Hours = parseFloat(document.getElementById('income1Hours').value) || 40;
+            
+                const income2Rate = parseFloat(document.getElementById('income2Rate').value.replace(/[^0-9.]/g, '')) || 0;
+                const income2Frequency = document.getElementById('income2Frequency').value;
+                const income2Hours = parseFloat(document.getElementById('income2Hours').value) || 40;
+        
+                // Calculate annual incomes using the same logic as calculateAnnualIncome function
+                const income1Annual = calculateAnnualIncome(income1Rate, income1Frequency, income1Hours);
+                const income2Annual = calculateAnnualIncome(income2Rate, income2Frequency, income2Hours);
+        
+                // Add other income sources
+                let otherIncomeTotal = 0;
+                document.querySelectorAll('.income-amount').forEach(input => {
+                    const amount = parseFloat(input.value.replace(/[^0-9.]/g, '')) || 0;
+                    otherIncomeTotal += amount * 12; // Convert monthly to annual
+                });
+        
+                const totalAnnualIncome = income1Annual + income2Annual + otherIncomeTotal;
+                
+                // Get percentages
+                const retirementPercent = parseFloat(document.getElementById('retirementIncomePercent').value.replace(/[^0-9.]/g, '')) / 100 || 0.70;
+                const widowPercent = parseFloat(document.getElementById('widowReduction').value.replace(/[^0-9.]/g, '')) / 100 || 0.70;
+                
+                // Calculate amounts
+                const retirementIncomeMonthly = (totalAnnualIncome * retirementPercent) / 12;
+                const widowIncomeMonthly = (retirementIncomeMonthly * widowPercent);
+                
+                // Update displays
+                const retirementElement = document.getElementById('retirementIncomeAmount');
+                const widowElement = document.getElementById('widowReductionAmount');
+                
+                if (retirementElement) {
+                    retirementElement.textContent = '$' + Math.round(retirementIncomeMonthly).toLocaleString() + '/mo';
+                }
+                
+                if (widowElement) {
+                    widowElement.textContent = '$' + Math.round(widowIncomeMonthly).toLocaleString() + '/mo';
+                }
+                
+            } catch (error) {
+                console.error('Error in updateRetirementCalculations:', error);
+                // Set default values on error
+                const retirementElement = document.getElementById('retirementIncomeAmount');
+                const widowElement = document.getElementById('widowReductionAmount');
+                
+                if (retirementElement) retirementElement.textContent = '$0/mo';
+                if (widowElement) widowElement.textContent = '$0/mo';
             }
         }
         
@@ -2569,7 +2730,7 @@
             const genderSelect = document.getElementById(partner + 'Gender');
             const lifeExpectancyInput = document.getElementById(partner + 'LifeExpectancy');
             
-            if (!dobInput.value) return;
+            if (!dobInput.value || !genderSelect) return;
             
             const currentAge = calculateAge(dobInput.value);
             const gender = genderSelect.value;
@@ -2593,7 +2754,7 @@
                 // Find closest age bracket
                 let projectedLifeExpectancy = gender === 'male' ? 79 : 84; // fallback
                 
-                if (lifeExpectancyTables[gender]) {
+                if (lifeExpectancyTables[gender] && typeof lifeExpectancyTables[gender] === 'object') {
                     const ages = Object.keys(lifeExpectancyTables[gender]).map(Number).sort((a, b) => a - b);
                     
                     // Find the closest age bracket
@@ -2737,10 +2898,28 @@
                 // Calculate total liabilities (shared between both partners)
                 const totalLiabilities = data.liabilities.reduce((sum, liability) => sum + liability.balance, 0);
                 
-                // Calculate education fund (shared between both partners) - smart calculation
-                const totalEducationCosts = data.family.dependents.reduce((total, dependent) => {
-                    return total + calculateSmartEducationFunding(dependent, data.assumptions.inflationRate || 0.03);
-                }, 0);
+                // Calculate education fund (shared between both partners) - get directly from DOM
+                let totalEducationCosts = 0;
+                const dependentElements = document.querySelectorAll('.dependent-item');
+                dependentElements.forEach(item => {
+                    const dobStr = item.querySelector('.dependent-dob')?.value || '';
+                    const eduAgeStr = item.querySelector('.dependent-edu-age')?.value || '18';
+                    const studyYearsStr = item.querySelector('.dependent-study-years')?.value || '4';
+                    
+                    if (dobStr) {
+                        const birthYear = parseInt(dobStr.substring(0, 4));
+                        const currentYear = new Date().getFullYear();
+                        const age = currentYear - birthYear;
+                        
+                        const dependent = {
+                            age: age,
+                            eduAge: parseInt(eduAgeStr) || 18,
+                            studyYears: parseInt(studyYearsStr) || 4
+                        };
+                        
+                        totalEducationCosts += calculateSmartEducationFunding(dependent, data.assumptions.inflationRate || 0.03);
+                    }
+                });
                 
                 // Get partner-specific data
                 const isPartner1 = partner === 'partner1';
@@ -2754,7 +2933,31 @@
                 const incomeReplacementYears = parseInt(document.getElementById(incomeReplacementId).value) || 10;
                 
                 // Calculate DIME components with inflation adjustments
-                const D = finalExpenses; // Debt (final expenses)
+                // D - Debt (final expenses + all non-mortgage debts)
+                let D = finalExpenses;
+                
+                // Add ALL non-mortgage debts to D (final expenses)
+                const securedElements = document.querySelectorAll('.liability-item[data-type="secured"]');
+                securedElements.forEach(item => {
+                    const balanceStr = item.querySelector('.liability-balance')?.value?.replace(/[^0-9.]/g, '') || '0';
+                    const balance = parseFloat(balanceStr) || 0;
+                    if (balance > 0) {
+                        // Apply 5% reduction per year for non-mortgage debts
+                        const remainingBalance = balance * Math.max(0, 1 - (incomeReplacementYears * 0.05));
+                        D += remainingBalance;
+                    }
+                });
+                
+                const unsecuredElements = document.querySelectorAll('.liability-item[data-type="unsecured"]');
+                unsecuredElements.forEach(item => {
+                    const balanceStr = item.querySelector('.liability-balance')?.value?.replace(/[^0-9.]/g, '') || '0';
+                    const balance = parseFloat(balanceStr) || 0;
+                    if (balance > 0) {
+                        // Apply 5% reduction per year for non-mortgage debts  
+                        const remainingBalance = balance * Math.max(0, 1 - (incomeReplacementYears * 0.05));
+                        D += remainingBalance;
+                    }
+                });
                 
                 // Income replacement with inflation - calculate present value of inflating income stream
                 const inflationRate = data.assumptions.inflationRate || 0.03;
@@ -2773,7 +2976,24 @@
                     }
                 }
                 
-                const M = totalLiabilities; // Mortgage/debt
+                // M - Mortgage/debt (current outstanding balance only)
+                // In DIME method, M represents the current mortgage balance that needs to be paid off
+                let M = 0;
+                
+                // Calculate ALL mortgages for this analysis - use current balance only
+                const mortgageElements = document.querySelectorAll('.mortgage-item');
+                mortgageElements.forEach(mortgageItem => {
+                    const balanceInput = mortgageItem.querySelector('.mortgage-balance');
+                    
+                    if (balanceInput) {
+                        const currentBalance = parseFloat(balanceInput.value.replace(/[^0-9.]/g, '')) || 0;
+                        if (currentBalance > 0) {
+                            M += currentBalance;
+                        }
+                    }
+                });
+                
+                // Note: Other debts (secured/unsecured) are now included in D, not M
                 const E = totalEducationCosts; // Education (already inflation-adjusted)
                 
                 const totalNeed = D + I + M + E;
@@ -2863,6 +3083,9 @@
                 // Update title with partner names
                 updateDimeTitles();
                 
+                // Also update the partner names throughout the app
+                updatePartnerNames();
+                
             } catch (error) {
                 console.error('Error calculating DIME analysis:', error);
                 alert('Error calculating DIME analysis. Please check your data.');
@@ -2917,10 +3140,10 @@
             const incomeLabel2 = document.getElementById('incomeReplacementLabel2');
             
             if (incomeLabel1) {
-                incomeLabel1.textContent = `Years to replace ${spouse1Name}'s income`;
+                incomeLabel1.textContent = `Years to replace ${spouse1Name}'s income prior to their retirement age`;
             }
             if (incomeLabel2) {
-                incomeLabel2.textContent = `Years to replace ${spouse2Name}'s income`;
+                incomeLabel2.textContent = `Years to replace ${spouse2Name}'s income prior to their retirement age`;
             }
         }
         
@@ -3019,6 +3242,11 @@
                     
                 // Trigger DIME calculations when income changes
                 setTimeout(() => updateDimeCalculations(), 100);
+                
+                // Update retirement calculations when income changes
+                if (typeof updateRetirementCalculations === 'function') {
+                    updateRetirementCalculations();
+                }
                     
             } catch (error) {
                 console.error('Error updating income display:', error);
@@ -3050,6 +3278,36 @@
             
             // Also update income displays to reflect name changes
             updateIncomeDisplay();
+            
+            // Update DIME chart and table titles
+            const chartTitle1 = document.getElementById('partner1DimeChartTitle');
+            const chartTitle2 = document.getElementById('partner2DimeChartTitle');
+            const tableTitle1 = document.getElementById('partner1DimeTableTitle');
+            const tableTitle2 = document.getElementById('partner2DimeTableTitle');
+            
+            if (chartTitle1) {
+                chartTitle1.textContent = `${partner1Name || 'Partner 1'} DIME Analysis`;
+            }
+            if (chartTitle2) {
+                chartTitle2.textContent = `${partner2Name || 'Partner 2'} DIME Analysis`;
+            }
+            if (tableTitle1) {
+                tableTitle1.textContent = `${partner1Name || 'Partner 1'} DIME Breakdown`;
+            }
+            if (tableTitle2) {
+                tableTitle2.textContent = `${partner2Name || 'Partner 2'} DIME Breakdown`;
+            }
+            
+            // Update Insurance Coverage Analysis titles
+            const coverageTitle1 = document.getElementById('partner1CoverageAnalysisTitle');
+            const coverageTitle2 = document.getElementById('partner2CoverageAnalysisTitle');
+            
+            if (coverageTitle1) {
+                coverageTitle1.textContent = `${partner1Name || 'Partner 1'} Insurance Coverage Analysis`;
+            }
+            if (coverageTitle2) {
+                coverageTitle2.textContent = `${partner2Name || 'Partner 2'} Insurance Coverage Analysis`;
+            }
             
             // Refresh DIME charts if on Insurance tab to update partner names
             if (document.querySelector('.tab-content.active')?.id === 'insurance') {
@@ -3166,7 +3424,7 @@
             };
             
             // Collect all dependents from the dynamic list
-            document.querySelectorAll('#dependentsList .form-row-4').forEach(row => {
+            document.querySelectorAll('#dependentsList .dependent-item').forEach(row => {
                 const name = row.querySelector('.dependent-name').value;
                 const dob = row.querySelector('.dependent-dob').value;
                 const eduAge = parseInt(row.querySelector('.dependent-edu-age').value) || 18;
@@ -3264,7 +3522,7 @@
                 const value = parseFloat(valueStr) || 0;
                 const growthStr = item.querySelector('.asset-growth').value.replace(/[^0-9.]/g, '');
                 const growth = parseFloat(growthStr) / 100 || 0.01;
-                const notes = item.querySelector('.asset-notes').value;
+                const notes = item.querySelector('.asset-notes')?.value || '';
                 
                 // Determine if liquid or fixed asset
                 const isLiquid = item.classList.contains('liquid-asset');
@@ -3281,16 +3539,16 @@
             
             // Collect mortgages
             document.querySelectorAll('.mortgage-item').forEach(item => {
-                const property = item.querySelector('.mortgage-property').value;
-                const originalStr = item.querySelector('.mortgage-original').value.replace(/[^0-9.]/g, '');
+                const property = item.querySelector('.mortgage-property')?.value || '';
+                const originalStr = item.querySelector('.mortgage-original')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const original = parseFloat(originalStr) || 0;
-                const balanceStr = item.querySelector('.mortgage-balance').value.replace(/[^0-9.]/g, '');
+                const balanceStr = item.querySelector('.mortgage-balance')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const balance = parseFloat(balanceStr) || 0;
-                const rate = parseFloat(item.querySelector('.mortgage-rate').value) / 100 || 0;
-                const term = parseInt(item.querySelector('.mortgage-term').value) || 0;
-                const paymentStr = item.querySelector('.mortgage-payment').value.replace(/[^0-9.]/g, '');
+                const rate = parseFloat(item.querySelector('.mortgage-rate')?.value) / 100 || 0;
+                const term = parseInt(item.querySelector('.mortgage-term')?.value) || 0;
+                const paymentStr = item.querySelector('.mortgage-payment')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const payment = parseFloat(paymentStr) || 0;
-                const maturity = item.querySelector('.mortgage-maturity').value;
+                const maturity = item.querySelector('.mortgage-maturity')?.value || '';
                 
                 // Only save mortgages with balance
                 if (balance > 0) {
@@ -3300,11 +3558,11 @@
             
             // Collect other debts (secured and unsecured)
             document.querySelectorAll('.liability-item').forEach(item => {
-                const type = item.querySelector('.liability-type').value;
-                const balanceStr = item.querySelector('.liability-balance').value.replace(/[^0-9.]/g, '');
+                const type = item.querySelector('.liability-type')?.value || '';
+                const balanceStr = item.querySelector('.liability-balance')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const balance = parseFloat(balanceStr) || 0;
-                const rate = parseFloat(item.querySelector('.liability-rate').value) / 100 || 0;
-                const paymentStr = item.querySelector('.liability-payment').value.replace(/[^0-9.]/g, '');
+                const rate = parseFloat(item.querySelector('.liability-rate')?.value) / 100 || 0;
+                const paymentStr = item.querySelector('.liability-payment')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const payment = parseFloat(paymentStr) || 0;
                 
                 // Only save liabilities with balance
@@ -3369,21 +3627,36 @@
                     function populateFormDataInline(data) {
                         // Populate family data
                         if (data.family) {
-                            document.getElementById('spouse1Name').value = data.family.spouse1.name || '';
-                            document.getElementById('spouse1DOB').value = data.family.spouse1.dob || '';
-                            document.getElementById('spouse1Gender').value = data.family.spouse1.gender || '';
-                            document.getElementById('spouse1RetireAge').value = data.family.spouse1.retireAge || 65;
-                            document.getElementById('spouse1LifeExpectancy').value = data.family.spouse1.lifeExpectancy || 85;
-                            document.getElementById('spouse1Email').value = data.family.spouse1.email || '';
-                            document.getElementById('spouse1Phone').value = data.family.spouse1.phone || '';
+                            const spouse1NameEl = document.getElementById('spouse1Name');
+                            const spouse1DOBEl = document.getElementById('spouse1DOB');
+                            const spouse1GenderEl = document.getElementById('spouse1Gender');
+                            const spouse1RetireAgeEl = document.getElementById('spouse1RetireAge');
+                            const spouse1LifeExpectancyEl = document.getElementById('spouse1LifeExpectancy');
+                            const spouse1EmailEl = document.getElementById('spouse1Email');
+                            const spouse1PhoneEl = document.getElementById('spouse1Phone');
+                            const spouse2NameEl = document.getElementById('spouse2Name');
+                            const spouse2DOBEl = document.getElementById('spouse2DOB');
+                            const spouse2GenderEl = document.getElementById('spouse2Gender');
+                            const spouse2RetireAgeEl = document.getElementById('spouse2RetireAge');
+                            const spouse2LifeExpectancyEl = document.getElementById('spouse2LifeExpectancy');
+                            const spouse2EmailEl = document.getElementById('spouse2Email');
+                            const spouse2PhoneEl = document.getElementById('spouse2Phone');
                             
-                            document.getElementById('spouse2Name').value = data.family.spouse2.name || '';
-                            document.getElementById('spouse2DOB').value = data.family.spouse2.dob || '';
-                            document.getElementById('spouse2Gender').value = data.family.spouse2.gender || '';
-                            document.getElementById('spouse2RetireAge').value = data.family.spouse2.retireAge || 65;
-                            document.getElementById('spouse2LifeExpectancy').value = data.family.spouse2.lifeExpectancy || 85;
-                            document.getElementById('spouse2Email').value = data.family.spouse2.email || '';
-                            document.getElementById('spouse2Phone').value = data.family.spouse2.phone || '';
+                            if (spouse1NameEl) spouse1NameEl.value = data.family.spouse1.name || '';
+                            if (spouse1DOBEl) spouse1DOBEl.value = data.family.spouse1.dob || '';
+                            if (spouse1GenderEl) spouse1GenderEl.value = data.family.spouse1.gender || '';
+                            if (spouse1RetireAgeEl) spouse1RetireAgeEl.value = data.family.spouse1.retireAge || 65;
+                            if (spouse1LifeExpectancyEl) spouse1LifeExpectancyEl.value = data.family.spouse1.lifeExpectancy || 85;
+                            if (spouse1EmailEl) spouse1EmailEl.value = data.family.spouse1.email || '';
+                            if (spouse1PhoneEl) spouse1PhoneEl.value = data.family.spouse1.phone || '';
+                            
+                            if (spouse2NameEl) spouse2NameEl.value = data.family.spouse2.name || '';
+                            if (spouse2DOBEl) spouse2DOBEl.value = data.family.spouse2.dob || '';
+                            if (spouse2GenderEl) spouse2GenderEl.value = data.family.spouse2.gender || '';
+                            if (spouse2RetireAgeEl) spouse2RetireAgeEl.value = data.family.spouse2.retireAge || 65;
+                            if (spouse2LifeExpectancyEl) spouse2LifeExpectancyEl.value = data.family.spouse2.lifeExpectancy || 85;
+                            if (spouse2EmailEl) spouse2EmailEl.value = data.family.spouse2.email || '';
+                            if (spouse2PhoneEl) spouse2PhoneEl.value = data.family.spouse2.phone || '';
                         }
                         
                         // Populate assumptions data
@@ -3423,8 +3696,30 @@
                         
                         // Populate insurance needs
                         if (data.insuranceNeeds) {
-                            document.getElementById('finalExpenses').value = data.insuranceNeeds.finalExpenses || 15000;
-                            document.getElementById('incomeReplacement').value = data.insuranceNeeds.incomeReplacement || 10;
+                            // Handle both old format (single values) and new format (per partner)
+                            if (data.insuranceNeeds.partner1 && data.insuranceNeeds.partner2) {
+                                // New format with separate partner data
+                                const finalExpenses1Element = document.getElementById('finalExpenses1');
+                                const incomeReplacement1Element = document.getElementById('incomeReplacement1');
+                                const finalExpenses2Element = document.getElementById('finalExpenses2');
+                                const incomeReplacement2Element = document.getElementById('incomeReplacement2');
+                                
+                                if (finalExpenses1Element) finalExpenses1Element.value = '$' + (data.insuranceNeeds.partner1.finalExpenses || 15000).toLocaleString();
+                                if (incomeReplacement1Element) incomeReplacement1Element.value = data.insuranceNeeds.partner1.incomeReplacement || 10;
+                                if (finalExpenses2Element) finalExpenses2Element.value = '$' + (data.insuranceNeeds.partner2.finalExpenses || 15000).toLocaleString();
+                                if (incomeReplacement2Element) incomeReplacement2Element.value = data.insuranceNeeds.partner2.incomeReplacement || 10;
+                            } else {
+                                // Old format with single values - apply to both partners
+                                const finalExpenses1Element = document.getElementById('finalExpenses1');
+                                const incomeReplacement1Element = document.getElementById('incomeReplacement1');
+                                const finalExpenses2Element = document.getElementById('finalExpenses2');
+                                const incomeReplacement2Element = document.getElementById('incomeReplacement2');
+                                
+                                if (finalExpenses1Element) finalExpenses1Element.value = '$' + (data.insuranceNeeds.finalExpenses || 15000).toLocaleString();
+                                if (incomeReplacement1Element) incomeReplacement1Element.value = data.insuranceNeeds.incomeReplacement || 10;
+                                if (finalExpenses2Element) finalExpenses2Element.value = '$' + (data.insuranceNeeds.finalExpenses || 15000).toLocaleString();
+                                if (incomeReplacement2Element) incomeReplacement2Element.value = data.insuranceNeeds.incomeReplacement || 10;
+                            }
                         }
                     }
                     
@@ -3439,6 +3734,14 @@
                     // Update income displays
                     if (typeof updateIncomeDisplay === 'function') {
                         updateIncomeDisplay();
+                    }
+                    
+                    // Update field visibility based on loaded data
+                    if (typeof toggleDownsizeField === 'function') {
+                        toggleDownsizeField();
+                    }
+                    if (typeof toggleRentField === 'function') {
+                        toggleRentField();
                     }
                     
                     alert('Data loaded successfully!');
@@ -3678,99 +3981,10 @@
         
         // Add new dependent row to the dependents list
         // Add new dependent row with same formatting as original row
-        function addDependent() {
-            const container = document.getElementById('dependentsList');
-            const div = document.createElement('div');
-            div.className = 'form-row-4';
-            // Match the original row's 5-column grid layout
-            div.style.gridTemplateColumns = '1fr 1fr 1fr 1fr 1fr';
-            div.innerHTML = `
-                <div class="form-group">
-                    <label>Child Name:</label>
-                    <input type="text" class="dependent-name" placeholder="Child's Name">
-                </div>
-                <div class="form-group">
-                    <label>Date of Birth:</label>
-                    <input type="text" class="dependent-dob" placeholder="YYYYMMDD" oninput="formatDateInput(this)">
-                </div>
-                <div class="form-group">
-                    <label>Post-Secondary Start Age:</label>
-                    <input type="number" class="dependent-edu-age" value="18" min="16" max="25">
-                </div>
-                <div class="form-group">
-                    <label>Years of Study:</label>
-                    <input type="number" class="dependent-study-years" value="4" min="1" max="8">
-                </div>
-                <div class="form-group">
-                    <label>Annual Education Cost:</label>
-                    <input type="text" class="dependent-edu-cost" value="$12,000.00" oninput="formatCurrency(this)" onblur="formatCurrencyComplete(this)">
-                </div>
-            `;
-            container.appendChild(div);
-        }
-        
-        function addGoal() {
-            const container = document.getElementById('goalsList');
-            const div = document.createElement('div');
-            div.className = 'goal-item';
-            div.innerHTML = `
-                <input type="checkbox" class="goal-active">
-                <select class="goal-type">
-                    <option value="home">Home Purchase</option>
-                    <option value="mortgage">Pay Off Mortgage</option>
-                    <option value="education">Education Funding</option>
-                    <option value="business">Start Business</option>
-                    <option value="travel">Travel</option>
-                    <option value="debt">Pay Off Debts</option>
-                    <option value="parents">Aging Parents Support</option>
-                    <option value="emergency">Emergency Fund</option>
-                    <option value="other">Other</option>
-                </select>
-                <input type="number" class="goal-years" placeholder="Years Away" min="0" max="50">
-                <input type="text" class="goal-amount" placeholder="$0.00" onchange="formatCurrency(this)"
-                <select class="goal-frequency">
-                    <option value="one-time">One-time</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
-                </select>
-            `;
-            container.appendChild(div);
-        }
         
         
         
-        function addInsurance() {
-            const container = document.getElementById('insuranceList');
-            const div = document.createElement('div');
-            div.className = 'form-row-4';
-            div.innerHTML = `
-                <div class="form-group">
-                    <label>Policy Type:</label>
-                    <select class="insurance-type">
-                        <option value="term-life">Term Life</option>
-                        <option value="whole-life">Whole Life</option>
-                        <option value="universal-life">Universal Life</option>
-                        <option value="disability">Disability</option>
-                        <option value="critical-illness">Critical Illness</option>
-                        <option value="health">Health/Extended Health</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Coverage Amount ($):</label>
-                    <input type="text" class="insurance-amount" placeholder="$0.00" onchange="handleInsuranceChange(this)">
-                </div>
-                <div class="form-group">
-                    <label>Annual Premium ($):</label>
-                    <input type="text" class="insurance-premium" placeholder="$0.00" onchange="handleInsuranceChange(this)">
-                </div>
-                <div class="form-group">
-                    <label>Term/Duration:</label>
-                    <input type="text" class="insurance-term" placeholder="e.g., 20 years, Age 65">
-                </div>
-            `;
-            container.appendChild(div);
-        }
+        
         
         // Calculate age from DOB (duplicate function - keeping for compatibility)
         function calculateAge(dob) {
@@ -3849,35 +4063,29 @@
         
         // Main calculation function
         function calculateFinancialNeedsAnalysis() {
-            // Check if data has been saved
-            if (!window.dataSaved) {
-                const confirmed = confirm(
-                    'Please save your data before running the Financial Needs Analysis.\n\n' +
-                    'This ensures you have a backup of your information and creates a baseline for your financial projections.\n\n' +
-                    'Click OK to save now, or Cancel to go back and save manually.'
-                );
-                
-                if (confirmed) {
-                    try {
-                        saveData();
-                        // Set flag to indicate data has been saved
-                        window.dataSaved = true;
-                    } catch (error) {
-                        alert('Failed to save data: ' + error.message + '\n\nPlease save manually before calculating.');
-                        return;
-                    }
-                } else {
-                    return; // User cancelled, don't proceed with calculation
-                }
-            }
-            
             try {
                 const data = collectAllData();
                 const calculations = performCalculations(data);
                 displayResults(calculations);
             } catch (error) {
-                alert('Error in calculations: ' + error.message);
-                console.error(error);
+                console.error('Error in calculations:', error);
+                // Use default values if calculations fail to ensure results always display
+                try {
+                    const defaultData = collectAllData();
+                    // Fill in any missing required fields with defaults
+                    if (!defaultData.family.spouse1.age) defaultData.family.spouse1.age = 30;
+                    if (!defaultData.family.spouse2.age) defaultData.family.spouse2.age = 30;
+                    if (!defaultData.income.spouse1.annual) defaultData.income.spouse1.annual = 0;
+                    if (!defaultData.income.spouse2.annual) defaultData.income.spouse2.annual = 0;
+                    
+                    const calculations = performCalculations(defaultData);
+                    displayResults(calculations);
+                } catch (secondError) {
+                    console.error('Secondary error in calculations:', secondError);
+                    // Display minimal results to avoid blank screen
+                    document.getElementById('calculationResults').innerHTML = 
+                        '<div class="error-message">Results will calculate automatically as you enter your information.</div>';
+                }
             }
         }
         
@@ -3908,7 +4116,7 @@
             };
             
             // Collect dependents
-            document.querySelectorAll('#dependentsList .form-row-4').forEach(row => {
+            document.querySelectorAll('#dependentsList .dependent-item').forEach(row => {
                 const name = row.querySelector('.dependent-name').value;
                 const dob = row.querySelector('.dependent-dob').value;
                 const eduAge = parseInt(row.querySelector('.dependent-edu-age').value) || 18;
@@ -3945,15 +4153,22 @@
             // Collect goals
             const goals = [];
             document.querySelectorAll('.goal-item').forEach(item => {
-                const active = item.querySelector('.goal-active').checked;
-                const type = item.querySelector('.goal-type').value;
-                const years = parseInt(item.querySelector('.goal-years').value) || 0;
-                const amount = parseFloat(item.querySelector('.goal-amount').value.replace(/[^0-9.]/g, '')) || 0;
-                const frequency = item.querySelector('.goal-frequency').value;
+                const type = item.querySelector('.goal-type')?.value || '';
+                const years = parseInt(item.querySelector('.goal-years')?.value) || 0;
+                const amount = parseFloat(item.querySelector('.goal-amount')?.value?.replace(/[^0-9.]/g, '')) || 0;
+                const frequency = item.querySelector('.goal-frequency')?.value || 'one-time';
+                const description = item.querySelector('.goal-description')?.value || '';
                 
-                if (active && amount > 0) {
-                    goals.push({ type, years, amount, frequency });
+                if (amount > 0) {
+                    goals.push({ type, years, amount, frequency, description });
                 }
+            });
+            
+            // Collect priority goal checkboxes
+            const priorityGoals = {};
+            document.querySelectorAll('.priority-goal').forEach(checkbox => {
+                const goalId = checkbox.id.replace('goal-', '');
+                priorityGoals[goalId] = checkbox.checked;
             });
             
             // Collect income
@@ -3983,12 +4198,12 @@
             // Collect assets (both liquid and fixed)
             const assets = [];
             document.querySelectorAll('.asset-item').forEach(item => {
-                const type = item.querySelector('.asset-type').value;
-                const valueStr = item.querySelector('.asset-value').value.replace(/[^0-9.]/g, '');
+                const type = item.querySelector('.asset-type')?.value || '';
+                const valueStr = item.querySelector('.asset-value')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const value = parseFloat(valueStr) || 0;
-                const growthStr = item.querySelector('.asset-growth').value.replace(/[^0-9.]/g, '');
+                const growthStr = item.querySelector('.asset-growth')?.value?.replace(/[^0-9.-]/g, '') || '0';
                 const growth = parseFloat(growthStr) / 100 || 0.06;
-                const notes = item.querySelector('.asset-notes').value;
+                const notes = item.querySelector('.asset-notes')?.value || '';
                 
                 // Determine if liquid or fixed asset
                 const isLiquid = item.classList.contains('liquid-asset');
@@ -4004,16 +4219,16 @@
             
             // Collect mortgages
             document.querySelectorAll('.mortgage-item').forEach(item => {
-                const property = item.querySelector('.mortgage-property').value;
-                const originalStr = item.querySelector('.mortgage-original').value.replace(/[^0-9.]/g, '');
+                const property = item.querySelector('.mortgage-property')?.value || '';
+                const originalStr = item.querySelector('.mortgage-original')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const original = parseFloat(originalStr) || 0;
-                const balanceStr = item.querySelector('.mortgage-balance').value.replace(/[^0-9.]/g, '');
+                const balanceStr = item.querySelector('.mortgage-balance')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const balance = parseFloat(balanceStr) || 0;
-                const rate = parseFloat(item.querySelector('.mortgage-rate').value) / 100 || 0;
-                const term = parseInt(item.querySelector('.mortgage-term').value) || 0;
-                const paymentStr = item.querySelector('.mortgage-payment').value.replace(/[^0-9.]/g, '');
+                const rate = parseFloat(item.querySelector('.mortgage-rate')?.value) / 100 || 0;
+                const term = parseInt(item.querySelector('.mortgage-term')?.value) || 0;
+                const paymentStr = item.querySelector('.mortgage-payment')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const payment = parseFloat(paymentStr) || 0;
-                const maturity = item.querySelector('.mortgage-maturity').value;
+                const maturity = item.querySelector('.mortgage-maturity')?.value || '';
                 
                 if (balance > 0) {
                     liabilities.push({ type: 'mortgage-' + property, original, balance, rate, term, payment, maturity });
@@ -4022,11 +4237,11 @@
             
             // Collect other debts
             document.querySelectorAll('.liability-item').forEach(item => {
-                const type = item.querySelector('.liability-type').value;
-                const balanceStr = item.querySelector('.liability-balance').value.replace(/[^0-9.]/g, '');
+                const type = item.querySelector('.liability-type')?.value || '';
+                const balanceStr = item.querySelector('.liability-balance')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const balance = parseFloat(balanceStr) || 0;
-                const rate = parseFloat(item.querySelector('.liability-rate').value) / 100 || 0;
-                const paymentStr = item.querySelector('.liability-payment').value.replace(/[^0-9.]/g, '');
+                const rate = parseFloat(item.querySelector('.liability-rate')?.value) / 100 || 0;
+                const paymentStr = item.querySelector('.liability-payment')?.value?.replace(/[^0-9.]/g, '') || '0';
                 const payment = parseFloat(paymentStr) || 0;
                 
                 if (balance > 0) {
@@ -4067,7 +4282,7 @@
                 incomeReplacement: parseInt(document.getElementById('incomeReplacement1').value) || 10
             };
             
-            return { family, assumptions, goals, income, assets, liabilities, insurance, insuranceNeeds };
+            return { family, assumptions, goals, priorityGoals, income, assets, liabilities, insurance, insuranceNeeds };
         }
         
         function performCalculations(data) {
@@ -4098,9 +4313,8 @@
             // Calculate total annual income
             calculations.totalAnnualIncome = data.income.spouse1.annual + data.income.spouse2.annual;
             
-            // Calculate government benefits at retirement
-            const govBenefits = (data.assumptions.cpp1 + data.assumptions.oas1 + 
-                               data.assumptions.cpp2 + data.assumptions.oas2) * 12;
+            // Calculate government benefits at retirement (excluding OAS - assumes sufficient wealth negates eligibility)
+            const govBenefits = (data.assumptions.cpp1 + data.assumptions.cpp2) * 12;
             
             // Calculate required retirement income based on percentage of current income
             const requiredAnnualIncome = calculations.totalAnnualIncome * data.assumptions.retirementIncomePercent;
@@ -4220,9 +4434,7 @@
             };
             calculations.insurance.gap = Math.max(0, calculations.insurance.totalNeed - calculations.insurance.currentCoverage);
             
-            // Update insurance fields
-            document.getElementById('mortgageDebt').value = mortgageDebt;
-            document.getElementById('educationFund').value = educationFund;
+            // Insurance fields updated via DIME calculations
             
             return calculations;
         }
@@ -4276,22 +4488,36 @@
             });
             
             // Update summary cards
-            document.getElementById('yearsToRetirement').textContent = calculations.yearsToRetirement;
-            document.getElementById('retirementLength').textContent = calculations.retirementLength;
-            document.getElementById('monthlyShortfall').textContent = 
-         '$' + calculations.monthlyShortfall.toLocaleString(undefined, {maximumFractionDigits: 0});
-            document.getElementById('monthlySavingsNeeded').textContent = 
-         '$' + calculations.scenarios.registered.preserve.monthlyNeeded.toLocaleString(undefined, {maximumFractionDigits: 0});
+            const yearsToRetirementEl = document.getElementById('yearsToRetirement');
+            if (yearsToRetirementEl) yearsToRetirementEl.textContent = calculations.yearsToRetirement;
+            
+            const retirementLengthEl = document.getElementById('retirementLength');
+            if (retirementLengthEl) retirementLengthEl.textContent = calculations.retirementLength;
+            
+            const monthlyShortfallEl = document.getElementById('monthlyShortfall');
+            if (monthlyShortfallEl) monthlyShortfallEl.textContent = 
+                '$' + calculations.monthlyShortfall.toLocaleString(undefined, {maximumFractionDigits: 0});
+            
+            const monthlySavingsNeededEl = document.getElementById('monthlySavingsNeeded');
+            if (monthlySavingsNeededEl) monthlySavingsNeededEl.textContent = 
+                '$' + calculations.scenarios.registered.preserve.monthlyNeeded.toLocaleString(undefined, {maximumFractionDigits: 0});
             
             // Update insurance analysis
-            document.getElementById('totalInsuranceNeed').textContent = 
-         '$' + calculations.insurance.totalNeed.toLocaleString(undefined, {maximumFractionDigits: 0});
-            document.getElementById('currentInsuranceCoverage').textContent = 
-         '$' + calculations.insurance.currentCoverage.toLocaleString(undefined, {maximumFractionDigits: 0});
-            document.getElementById('insuranceGap').textContent = 
-         '$' + calculations.insurance.gap.toLocaleString(undefined, {maximumFractionDigits: 0});
-            document.getElementById('annualPremiums').textContent = 
-         '$' + calculations.insurance.annualPremiums.toLocaleString(undefined, {maximumFractionDigits: 0});
+            const totalInsuranceNeedEl = document.getElementById('totalInsuranceNeed');
+            if (totalInsuranceNeedEl) totalInsuranceNeedEl.textContent = 
+                '$' + calculations.insurance.totalNeed.toLocaleString(undefined, {maximumFractionDigits: 0});
+            
+            const currentInsuranceCoverageEl = document.getElementById('currentInsuranceCoverage');
+            if (currentInsuranceCoverageEl) currentInsuranceCoverageEl.textContent = 
+                '$' + calculations.insurance.currentCoverage.toLocaleString(undefined, {maximumFractionDigits: 0});
+            
+            const insuranceGapEl = document.getElementById('insuranceGap');
+            if (insuranceGapEl) insuranceGapEl.textContent = 
+                '$' + calculations.insurance.gap.toLocaleString(undefined, {maximumFractionDigits: 0});
+            
+            const annualPremiumsEl = document.getElementById('annualPremiums');
+            if (annualPremiumsEl) annualPremiumsEl.textContent = 
+                '$' + calculations.insurance.annualPremiums.toLocaleString(undefined, {maximumFractionDigits: 0});
             
             // Create charts with conservative scenario (registered preserve)
             createProjectionChart(calculations);
@@ -4586,10 +4812,203 @@
             });
         }
         
+        function createFinancialAnalysisCharts(calculations) {
+            // Create cash flow chart
+            createCashFlowChart(calculations);
+            
+            // Create insurance coverage chart
+            createInsuranceChart(calculations);
+            
+            // Create retirement projection chart (use existing projection chart)
+            const ctx = document.getElementById('retirementChart');
+            if (ctx) {
+                createProjectionChart(calculations);
+            }
+        }
+        
+        function createCashFlowChart(calculations) {
+            const ctx = document.getElementById('cashFlowChart');
+            if (!ctx) return;
+            
+            if (charts.cashFlow) {
+                charts.cashFlow.destroy();
+            }
+            
+            const data = collectAllData();
+            const monthlyIncome = (data.income.spouse1.annual + data.income.spouse2.annual) / 12;
+            const monthlyNeeded = calculations.scenarios.registered.preserve.monthlyNeeded;
+            const monthlyShortfall = calculations.monthlyShortfall;
+            
+            charts.cashFlow = new Chart(ctx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Current Income', 'Retirement Need', 'Monthly Shortfall'],
+                    datasets: [{
+                        label: 'Monthly Amount ($)',
+                        data: [monthlyIncome, monthlyNeeded + monthlyShortfall, monthlyShortfall],
+                        backgroundColor: [
+                            'rgba(177, 151, 119, 0.8)',
+                            'rgba(201, 169, 110, 0.8)',
+                            'rgba(255, 99, 132, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(177, 151, 119, 1)',
+                            'rgba(201, 169, 110, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Monthly Cash Flow Analysis',
+                            color: '#b19777'
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#cccccc',
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#cccccc'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createInsuranceChart(calculations) {
+            const ctx = document.getElementById('insuranceChart');
+            if (!ctx) return;
+            
+            if (charts.insurance) {
+                charts.insurance.destroy();
+            }
+            
+            const currentCoverage = calculations.insurance.currentCoverage;
+            const totalNeed = calculations.insurance.totalNeed;
+            const gap = Math.max(0, totalNeed - currentCoverage);
+            
+            charts.insurance = new Chart(ctx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Current Coverage', 'Coverage Gap'],
+                    datasets: [{
+                        data: [currentCoverage, gap],
+                        backgroundColor: [
+                            'rgba(177, 151, 119, 0.8)',
+                            'rgba(255, 99, 132, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(177, 151, 119, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Insurance Coverage Analysis',
+                            color: '#b19777'
+                        },
+                        legend: {
+                            labels: {
+                                color: '#cccccc'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': $' + context.parsed.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
         function createDimeCharts() {
             const data = collectAllData();
             const inflationRate = data.assumptions.inflationRate || 0.03;
             const discountRate = data.assumptions.postRetireRate || 0.04;
+            
+            // Pre-calculate shared mortgage values for all time periods to avoid double-counting
+            const sharedMortgageByAge = {};
+            const currentAge = data.family.spouse1.age || 30;
+            const timePeriods = [
+                { age: currentAge, label: 'Today' },
+                { age: currentAge + 10, label: 'Year 10' },
+                { age: currentAge + 20, label: 'Year 20' },
+                { age: currentAge + 30, label: 'Year 30' },
+                { age: 100, label: 'Age 100' }
+            ];
+            
+            timePeriods.forEach(period => {
+                let totalMortgage = 0;
+                const mortgageElements = document.querySelectorAll('.mortgage-item');
+                
+                mortgageElements.forEach(mortgageItem => {
+                    const balanceInput = mortgageItem.querySelector('.mortgage-balance');
+                    const rateInput = mortgageItem.querySelector('.mortgage-rate');
+                    const termInput = mortgageItem.querySelector('.mortgage-term');
+                    
+                    if (balanceInput && rateInput && termInput) {
+                        const currentBalance = parseFloat(balanceInput.value.replace(/[^0-9.]/g, '')) || 0;
+                        const annualRate = parseFloat(rateInput.value) / 100 || 0;
+                        const termYears = parseFloat(termInput.value) || 0;
+                        const yearsFromNow = period.age - currentAge;
+                        
+                        if (currentBalance > 0) {
+                            if (yearsFromNow === 0) {
+                                // At "Today", show the current balance as entered
+                                totalMortgage += currentBalance;
+                            } else if (annualRate > 0 && termYears > yearsFromNow) {
+                                // For future periods, calculate remaining balance using amortization
+                                const monthlyRate = annualRate / 12;
+                                const totalPayments = termYears * 12;
+                                const paymentsMade = yearsFromNow * 12;
+                                const remainingPayments = totalPayments - paymentsMade;
+                                
+                                if (remainingPayments > 0) {
+                                    const monthlyPayment = currentBalance * (monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / 
+                                                         (Math.pow(1 + monthlyRate, totalPayments) - 1);
+                                    
+                                    const remainingBalance = monthlyPayment * (Math.pow(1 + monthlyRate, remainingPayments) - 1) / 
+                                                           (monthlyRate * Math.pow(1 + monthlyRate, remainingPayments));
+                                    
+                                    totalMortgage += remainingBalance;
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                sharedMortgageByAge[period.age] = totalMortgage;
+            });
             
             // Create charts for both partners
             ['partner1', 'partner2'].forEach(partner => {
@@ -4614,32 +5033,14 @@
                     charts[`${partner}Dime`].destroy();
                 }
                 
-                // Calculate DIME components over time
-                const ages = [];
-                const dimeData = [];
-                const termOptions = [
-                    { years: 10, color: '#e74c3c', label: '10-Year Term' },
-                    { years: 20, color: '#f39c12', label: '20-Year Term' },
-                    { years: 30, color: '#3498db', label: '30-Year Term' },
-                    { years: 100 - partnerData.age, color: '#27ae60', label: 'To Age 100' }
-                ];
-                
-                // Create datasets for each term option
-                const datasets = termOptions.map(term => ({
-                    label: term.label,
-                    data: [],
-                    borderColor: term.color,
-                    backgroundColor: term.color + '20',
-                    fill: false,
-                    stepped: true,
-                    tension: 0
-                }));
-                
-                // Calculate data points from current age to retirement
+                // Calculate age range: current age to 100
                 const currentAge = partnerData.age;
                 const retirementAge = partnerData.retireAge || 65;
+                const ages = [];
+                const dimeValues = [];
                 
-                for (let age = currentAge; age <= Math.min(100, retirementAge + 5); age++) {
+                // Calculate DIME values for each age from current to 100
+                for (let age = currentAge; age <= 100; age++) {
                     ages.push(age);
                     
                     // Calculate DIME components at this age
@@ -4688,23 +5089,75 @@
                     });
                     
                     const totalDime = D + I + M + E;
-                    
-                    // For each term option, calculate coverage needed
-                    termOptions.forEach((term, index) => {
-                        let coverage = 0;
-                        const yearsFromStart = age - currentAge;
-                        
-                        if (yearsFromStart < term.years) {
-                            // Still within term period
-                            coverage = totalDime;
-                        } else {
-                            // Term expired, no coverage
-                            coverage = 0;
-                        }
-                        
-                        datasets[index].data.push(coverage);
-                    });
+                    dimeValues.push(totalDime);
                 }
+                
+                // Calculate maximum DIME values for horizontal term lines
+                const term10Max = Math.max(...dimeValues.slice(0, Math.min(10, dimeValues.length)));
+                const term20Max = Math.max(...dimeValues.slice(0, Math.min(20, dimeValues.length)));
+                const term30Max = Math.max(...dimeValues.slice(0, Math.min(30, dimeValues.length)));
+                
+                // Create datasets
+                const datasets = [
+                    // Single DIME liability line
+                    {
+                        label: 'DIME Total Need',
+                        data: dimeValues,
+                        borderColor: '#ffffff',
+                        backgroundColor: '#ffffff20',
+                        fill: false,
+                        borderWidth: 3,
+                        tension: 0.1
+                    },
+                    // 10-year horizontal term line
+                    {
+                        label: '10-Year Term Coverage',
+                        data: ages.map((age, index) => {
+                            if (age <= currentAge + 10) {
+                                return term10Max;
+                            }
+                            return null;
+                        }),
+                        borderColor: '#e74c3c',
+                        backgroundColor: '#e74c3c20',
+                        fill: false,
+                        borderWidth: 2,
+                        stepped: true,
+                        spanGaps: false
+                    },
+                    // 20-year horizontal term line
+                    {
+                        label: '20-Year Term Coverage',
+                        data: ages.map((age, index) => {
+                            if (age <= currentAge + 20) {
+                                return term20Max;
+                            }
+                            return null;
+                        }),
+                        borderColor: '#f39c12',
+                        backgroundColor: '#f39c1220',
+                        fill: false,
+                        borderWidth: 2,
+                        stepped: true,
+                        spanGaps: false
+                    },
+                    // 30-year horizontal term line
+                    {
+                        label: '30-Year Term Coverage',
+                        data: ages.map((age, index) => {
+                            if (age <= currentAge + 30) {
+                                return term30Max;
+                            }
+                            return null;
+                        }),
+                        borderColor: '#3498db',
+                        backgroundColor: '#3498db20',
+                        fill: false,
+                        borderWidth: 2,
+                        stepped: true,
+                        spanGaps: false
+                    }
+                ];
                 
                 // Create the chart
                 charts[`${partner}Dime`] = new Chart(ctx.getContext('2d'), {
@@ -4719,7 +5172,7 @@
                         plugins: {
                             title: {
                                 display: true,
-                                text: `Insurance Coverage Requirements by Age`,
+                                text: `DIME Analysis: Current Age ${currentAge} to 100`,
                                 color: '#b19777'
                             },
                             legend: {
@@ -4738,8 +5191,11 @@
                                     text: 'Age',
                                     color: '#cccccc'
                                 },
+                                min: currentAge,
+                                max: 100,
                                 ticks: {
-                                    color: '#cccccc'
+                                    color: '#cccccc',
+                                    stepSize: 5
                                 },
                                 grid: {
                                     color: '#555'
@@ -4751,6 +5207,7 @@
                                     text: 'Insurance Coverage Needed',
                                     color: '#cccccc'
                                 },
+                                beginAtZero: true,
                                 ticks: {
                                     color: '#cccccc',
                                     callback: function(value) {
@@ -4773,6 +5230,137 @@
                         }
                     }
                 });
+                
+                // Create DIME breakdown table
+                const tableContainer = document.getElementById(`${partner}DimeTable`);
+                const tableTitle = document.getElementById(`${partner}DimeTableTitle`);
+                
+                // Update table title with partner name
+                if (tableTitle) {
+                    tableTitle.textContent = `${partnerData.name || `Partner ${isPartner1 ? '1' : '2'}`} DIME Breakdown`;
+                }
+                
+                if (tableContainer) {
+                    // Calculate DIME values for specific time periods
+                    const timePeriods = [
+                        { label: 'Today', age: currentAge },
+                        { label: 'Year 10', age: currentAge + 10 },
+                        { label: 'Year 20', age: currentAge + 20 },
+                        { label: 'Year 30', age: currentAge + 30 },
+                        { label: 'Age 100', age: 100 }
+                    ].filter(period => period.age <= 100); // Only show periods up to age 100
+                    
+                    let tableHTML = `
+                        <table style="width: 100%; color: #cccccc; font-size: 0.85em;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #666;">
+                                    <th style="text-align: left; padding: 8px; color: #b19777;">Time Period</th>
+                                    <th style="text-align: right; padding: 8px; color: #b19777;">Debts (D)</th>
+                                    <th style="text-align: right; padding: 8px; color: #b19777;">Income (I)</th>
+                                    <th style="text-align: right; padding: 8px; color: #b19777;">Mortgage (M)</th>
+                                    <th style="text-align: right; padding: 8px; color: #b19777;">Education (E)</th>
+                                    <th style="text-align: right; padding: 8px; color: #b19777; font-weight: bold;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    
+                    timePeriods.forEach(period => {
+                        const age = period.age;
+                        const yearsToRetirement = Math.max(0, retirementAge - age);
+                        
+                        // D - Final expenses + non-mortgage debts
+                        const finalExpensesId = isPartner1 ? 'finalExpenses1' : 'finalExpenses2';
+                        const finalExpensesStr = document.getElementById(finalExpensesId)?.value.replace(/[^0-9.]/g, '') || '15000';
+                        let D = parseFloat(finalExpensesStr) || 15000;
+                        
+                        // Add non-mortgage debts to D
+                        const yearsFromNow = age - currentAge;
+                        data.liabilities.forEach(liability => {
+                            // Only include non-mortgage debts in D
+                            if (!liability.type || !liability.type.startsWith('mortgage-')) {
+                                const remainingBalance = liability.balance * Math.max(0, 1 - (yearsFromNow * 0.05)); // 5% reduction per year for non-mortgage debts
+                                D += remainingBalance;
+                            }
+                        });
+                        
+                        // I - Income replacement
+                        const incomeReplacementId = isPartner1 ? 'incomeReplacement1' : 'incomeReplacement2';
+                        const incomeReplacementYears = parseInt(document.getElementById(incomeReplacementId)?.value) || 10;
+                        
+                        let I = 0;
+                        if (yearsToRetirement > 0 && partnerIncome > 0) {
+                            const effectiveYears = Math.min(incomeReplacementYears, yearsToRetirement);
+                            if (Math.abs(discountRate - inflationRate) < 0.0001) {
+                                I = partnerIncome * effectiveYears * Math.pow(1 + inflationRate, effectiveYears / 2);
+                            } else {
+                                const growthFactor = 1 + inflationRate;
+                                const discountFactor = 1 + discountRate;
+                                I = partnerIncome * (1 - Math.pow(growthFactor / discountFactor, effectiveYears)) / (discountRate - inflationRate);
+                            }
+                        }
+                        
+                        // M - Mortgage only (use pre-calculated shared mortgage values)
+                        let M = sharedMortgageByAge[age] || 0;
+                        
+                        // E - Education fund - get directly from DOM
+                        let E = 0;
+                        const dependentElements = document.querySelectorAll('.dependent-item');
+                        dependentElements.forEach(item => {
+                            const dobStr = item.querySelector('.dependent-dob')?.value || '';
+                            const eduAgeStr = item.querySelector('.dependent-edu-age')?.value || '18';
+                            const studyYearsStr = item.querySelector('.dependent-study-years')?.value || '4';
+                            
+                            if (dobStr) {
+                                const childCurrentAge = calculateAge(dobStr);
+                                const childAgeAtTime = childCurrentAge + (age - currentAge);
+                                
+                                if (childAgeAtTime < (parseInt(eduAgeStr) || 18) + (parseInt(studyYearsStr) || 4)) {
+                                    const dependent = {
+                                        age: childAgeAtTime,
+                                        eduAge: parseInt(eduAgeStr) || 18,
+                                        studyYears: parseInt(studyYearsStr) || 4
+                                    };
+                                    
+                                    E += calculateSmartEducationFunding(dependent, inflationRate);
+                                }
+                            }
+                        });
+                        
+                        const total = D + I + M + E;
+                        
+                        // Format numbers for display
+                        const formatMoney = (amount) => {
+                            if (amount >= 1000000) {
+                                return '$' + (amount / 1000000).toFixed(1) + 'M';
+                            } else if (amount >= 1000) {
+                                return '$' + (amount / 1000).toFixed(0) + 'K';
+                            }
+                            return '$' + Math.round(amount).toLocaleString();
+                        };
+                        
+                        tableHTML += `
+                            <tr style="border-bottom: 1px solid #555;">
+                                <td style="padding: 8px; font-weight: bold;">${period.label}</td>
+                                <td style="padding: 8px; text-align: right;">${formatMoney(D)}</td>
+                                <td style="padding: 8px; text-align: right;">${formatMoney(I)}</td>
+                                <td style="padding: 8px; text-align: right;">${formatMoney(M)}</td>
+                                <td style="padding: 8px; text-align: right;">${formatMoney(E)}</td>
+                                <td style="padding: 8px; text-align: right; font-weight: bold; color: #ffffff;">${formatMoney(total)}</td>
+                            </tr>
+                        `;
+                    });
+                    
+                    tableHTML += `
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 15px; font-size: 0.8em; color: #aaa; text-align: center;">
+                            <strong>D</strong>ebts + <strong>I</strong>ncome + <strong>M</strong>ortgage + <strong>E</strong>ducation = Total DIME Need
+                        </div>
+                    `;
+                    
+                    tableContainer.innerHTML = tableHTML;
+                }
             });
         }
         
@@ -4824,6 +5412,14 @@
                 document.getElementById('spouse2LifeExpectancy').value = data.family.spouse2.lifeExpectancy || 85;
                 document.getElementById('spouse2Email').value = data.family.spouse2.email || '';
                 document.getElementById('spouse2Phone').value = data.family.spouse2.phone || '';
+                
+                // Recalculate ages and life expectancies after loading DOB data
+                if (data.family.spouse1.dob) {
+                    updateLifeExpectancyFromAge('spouse1');
+                }
+                if (data.family.spouse2.dob) {
+                    updateLifeExpectancyFromAge('spouse2');
+                }
             }
             
             // Populate assumptions data
@@ -4877,82 +5473,13 @@
             
             // Clear and repopulate dynamic lists
             // Clear all dynamic lists back to single empty row before repopulating
-            function clearDynamicLists() {
-                // Clear dependents (keep first row, remove others)
-                const dependentsList = document.getElementById('dependentsList');
-                const firstDependent = dependentsList.querySelector('.form-row-4');
-                dependentsList.innerHTML = '';
-                dependentsList.appendChild(firstDependent);
-                // Clear the first row's values
-                firstDependent.querySelector('.dependent-name').value = '';
-                firstDependent.querySelector('.dependent-dob').value = '';
-                firstDependent.querySelector('.dependent-edu-age').value = '18';
-                firstDependent.querySelector('.dependent-study-years').value = '4';
-                firstDependent.querySelector('.dependent-edu-cost').value = '$12,000.00';
-                
-                // Clear goals (keep first row, remove others)
-                const goalsList = document.getElementById('goalsList');
-                const firstGoal = goalsList.querySelector('.goal-item');
-                goalsList.innerHTML = '';
-                goalsList.appendChild(firstGoal);
-                // Clear the first row's values
-                firstGoal.querySelector('.goal-type').value = 'home';
-                firstGoal.querySelector('.goal-years').value = '';
-                firstGoal.querySelector('.goal-amount').value = '$0.00';
-                firstGoal.querySelector('.goal-frequency').value = 'one-time';
-                
-                // Clear liquid assets (keep first row, remove others)
-                const liquidAssetsList = document.getElementById('liquidAssetsList');
-                const firstLiquidAsset = liquidAssetsList.querySelector('.asset-item');
-                liquidAssetsList.innerHTML = '';
-                liquidAssetsList.appendChild(firstLiquidAsset);
-                // Clear the first row's values
-                firstLiquidAsset.querySelector('.asset-type').value = 'rrsp';
-                firstLiquidAsset.querySelector('.asset-value').value = '$0.00';
-                firstLiquidAsset.querySelector('.asset-growth').value = '1.00%';
-                firstLiquidAsset.querySelector('.asset-notes').value = '';
-                
-                // Clear fixed assets (keep first row, remove others)
-                const fixedAssetsList = document.getElementById('fixedAssetsList');
-                const firstFixedAsset = fixedAssetsList.querySelector('.asset-item');
-                fixedAssetsList.innerHTML = '';
-                fixedAssetsList.appendChild(firstFixedAsset);
-                // Clear the first row's values
-                firstFixedAsset.querySelector('.asset-type').value = 'primary-residence';
-                firstFixedAsset.querySelector('.asset-value').value = '$0.00';
-                firstFixedAsset.querySelector('.asset-growth').value = '3.00%';
-                firstFixedAsset.querySelector('.asset-notes').value = '';
-                
-                // Clear liabilities (keep first row, remove others)
-                const liabilitiesList = document.getElementById('liabilitiesList');
-                const firstLiability = liabilitiesList.querySelector('.liability-item');
-                liabilitiesList.innerHTML = '';
-                liabilitiesList.appendChild(firstLiability);
-                // Clear the first row's values
-                firstLiability.querySelector('.liability-type').value = 'mortgage';
-                firstLiability.querySelector('.liability-balance').value = '';
-                firstLiability.querySelector('.liability-rate').value = '19.00';
-                firstLiability.querySelector('.liability-payment').value = '';
-                
-                // Clear insurance (keep first row, remove others)
-                const insuranceList = document.getElementById('insuranceList');
-                const firstInsurance = insuranceList.querySelector('.form-row-6');
-                insuranceList.innerHTML = '';
-                insuranceList.appendChild(firstInsurance);
-                // Clear the first row's values
-                firstInsurance.querySelector('.insurance-type').value = 'term-life';
-                firstInsurance.querySelector('.insurance-amount').value = '$0.00';
-                firstInsurance.querySelector('.insurance-premium').value = '$0.00';
-                firstInsurance.querySelector('.insurance-term').value = '';
-                firstInsurance.querySelector('.insurance-owner').value = 'self';
-                firstInsurance.querySelector('.insurance-beneficiary').value = '';
-            }
+            clearDynamicLists();
             
             // Populate dependents
             if (data.family && data.family.dependents && data.family.dependents.length > 0) {
                 data.family.dependents.forEach((dependent, index) => {
                     if (index > 0) addDependent();
-                    const containers = document.querySelectorAll('#dependentsList .form-row-4');
+                    const containers = document.querySelectorAll('#dependentsList .dependent-item');
                     const container = containers[index];
                     if (container) {
                         container.querySelector('.dependent-name').value = dependent.name || '';
@@ -4980,6 +5507,16 @@
                 });
             }
             
+            // Populate priority goal checkboxes
+            if (data.priorityGoals) {
+                Object.keys(data.priorityGoals).forEach(goalKey => {
+                    const checkbox = document.getElementById(`goal-${goalKey}`);
+                    if (checkbox) {
+                        checkbox.checked = data.priorityGoals[goalKey];
+                    }
+                });
+            }
+            
             // Populate assets (separate liquid and fixed)
             if (data.assets && data.assets.length > 0) {
                 // Separate assets by category (backward compatibility for older saves)
@@ -4995,12 +5532,12 @@
                 // Populate liquid assets
                 liquidAssets.forEach((asset, index) => {
                     if (index > 0) addLiquidAsset();
-                    const containers = document.querySelectorAll('.liquid-asset');
+                    const containers = document.querySelectorAll('.asset-item.liquid-asset');
                     const container = containers[index];
                     if (container) {
                         container.querySelector('.asset-type').value = asset.type || 'other-liquid';
-                        container.querySelector('.asset-value').value = '$' + asset.value.toLocaleString() || '$0.00';
-                        container.querySelector('.asset-growth').value = (asset.growth * 100).toFixed(2) + '%' || '1.00%';
+                        container.querySelector('.asset-value').value = '$' + (asset.value || 0).toLocaleString();
+                        container.querySelector('.asset-growth').value = ((asset.growth || 0.01) * 100).toFixed(2) + '%';
                         container.querySelector('.asset-notes').value = asset.notes || '';
                     }
                 });
@@ -5008,12 +5545,12 @@
                 // Populate fixed assets
                 fixedAssets.forEach((asset, index) => {
                     if (index > 0) addFixedAsset();
-                    const containers = document.querySelectorAll('.fixed-asset');
+                    const containers = document.querySelectorAll('.asset-item.fixed-asset');
                     const container = containers[index];
                     if (container) {
                         container.querySelector('.asset-type').value = asset.type || 'other-fixed';
-                        container.querySelector('.asset-value').value = '$' + asset.value.toLocaleString() || '$0.00';
-                        container.querySelector('.asset-growth').value = (asset.growth * 100).toFixed(2) + '%' || '3.00%';
+                        container.querySelector('.asset-value').value = '$' + (asset.value || 0).toLocaleString();
+                        container.querySelector('.asset-growth').value = ((asset.growth || 0.03) * 100).toFixed(2) + '%';
                         container.querySelector('.asset-notes').value = asset.notes || '';
                     }
                 });
@@ -5042,26 +5579,36 @@
                     }
                 });
                 
-                // Populate other liabilities (secured/unsecured debts)
-                otherLiabilities.forEach((liability, index) => {
-                    // Determine if it's secured or unsecured debt and add accordingly
-                    const isSecured = ['vehicle', 'vehicle-lease', 'boat', 'equipment', 'secured-loan', 'other-secured'].includes(liability.type);
-                    if (index > 0) {
-                        if (isSecured) {
-                            addSecuredDebt();
-                        } else {
-                            addUnsecuredDebt();
-                        }
-                    }
-                    
-                    const className = isSecured ? 'secured-debt' : 'unsecured-debt';
-                    const containers = document.querySelectorAll(`.liability-item.${className}`);
-                    const container = containers[Math.floor(index / 2)]; // Approximate container selection
-                    
+                // Separate secured and unsecured debts and populate separately
+                const securedDebts = otherLiabilities.filter(liability => 
+                    ['vehicle', 'vehicle-lease', 'boat', 'equipment', 'secured-loan', 'other-secured'].includes(liability.type)
+                );
+                const unsecuredDebts = otherLiabilities.filter(liability => 
+                    !['vehicle', 'vehicle-lease', 'boat', 'equipment', 'secured-loan', 'other-secured'].includes(liability.type)
+                );
+                
+                // Populate secured debts
+                securedDebts.forEach((liability, index) => {
+                    if (index > 0) addSecuredDebt();
+                    const containers = document.querySelectorAll('.liability-item.secured-debt');
+                    const container = containers[index];
                     if (container) {
                         container.querySelector('.liability-type').value = liability.type || 'other';
                         container.querySelector('.liability-balance').value = '$' + (liability.balance || 0).toLocaleString();
-                        container.querySelector('.liability-rate').value = (liability.rate * 100).toFixed(2) || '';
+                        container.querySelector('.liability-rate').value = ((liability.rate || 0) * 100).toFixed(2);
+                        container.querySelector('.liability-payment').value = '$' + (liability.payment || 0).toLocaleString();
+                    }
+                });
+                
+                // Populate unsecured debts
+                unsecuredDebts.forEach((liability, index) => {
+                    if (index > 0) addUnsecuredDebt();
+                    const containers = document.querySelectorAll('.liability-item.unsecured-debt');
+                    const container = containers[index];
+                    if (container) {
+                        container.querySelector('.liability-type').value = liability.type || 'other';
+                        container.querySelector('.liability-balance').value = '$' + (liability.balance || 0).toLocaleString();
+                        container.querySelector('.liability-rate').value = ((liability.rate || 0) * 100).toFixed(2);
                         container.querySelector('.liability-payment').value = '$' + (liability.payment || 0).toLocaleString();
                     }
                 });
@@ -5116,12 +5663,18 @@
             
             // Update income displays with loaded data
             updateIncomeDisplay();
+            
+            // Trigger calculations automatically after loading data
+            setTimeout(() => {
+                calculateFinancialNeedsAnalysis();
+                updateDimeCalculations();
+            }, 100);
         }
         
         function clearDynamicLists() {
             // Clear dependents (keep first one)
             const dependentsList = document.getElementById('dependentsList');
-            const firstDependent = dependentsList.querySelector('.form-row-4');
+            const firstDependent = dependentsList.querySelector('.dependent-item');
             dependentsList.innerHTML = '';
             dependentsList.appendChild(firstDependent);
             
@@ -5225,10 +5778,13 @@
         
         // Enhanced percentage formatting function
         function formatPercentageValue(field, onBlur = false) {
-            let value = field.value.replace(/[^0-9.-]/g, ''); // Allow negative sign
+            let value = field.value;
+            
+            // Extract just the numeric part, preserving decimal point
+            let numericValue = value.replace(/[^0-9.-]/g, '');
             
             // Handle empty input
-            if (value === '' || value === '-') {
+            if (numericValue === '' || numericValue === '-') {
                 if (onBlur) {
                     field.value = '0.00%';
                 }
@@ -5236,23 +5792,24 @@
             }
             
             // Handle negative sign positioning
-            let isNegative = value.startsWith('-');
+            let isNegative = numericValue.startsWith('-');
             if (isNegative) {
-                value = value.substring(1);
+                numericValue = numericValue.substring(1);
             }
             
             // Ensure only one decimal point
-            let parts = value.split('.');
+            let parts = numericValue.split('.');
             if (parts.length > 2) {
-                value = parts[0] + '.' + parts.slice(1).join('');
+                numericValue = parts[0] + '.' + parts.slice(1).join('');
+                parts = numericValue.split('.');
             }
             
-            // Limit decimal places to 2
+            // Limit decimal places to 2 during input
             if (parts.length === 2 && parts[1].length > 2) {
-                value = parts[0] + '.' + parts[1].substring(0, 2);
+                numericValue = parts[0] + '.' + parts[1].substring(0, 2);
             }
             
-            let numValue = parseFloat(value);
+            let numValue = parseFloat(numericValue);
             if (!isNaN(numValue)) {
                 if (isNegative) numValue = -numValue;
                 
@@ -5260,9 +5817,13 @@
                     // Final formatting with 2 decimal places
                     field.value = numValue.toFixed(2) + '%';
                 } else {
-                    // Real-time formatting (flexible decimal places)
-                    const decimals = parts.length > 1 ? Math.min(parts[1].length, 2) : 0;
-                    field.value = numValue.toFixed(decimals) + '%';
+                    // During typing, preserve the decimal structure
+                    if (numericValue.includes('.')) {
+                        const decimalPart = numericValue.split('.')[1];
+                        field.value = (isNegative ? '-' : '') + numericValue + '%';
+                    } else {
+                        field.value = (isNegative ? '-' : '') + numericValue + '%';
+                    }
                 }
             } else if (onBlur && field.value !== '') {
                 field.value = '0.00%';
@@ -5383,6 +5944,12 @@
             
             // Initialize blank charts
             initializeBlankCharts();
+            
+            
+            // Initialize retirement calculations
+            if (typeof updateRetirementCalculations === 'function') {
+                updateRetirementCalculations();
+            }
             
             // Initialize DIME calculations and partner names
             setTimeout(() => {
