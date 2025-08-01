@@ -1,0 +1,15 @@
+# Real configuration files with personal information
+config.js
+*.local.js
+
+# Environment files
+.env
+.env.local
+
+# Personal data
+secrets/
+personal/
+
+# System files
+.DS_Store
+Thumbs.db

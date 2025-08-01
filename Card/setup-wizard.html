@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Financial Services Template - Setup Wizard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .wizard-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .wizard-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .wizard-header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .wizard-header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #ecf0f1;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.85em;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            opacity: 1;
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .step.completed {
+            opacity: 1;
+            color: #27ae60;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #bdc3c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-circle {
+            background: #3498db;
+            color: white;
+        }
+
+        .step.completed .step-circle {
+            background: #27ae60;
+            color: white;
+        }
+
+        .wizard-content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .help-text {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .service-card {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .service-card:hover {
+            border-color: #3498db;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        }
+
+        .service-card.completed {
+            border-color: #27ae60;
+            background: #f8fff8;
+        }
+
+        .service-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .service-info h3 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .service-info p {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .btn-large {
+            padding: 15px 30px;
+            font-size: 18px;
+        }
+
+        .wizard-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .validation-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .validation-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .validation-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .validation-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .config-preview {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-icon {
+            margin-right: 15px;
+            font-size: 20px;
+        }
+
+        .status-pending { color: #f39c12; }
+        .status-completed { color: #27ae60; }
+        .status-error { color: #e74c3c; }
+
+        .external-link {
+            display: inline-flex;
+            align-items: center;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 5px 10px 5px 0;
+        }
+
+        .external-link:hover {
+            text-decoration: underline;
+        }
+
+        .external-link::after {
+            content: '↗';
+            margin-left: 5px;
+            font-size: 0.8em;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .final-steps {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .final-steps h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-indicator {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .wizard-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wizard-container">
+        <!-- Header -->
+        <div class="wizard-header">
+            <h1>🚀 Setup Wizard</h1>
+            <p>Let's get your Financial Services Template up and running in minutes!</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-circle">1</div>
+                <span>Personal Info</span>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-circle">2</div>
+                <span>EmailJS</span>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-circle">3</div>
+                <span>reCAPTCHA</span>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-circle">4</div>
+                <span>Resources</span>
+            </div>
+            <div class="step" data-step="5">
+                <div class="step-circle">5</div>
+                <span>Optional</span>
+            </div>
+            <div class="step" data-step="6">
+                <div class="step-circle">6</div>
+                <span>Review</span>
+            </div>
+            <div class="step" data-step="7">
+                <div class="step-circle">7</div>
+                <span>Launch</span>
+            </div>
+        </div>
+
+        <!-- Wizard Content -->
+        <div class="wizard-content">
+            <!-- Step 1: Personal Information -->
+            <div class="step-content active" id="step1">
+                <h2>👤 Personal Information</h2>
+                <p>Let's start with your basic information that will appear on your landing page.</p>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" required>
+                        <div class="help-text">Your first name as you want it to appear</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" required>
+                        <div class="help-text">Your last name as you want it to appear</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="title">Professional Title *</label>
+                    <input type="text" id="title" placeholder="Financial Advisor, Insurance Agent, etc.">
+                    <div class="help-text">Your professional title or designation</div>
+                </div>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="company">Company Name *</label>
+                        <input type="text" id="company" required>
+                        <div class="help-text">Your company or business name</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" required>
+                        <div class="help-text">Your professional email address</div>
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" placeholder="(555) 123-4567" required>
+                        <div class="help-text">Your business phone number</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="website">Website URL</label>
+                        <input type="url" id="website" placeholder="https://your-website.com">
+                        <div class="help-text">Your existing website (optional)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: EmailJS Setup -->
+            <div class="step-content" id="step2">
+                <h2>📧 EmailJS Configuration</h2>
+                <p>EmailJS handles sending emails from your contact form. Let's set up your account and get your keys.</p>
+
+                <div class="service-card" id="emailjsCard">
+                    <div class="service-header">
+                        <div class="service-icon">📧</div>
+                        <div class="service-info">
+                            <h3>EmailJS Account</h3>
+                            <p>Free email service for your contact forms</p>
+                        </div>
+                    </div>
+
+                    <div class="wizard-step">
+                        <h4>Step 1: Create Account</h4>
+                        <p>First, create your free EmailJS account:</p>
+                        <a href="https://www.emailjs.com/" target="_blank" class="external-link">Create EmailJS Account</a>
+                        
+                        <h4 style="margin-top: 20px;">Step 2: Add Email Service</h4>
+                        <p>Connect your Gmail, Outlook, or other email service to EmailJS.</p>
+                        
+                        <h4 style="margin-top: 20px;">Step 3: Create Email Templates</h4>
+                        <p>Create these two templates in your EmailJS dashboard:</p>
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li><strong>template_visitor</strong> - Sends brochure to visitors</li>
+                            <li><strong>template_admin</strong> - Sends contact info to you</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emailjsServiceId">Service ID *</label>
+                        <input type="text" id="emailjsServiceId" placeholder="service_xxxxxxx">
+                        <div class="help-text">Found in EmailJS Dashboard > Email Services</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emailjsPublicKey">Public Key *</label>
+                        <input type="text" id="emailjsPublicKey" placeholder="user_xxxxxxxxxx">
+                        <div class="help-text">Found in EmailJS Dashboard > Account > API Keys</div>
+                    </div>
+
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label for="visitorTemplate">Visitor Template ID</label>
+                            <input type="text" id="visitorTemplate" placeholder="template_visitor" value="template_visitor">
+                            <div class="help-text">Template that sends brochure to visitors</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminTemplate">Admin Template ID</label>
+                            <input type="text" id="adminTemplate" placeholder="template_admin" value="template_admin">
+                            <div class="help-text">Template that sends leads to you</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: reCAPTCHA Setup -->
+            <div class="step-content" id="step3">
+                <h2>🔒 reCAPTCHA Setup</h2>
+                <p>reCAPTCHA protects your forms from spam. Let's get your keys.</p>
+
+                <div class="service-card" id="recaptchaCard">
+                    <div class="service-header">
+                        <div class="service-icon">🔒</div>
+                        <div class="service-info">
+                            <h3>Google reCAPTCHA v3</h3>
+                            <p>Free spam protection for your forms</p>
+                        </div>
+                    </div>
+
+                    <div class="wizard-step">
+                        <h4>Setup Instructions:</h4>
+                        <ol style="margin: 10px 0 10px 20px; line-height: 1.6;">
+                            <li>Go to <a href="https://www.google.com/recaptcha/admin/create" target="_blank" class="external-link">Google reCAPTCHA Console</a></li>
+                            <li>Choose "reCAPTCHA v3"</li>
+                            <li>Add these domains:
+                                <ul style="margin: 5px 0 5px 20px;">
+                                    <li><code>localhost</code> (for testing)</li>
+                                    <li><code>yourusername.github.io</code> (your site)</li>
+                                </ul>
+                            </li>
+                            <li>Copy your Site Key (not the Secret Key)</li>
+                        </ol>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recaptchaSiteKey">reCAPTCHA Site Key *</label>
+                        <input type="text" id="recaptchaSiteKey" placeholder="6Le...">
+                        <div class="help-text">Your Site Key (the public one, not the secret key)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Resources -->
+            <div class="step-content" id="step4">
+                <h2>📁 Resources & Files</h2>
+                <p>Let's set up your downloadable resources and redirect URLs.</p>
+
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">📄</div>
+                        <div class="service-info">
+                            <h3>Brochure/PDF Setup</h3>
+                            <p>Upload your brochure to Google Drive</p>
+                        </div>
+                    </div>
+
+                    <div class="wizard-step">
+                        <h4>Setup Instructions:</h4>
+                        <ol style="margin: 10px 0 10px 20px; line-height: 1.6;">
+                            <li>Upload your brochure/PDF to Google Drive</li>
+                            <li>Right-click → Share → Change to "Anyone with the link"</li>
+                            <li>Copy the share link and paste below</li>
+                        </ol>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="brochureUrl">Brochure URL *</label>
+                        <input type="url" id="brochureUrl" placeholder="https://drive.google.com/file/d/...">
+                        <div class="help-text">Google Drive shareable link to your brochure</div>
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="redirectUrl">Redirect URL *</label>
+                        <input type="url" id="redirectUrl" placeholder="https://linktr.ee/yourname">
+                        <div class="help-text">Where to send visitors after form submission</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingUrl">Booking/Calendar URL</label>
+                        <input type="url" id="bookingUrl" placeholder="https://calendly.com/yourname">
+                        <div class="help-text">Your Calendly or booking link (optional)</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="headshotUrl">Professional Photo URL</label>
+                    <input type="url" id="headshotUrl" placeholder="https://...">
+                    <div class="help-text">Direct URL to your professional headshot (optional)</div>
+                </div>
+            </div>
+
+            <!-- Step 5: Optional Services -->
+            <div class="step-content" id="step5">
+                <h2>📬 Optional Services</h2>
+                <p>These services are optional but can enhance your lead generation.</p>
+
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">📮</div>
+                        <div class="service-info">
+                            <h3>Mailchimp Newsletter (Optional)</h3>
+                            <p>Collect email subscribers automatically</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="enableMailchimp" style="margin-right: 10px;">
+                            Enable Mailchimp Integration
+                        </label>
+                    </div>
+
+                    <div id="mailchimpFields" class="hidden">
+                        <div class="wizard-step">
+                            <h4>Setup Instructions:</h4>
+                            <ol style="margin: 10px 0 10px 20px; line-height: 1.6;">
+                                <li>Create free <a href="https://mailchimp.com/" target="_blank" class="external-link">Mailchimp account</a></li>
+                                <li>Go to Audience → Signup forms → Embedded forms</li>
+                                <li>Copy the form action URL from the HTML code</li>
+                            </ol>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mailchimpUrl">Mailchimp Form Action URL</label>
+                            <input type="url" id="mailchimpUrl" placeholder="https://xxx.list-manage.com/subscribe/post?u=...">
+                            <div class="help-text">The action URL from your Mailchimp embedded form</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mailchimpHoneypot">Honeypot Field Name</label>
+                            <input type="text" id="mailchimpHoneypot" placeholder="b_xxxxx_xxxxx">
+                            <div class="help-text">Found in the Mailchimp form HTML (starts with "b_")</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">🎨</div>
+                        <div class="service-info">
+                            <h3>Branding Customization</h3>
+                            <p>Customize your page text and colors</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pageTitle">Page Title</label>
+                        <input type="text" id="pageTitle" value="Financial Freedom Guide">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="headline">Main Headline</label>
+                        <input type="text" id="headline" value="Create Financial Freedom on Your Terms">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subtitle">Subtitle</label>
+                        <textarea id="subtitle">Download core financial principles that build wealth AND learn about a professional opportunity that offers schedule flexibility, comprehensive training, and the potential for significant additional income.</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Review Configuration -->
+            <div class="step-content" id="step6">
+                <h2>👁️ Review Your Configuration</h2>
+                <p>Please review all your settings before we generate your config.js file.</p>
+
+                <div id="configValidation"></div>
+
+                <h3 style="margin: 30px 0 15px 0;">Configuration Preview:</h3>
+                <div class="config-preview" id="configPreview">
+                    <!-- Configuration will be displayed here -->
+                </div>
+
+                <div class="validation-message validation-warning">
+                    <strong>⚠️ Important:</strong> Make sure all your information is correct. You can always edit the config.js file later if needed.
+                </div>
+            </div>
+
+            <!-- Step 7: Launch -->
+            <div class="step-content" id="step7">
+                <h2>🎉 Ready to Launch!</h2>
+                
+                <div class="final-steps">
+                    <h3>🚀 Your Template is Ready!</h3>
+                    <p>Your config.js file has been updated with all your settings.</p>
+                </div>
+
+                <h3>Final Checklist:</h3>
+                <ul class="checklist" id="finalChecklist">
+                    <li><span class="checklist-icon status-pending">⏳</span> Configuration file updated</li>
+                    <li><span class="checklist-icon status-pending">⏳</span> EmailJS templates created</li>
+                    <li><span class="checklist-icon status-pending">⏳</span> reCAPTCHA domain registered</li>
+                    <li><span class="checklist-icon status-pending">⏳</span> Brochure uploaded and shared</li>
+                </ul>
+
+                <h3 style="margin-top: 30px;">Test Your Setup:</h3>
+                <div style="text-align: center; margin: 20px 0;">
+                    <a href="Card/test-config.html" target="_blank" class="btn btn-large">🧪 Test Configuration</a>
+                    <a href="Card/index.html" target="_blank" class="btn btn-success btn-large">🚀 View Your Landing Page</a>
+                </div>
+
+                <div class="validation-message validation-success">
+                    <strong>✅ Next Steps:</strong>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Test your configuration using the test page</li>
+                        <li>Submit a test form to verify emails work</li>
+                        <li>Generate QR codes pointing to your landing page</li>
+                        <li>Start collecting leads!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="wizard-actions">
+            <button class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">← Previous</button>
+            <div id="stepInfo">Step 1 of 7</div>
+            <button class="btn" id="nextBtn" onclick="changeStep(1)">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 7;
+        let configData = {};
+
+        // Initialize wizard
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStepDisplay();
+            setupEventListeners();
+            loadExistingConfig();
+        });
+
+        function setupEventListeners() {
+            // Mailchimp checkbox toggle
+            document.getElementById('enableMailchimp').addEventListener('change', function() {
+                const fields = document.getElementById('mailchimpFields');
+                fields.classList.toggle('hidden', !this.checked);
+            });
+
+            // Real-time validation for required fields
+            const requiredFields = ['firstName', 'lastName', 'title', 'company', 'email', 'phone', 
+                                  'emailjsServiceId', 'emailjsPublicKey', 'recaptchaSiteKey', 
+                                  'brochureUrl', 'redirectUrl'];
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('input', validateCurrentStep);
+                    field.addEventListener('blur', validateCurrentStep);
+                }
+            });
+        }
+
+        function changeStep(direction) {
+            if (direction > 0 && !validateCurrentStep()) {
+                return; // Don't proceed if validation fails
+            }
+
+            const newStep = currentStep + direction;
+            if (newStep < 1 || newStep > totalSteps) return;
+
+            // Save current step data
+            saveCurrentStepData();
+
+            // Update step
+            document.querySelector(`.step-content.active`).classList.remove('active');
+            document.querySelector(`#step${newStep}`).classList.add('active');
+
+            // Update step indicators
+            document.querySelectorAll('.step').forEach(step => {
+                const stepNum = parseInt(step.getAttribute('data-step'));
+                step.classList.remove('active', 'completed');
+                
+                if (stepNum < newStep) {
+                    step.classList.add('completed');
+                } else if (stepNum === newStep) {
+                    step.classList.add('active');
+                }
+            });
+
+            currentStep = newStep;
+            updateStepDisplay();
+
+            // Special actions for certain steps
+            if (currentStep === 6) {
+                generateConfigPreview();
+            } else if (currentStep === 7) {
+                updateConfigFile();
+                updateFinalChecklist();
+            }
+        }
+
+        function updateStepDisplay() {
+            // Update progress bar
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const stepInfo = document.getElementById('stepInfo');
+
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
+            
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'block';
+                nextBtn.textContent = currentStep === totalSteps - 1 ? 'Generate Config →' : 'Next →';
+            }
+
+            stepInfo.textContent = `Step ${currentStep} of ${totalSteps}`;
+        }
+
+        function validateCurrentStep() {
+            let isValid = true;
+            let errorMessages = [];
+
+            // Remove existing validation messages
+            document.querySelectorAll('.validation-message').forEach(msg => {
+                if (!msg.classList.contains('validation-warning')) {
+                    msg.remove();
+                }
+            });
+
+            if (currentStep === 1) {
+                // Validate personal information
+                const requiredFields = ['firstName', 'lastName', 'title', 'company', 'email', 'phone'];
+                requiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.style.borderColor = '#e74c3c';
+                        errorMessages.push(`${field.previousElementSibling.textContent} is required`);
+                    } else {
+                        field.style.borderColor = '#e9ecef';
+                    }
+                });
+
+                // Validate email format
+                const email = document.getElementById('email');
+                if (email.value && !isValidEmail(email.value)) {
+                    isValid = false;
+                    email.style.borderColor = '#e74c3c';
+                    errorMessages.push('Please enter a valid email address');
+                }
+            } else if (currentStep === 2) {
+                // Validate EmailJS
+                const serviceId = document.getElementById('emailjsServiceId');
+                const publicKey = document.getElementById('emailjsPublicKey');
+                
+                if (!serviceId.value.trim()) {
+                    isValid = false;
+                    serviceId.style.borderColor = '#e74c3c';
+                    errorMessages.push('EmailJS Service ID is required');
+                } else {
+                    serviceId.style.borderColor = '#e9ecef';
+                }
+
+                if (!publicKey.value.trim()) {
+                    isValid = false;
+                    publicKey.style.borderColor = '#e74c3c';
+                    errorMessages.push('EmailJS Public Key is required');
+                } else {
+                    publicKey.style.borderColor = '#e9ecef';
+                }
+            } else if (currentStep === 3) {
+                // Validate reCAPTCHA
+                const siteKey = document.getElementById('recaptchaSiteKey');
+                if (!siteKey.value.trim()) {
+                    isValid = false;
+                    siteKey.style.borderColor = '#e74c3c';
+                    errorMessages.push('reCAPTCHA Site Key is required');
+                } else {
+                    siteKey.style.borderColor = '#e9ecef';
+                }
+            } else if (currentStep === 4) {
+                // Validate resources
+                const brochureUrl = document.getElementById('brochureUrl');
+                const redirectUrl = document.getElementById('redirectUrl');
+                
+                if (!brochureUrl.value.trim()) {
+                    isValid = false;
+                    brochureUrl.style.borderColor = '#e74c3c';
+                    errorMessages.push('Brochure URL is required');
+                } else if (!isValidUrl(brochureUrl.value)) {
+                    isValid = false;
+                    brochureUrl.style.borderColor = '#e74c3c';
+                    errorMessages.push('Please enter a valid brochure URL');
+                } else {
+                    brochureUrl.style.borderColor = '#e9ecef';
+                }
+
+                if (!redirectUrl.value.trim()) {
+                    isValid = false;
+                    redirectUrl.style.borderColor = '#e74c3c';
+                    errorMessages.push('Redirect URL is required');
+                } else if (!isValidUrl(redirectUrl.value)) {
+                    isValid = false;
+                    redirectUrl.style.borderColor = '#e74c3c';
+                    errorMessages.push('Please enter a valid redirect URL');
+                } else {
+                    redirectUrl.style.borderColor = '#e9ecef';
+                }
+            }
+
+            // Display error messages
+            if (!isValid && errorMessages.length > 0) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'validation-message validation-error';
+                errorDiv.innerHTML = '<strong>❌ Please fix these issues:</strong><ul style="margin: 10px 0 0 20px;">' + 
+                    errorMessages.map(msg => `<li>${msg}</li>`).join('') + '</ul>';
+                
+                const stepContent = document.querySelector('.step-content.active');
+                stepContent.insertBefore(errorDiv, stepContent.firstChild);
+            }
+
+            return isValid;
+        }
+
+        function saveCurrentStepData() {
+            if (currentStep === 1) {
+                configData.personal = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    title: document.getElementById('title').value,
+                    company: document.getElementById('company').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    website: document.getElementById('website').value
+                };
+            } else if (currentStep === 2) {
+                configData.emailjs = {
+                    serviceId: document.getElementById('emailjsServiceId').value,
+                    publicKey: document.getElementById('emailjsPublicKey').value,
+                    visitorTemplate: document.getElementById('visitorTemplate').value,
+                    adminTemplate: document.getElementById('adminTemplate').value
+                };
+            } else if (currentStep === 3) {
+                configData.recaptcha = {
+                    siteKey: document.getElementById('recaptchaSiteKey').value
+                };
+            } else if (currentStep === 4) {
+                configData.resources = {
+                    brochureUrl: document.getElementById('brochureUrl').value,
+                    redirectUrl: document.getElementById('redirectUrl').value,
+                    bookingUrl: document.getElementById('bookingUrl').value,
+                    headshotUrl: document.getElementById('headshotUrl').value
+                };
+            } else if (currentStep === 5) {
+                configData.optional = {
+                    enableMailchimp: document.getElementById('enableMailchimp').checked,
+                    mailchimpUrl: document.getElementById('mailchimpUrl').value,
+                    mailchimpHoneypot: document.getElementById('mailchimpHoneypot').value,
+                    pageTitle: document.getElementById('pageTitle').value,
+                    headline: document.getElementById('headline').value,
+                    subtitle: document.getElementById('subtitle').value
+                };
+            }
+        }
+
+        function generateConfigPreview() {
+            saveCurrentStepData();
+
+            // Generate configuration validation
+            const validationDiv = document.getElementById('configValidation');
+            const validationItems = [];
+
+            // Check completeness
+            if (configData.personal && configData.emailjs && configData.recaptcha && configData.resources) {
+                validationItems.push('<div class="validation-success">✅ All required sections completed</div>');
+            } else {
+                validationItems.push('<div class="validation-error">❌ Some required sections are incomplete</div>');
+            }
+
+            // Check EmailJS
+            if (configData.emailjs && configData.emailjs.serviceId && configData.emailjs.publicKey) {
+                validationItems.push('<div class="validation-success">✅ EmailJS configuration ready</div>');
+            } else {
+                validationItems.push('<div class="validation-error">❌ EmailJS configuration incomplete</div>');
+            }
+
+            // Check reCAPTCHA
+            if (configData.recaptcha && configData.recaptcha.siteKey) {
+                validationItems.push('<div class="validation-success">✅ reCAPTCHA configuration ready</div>');
+            } else {
+                validationItems.push('<div class="validation-error">❌ reCAPTCHA configuration incomplete</div>');
+            }
+
+            validationDiv.innerHTML = validationItems.join('');
+
+            // Generate config preview
+            const config = generateConfigObject();
+            document.getElementById('configPreview').textContent = JSON.stringify(config, null, 2);
+        }
+
+        function generateConfigObject() {
+            const config = {
+                personal: configData.personal || {},
+                branding: {
+                    pageTitle: configData.optional?.pageTitle || "Financial Freedom Guide",
+                    headline: configData.optional?.headline || "Create Financial Freedom on Your Terms",
+                    subtitle: configData.optional?.subtitle || "Download core financial principles...",
+                    headshotUrl: configData.resources?.headshotUrl || ""
+                },
+                email: {
+                    emailjs: {
+                        serviceId: configData.emailjs?.serviceId || "YOUR_EMAILJS_SERVICE_ID",
+                        publicKey: configData.emailjs?.publicKey || "YOUR_EMAILJS_PUBLIC_KEY",
+                        templates: {
+                            visitor: configData.emailjs?.visitorTemplate || "template_visitor",
+                            admin: configData.emailjs?.adminTemplate || "template_admin"
+                        }
+                    },
+                    adminEmailEncoded: btoa(configData.personal?.email || "admin@example.com")
+                },
+                security: {
+                    recaptcha: {
+                        productionSiteKey: configData.recaptcha?.siteKey || "YOUR_RECAPTCHA_SITE_KEY"
+                    }
+                },
+                marketing: {
+                    mailchimp: {
+                        enabled: configData.optional?.enableMailchimp || false,
+                        actionUrl: configData.optional?.mailchimpUrl || "YOUR_MAILCHIMP_ACTION_URL",
+                        honeypotField: configData.optional?.mailchimpHoneypot || "b_USERID_LISTID"
+                    }
+                },
+                resources: {
+                    brochureUrl: configData.resources?.brochureUrl || "",
+                    redirectUrl: configData.resources?.redirectUrl || "",
+                    bookingUrl: configData.resources?.bookingUrl || ""
+                }
+            };
+
+            return config;
+        }
+
+        function updateConfigFile() {
+            const config = generateConfigObject();
+            
+            // In a real implementation, this would write to the file
+            // For now, we'll prepare the download
+            const configContent = generateFullConfigFile(config);
+            
+            // Create download link
+            const blob = new Blob([configContent], { type: 'application/javascript' });
+            const url = URL.createObjectURL(blob);
+            
+            // Add download button
+            const downloadBtn = document.createElement('a');
+            downloadBtn.href = url;
+            downloadBtn.download = 'config.js';
+            downloadBtn.className = 'btn btn-success btn-large';
+            downloadBtn.innerHTML = '💾 Download Updated config.js';
+            downloadBtn.style.display = 'block';
+            downloadBtn.style.textAlign = 'center';
+            downloadBtn.style.margin = '20px auto';
+            
+            const finalSteps = document.querySelector('.final-steps');
+            finalSteps.appendChild(downloadBtn);
+        }
+
+        function generateFullConfigFile(config) {
+            return `// ===============================================================================
+//                           CARD CONFIGURATION FILE
+// ===============================================================================
+// 
+// ✅ GENERATED BY SETUP WIZARD - ${new Date().toLocaleString()}
+// 
+// This file contains your personal and service configuration.
+// You can edit these values manually if needed.
+//
+// ===============================================================================
+
+const CARD_CONFIG = {
+    // ===== PERSONAL INFORMATION =====
+    personal: {
+        firstName: "${config.personal.firstName || ''}",
+        lastName: "${config.personal.lastName || ''}", 
+        title: "${config.personal.title || ''}",
+        company: "${config.personal.company || ''}",
+        email: "${config.personal.email || ''}", 
+        phone: "${config.personal.phone || ''}",
+        website: "${config.personal.website || ''}",
+        linkedin: "",
+        address: {
+            street: "",
+            city: "", 
+            province: "",
+            postalCode: "",
+            country: ""
+        },
+        serviceAreas: []
+    },
+
+    // ===== BRANDING & CONTENT =====
+    branding: {
+        pageTitle: "${config.branding.pageTitle}",
+        headline: "${config.branding.headline}",
+        subtitle: "${config.branding.subtitle.replace(/"/g, '\\"')}",
+        brochureTitle: "Your Financial Freedom Guide",
+        successMessage: "Your Financial Freedom Guide has been sent to your email address. Check your inbox (and spam folder) for the download link.",
+        privacyText: "Your information is secure and will never be shared with third parties.",
+        
+        colors: {
+            primary: "#c9a96e",
+            primaryLight: "#d4b876", 
+            primaryDark: "#b8965a",
+            background: "#1a1a1a",
+            backgroundLight: "#2c2c2c",
+            text: "#ffffff",
+            textMuted: "#cccccc",
+            textLight: "#888888"
+        },
+
+        headshotUrl: "${config.branding.headshotUrl}"
+    },
+
+    // ===== EMAIL SERVICES =====
+    email: {
+        emailjs: {
+            serviceId: "${config.email.emailjs.serviceId}",
+            publicKey: "${config.email.emailjs.publicKey}",
+            templates: {
+                visitor: "${config.email.emailjs.templates.visitor}",
+                admin: "${config.email.emailjs.templates.admin}"
+            }
+        },
+
+        adminEmailEncoded: "${config.email.adminEmailEncoded}",
+        
+        automation: {
+            sendBrochureToVisitor: true,
+            sendLeadNotificationToAdmin: true,
+            includeVCardData: true,
+            includeNotionData: true
+        }
+    },
+
+    // ===== SECURITY SERVICES =====
+    security: {
+        recaptcha: {
+            testSiteKey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+            productionSiteKey: "${config.security.recaptcha.productionSiteKey}",
+            minScore: 0.3
+        }
+    },
+
+    // ===== MARKETING SERVICES =====
+    marketing: {
+        mailchimp: {
+            actionUrl: "${config.marketing.mailchimp.actionUrl}",
+            honeypotField: "${config.marketing.mailchimp.honeypotField}",
+            enabled: ${config.marketing.mailchimp.enabled},
+            defaultOptIn: true
+        },
+
+        analytics: {
+            trackingEnabled: true,
+            source: "QR Code Landing Page",
+            utmSource: "qr_code",
+            utmMedium: "business_card",
+            utmCampaign: "lead_generation"
+        }
+    },
+
+    // ===== RESOURCES & FILES =====
+    resources: {
+        brochureUrl: "${config.resources.brochureUrl}",
+        bookingUrl: "${config.resources.bookingUrl}",
+        redirectUrl: "${config.resources.redirectUrl}",
+        redirectDelay: 5
+    },
+
+    // ===== FORM SETTINGS =====
+    form: {
+        requiredFields: ["firstName", "lastName", "email"],
+        showPhoneField: true,
+        showCompanyField: true,
+        showNewsletterOption: true,
+        
+        validation: {
+            emailRegex: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/,
+            phoneFormat: "###-###-####",
+            maxFieldLength: 100
+        },
+
+        autoFormat: {
+            phone: true,
+            capitalizeName: true
+        }
+    },
+
+    // ===== ADVANCED SETTINGS =====
+    advanced: {
+        detectEnvironment: true,
+        
+        debug: {
+            enableConsoleLog: true,
+            logEmailjsResponses: true,
+            logMailchimpSubmissions: true,
+            logFormValidation: false
+        },
+
+        performance: {
+            lazyLoadImages: true,
+            preloadCriticalResources: true
+        },
+
+        features: {
+            enableDataExport: true,
+            enableProgressiveEnhancement: true,
+            enableOfflineSupport: false
+        }
+    }
+};
+
+// ===============================================================================
+//                              SECURITY HELPERS
+// ===============================================================================
+
+function getAdminEmail() {
+    try {
+        return atob(CARD_CONFIG.email.adminEmailEncoded);
+    } catch (e) {
+        console.error('Failed to decode admin email');
+        return 'admin@example.com';
+    }
+}
+
+function getRecaptchaSiteKey() {
+    const isLocalhost = window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1' || 
+                       window.location.hostname.includes('github.io') === false;
+    
+    return isLocalhost 
+        ? CARD_CONFIG.security.recaptcha.testSiteKey
+        : CARD_CONFIG.security.recaptcha.productionSiteKey;
+}
+
+function validateConfig() {
+    const issues = [];
+    
+    if (CARD_CONFIG.email.emailjs.serviceId === 'YOUR_EMAILJS_SERVICE_ID') {
+        issues.push('EmailJS Service ID not configured');
+    }
+    if (CARD_CONFIG.email.emailjs.publicKey === 'YOUR_EMAILJS_PUBLIC_KEY') {
+        issues.push('EmailJS Public Key not configured');
+    }
+    
+    if (CARD_CONFIG.security.recaptcha.productionSiteKey === 'YOUR_RECAPTCHA_SITE_KEY') {
+        issues.push('reCAPTCHA Site Key not configured for production');
+    }
+    
+    if (CARD_CONFIG.marketing.mailchimp.enabled && 
+        CARD_CONFIG.marketing.mailchimp.actionUrl === 'YOUR_MAILCHIMP_ACTION_URL') {
+        issues.push('Mailchimp Action URL not configured');
+    }
+    
+    if (issues.length > 0 && CARD_CONFIG.advanced.debug.enableConsoleLog) {
+        console.warn('Configuration Issues Found:');
+        issues.forEach(issue => console.warn('- ' + issue));
+        console.warn('Please update config.js with your actual service credentials');
+    }
+    
+    return issues;
+}
+
+// ===============================================================================
+//                            EXPORT CONFIGURATION
+// ===============================================================================
+
+window.CARD_CONFIG = CARD_CONFIG;
+window.getAdminEmail = getAdminEmail;
+window.getRecaptchaSiteKey = getRecaptchaSiteKey;
+window.validateConfig = validateConfig;
+
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', function() {
+        validateConfig();
+    });
+}`;
+        }
+
+        function updateFinalChecklist() {
+            const checklist = document.getElementById('finalChecklist');
+            const items = checklist.querySelectorAll('li .checklist-icon');
+            
+            // Simulate checking items
+            setTimeout(() => {
+                items[0].className = 'checklist-icon status-completed';
+                items[0].textContent = '✅';
+            }, 500);
+            
+            setTimeout(() => {
+                if (configData.emailjs && configData.emailjs.serviceId) {
+                    items[1].className = 'checklist-icon status-completed';
+                    items[1].textContent = '✅';
+                }
+            }, 1000);
+            
+            setTimeout(() => {
+                if (configData.recaptcha && configData.recaptcha.siteKey) {
+                    items[2].className = 'checklist-icon status-completed';
+                    items[2].textContent = '✅';
+                }
+            }, 1500);
+            
+            setTimeout(() => {
+                if (configData.resources && configData.resources.brochureUrl) {
+                    items[3].className = 'checklist-icon status-completed';
+                    items[3].textContent = '✅';
+                }
+            }, 2000);
+        }
+
+        function loadExistingConfig() {
+            // In a real implementation, this would load from the existing config.js file
+            // For now, we'll leave it empty for new setups
+        }
+
+        // Utility functions
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function isValidUrl(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        // Handle keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                const activeElement = document.activeElement;
+                if (activeElement.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    changeStep(1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
