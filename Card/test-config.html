@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Test</title>
+    <script src="config.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .pass { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .fail { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .warn { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        .config-section { background: white; padding: 15px; margin: 10px 0; border-radius: 4px; border: 1px solid #ddd; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Card Configuration Test</h1>
+    <p>This page tests your config.js configuration and identifies any issues.</p>
+    
+    <div id="test-results"></div>
+    
+    <div class="config-section">
+        <h3>📋 Current Configuration Summary</h3>
+        <div id="config-summary"></div>
+    </div>
+
+    <script>
+        function runTests() {
+            const results = [];
+            
+            // Test 1: Configuration file loaded
+            if (typeof CARD_CONFIG !== 'undefined') {
+                results.push({type: 'pass', message: '✅ Configuration file loaded successfully'});
+            } else {
+                results.push({type: 'fail', message: '❌ Configuration file not loaded - check config.js'});
+                return results;
+            }
+            
+            // Test 2: Helper functions available
+            if (typeof getAdminEmail === 'function' && typeof getRecaptchaSiteKey === 'function') {
+                results.push({type: 'pass', message: '✅ Helper functions loaded'});
+            } else {
+                results.push({type: 'fail', message: '❌ Helper functions missing'});
+            }
+            
+            // Test 3: EmailJS Configuration
+            const emailConfig = CARD_CONFIG.email.emailjs;
+            if (emailConfig.serviceId !== 'YOUR_EMAILJS_SERVICE_ID' && emailConfig.publicKey !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+                results.push({type: 'pass', message: '✅ EmailJS configured'});
+            } else {
+                results.push({type: 'warn', message: '⚠️ EmailJS not configured - emails will not work'});
+            }
+            
+            // Test 4: reCAPTCHA Configuration  
+            const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const recaptchaKey = getRecaptchaSiteKey();
+            if (isLocalhost && recaptchaKey === CARD_CONFIG.security.recaptcha.testSiteKey) {
+                results.push({type: 'pass', message: '✅ reCAPTCHA using test key for localhost'});
+            } else if (!isLocalhost && recaptchaKey !== 'YOUR_RECAPTCHA_SITE_KEY') {
+                results.push({type: 'pass', message: '✅ reCAPTCHA production key configured'});
+            } else {
+                results.push({type: 'warn', message: '⚠️ reCAPTCHA not configured for production'});
+            }
+            
+            // Test 5: Mailchimp Configuration
+            const mailchimpConfig = CARD_CONFIG.marketing.mailchimp;
+            if (mailchimpConfig.enabled && mailchimpConfig.actionUrl !== 'YOUR_MAILCHIMP_ACTION_URL') {
+                results.push({type: 'pass', message: '✅ Mailchimp configured'});
+            } else if (!mailchimpConfig.enabled) {
+                results.push({type: 'pass', message: '✅ Mailchimp disabled by configuration'});
+            } else {
+                results.push({type: 'warn', message: '⚠️ Mailchimp enabled but not configured'});
+            }
+            
+            // Test 6: Resources Configuration
+            const resources = CARD_CONFIG.resources;
+            if (resources.brochureUrl && resources.redirectUrl) {
+                results.push({type: 'pass', message: '✅ Resources configured (brochure, redirect)'});
+            } else {
+                results.push({type: 'warn', message: '⚠️ Some resources not configured'});
+            }
+            
+            // Test 7: Admin Email Decoding
+            try {
+                const adminEmail = getAdminEmail();
+                if (adminEmail && adminEmail.includes('@')) {
+                    results.push({type: 'pass', message: `✅ Admin email decoded: ${adminEmail}`});
+                } else {
+                    results.push({type: 'fail', message: '❌ Admin email decode failed'});
+                }
+            } catch (e) {
+                results.push({type: 'fail', message: '❌ Admin email decode error: ' + e.message});
+            }
+            
+            // Test 8: Configuration Validation
+            const configIssues = validateConfig();
+            if (configIssues.length === 0) {
+                results.push({type: 'pass', message: '✅ All configuration valid'});
+            } else {
+                results.push({type: 'warn', message: `⚠️ Configuration issues found: ${configIssues.length}`});
+            }
+            
+            return results;
+        }
+        
+        function displayResults(results) {
+            const container = document.getElementById('test-results');
+            container.innerHTML = '';
+            
+            results.forEach(result => {
+                const div = document.createElement('div');
+                div.className = `test-result ${result.type}`;
+                div.textContent = result.message;
+                container.appendChild(div);
+            });
+        }
+        
+        function displayConfigSummary() {
+            const container = document.getElementById('config-summary');
+            
+            if (typeof CARD_CONFIG === 'undefined') {
+                container.innerHTML = '<p class="fail">❌ Configuration not loaded</p>';
+                return;
+            }
+            
+            const summary = {
+                'Personal Info': CARD_CONFIG.personal ? `${CARD_CONFIG.personal.firstName} ${CARD_CONFIG.personal.lastName}` : 'Not configured',
+                'EmailJS Service': CARD_CONFIG.email.emailjs.serviceId,
+                'reCAPTCHA Key': getRecaptchaSiteKey() === 'YOUR_RECAPTCHA_SITE_KEY' ? 'Not configured' : 'Configured',
+                'Mailchimp': CARD_CONFIG.marketing.mailchimp.enabled ? 'Enabled' : 'Disabled',
+                'Environment': window.location.hostname === 'localhost' ? 'Development (localhost)' : 'Production',
+                'Debug Logging': CARD_CONFIG.advanced.debug.enableConsoleLog ? 'Enabled' : 'Disabled'
+            };
+            
+            let html = '<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse;">';
+            for (const [key, value] of Object.entries(summary)) {
+                html += `<tr><td><strong>${key}</strong></td><td>${value}</td></tr>`;
+            }
+            html += '</table>';
+            
+            container.innerHTML = html;
+        }
+        
+        window.onload = function() {
+            const results = runTests();
+            displayResults(results);
+            displayConfigSummary();
+            
+            // Show configuration issues in detail
+            if (typeof validateConfig === 'function') {
+                const issues = validateConfig();
+                if (issues.length > 0) {
+                    console.log('Configuration Issues:', issues);
+                }
+            }
+        };
+    </script>
+</body>
+</html>
