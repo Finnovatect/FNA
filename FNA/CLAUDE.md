@@ -107,3 +107,9 @@ This is a Jekyll-based GitHub Pages website for "Financial Needs Analysis" - a f
 - **CRITICAL**: All percentage fields must show % symbol in the field
 - Format: 25.00% (with percentage symbol visible)
 - Apply to all rate and percentage input fields throughout the application
+
+## CSS Guidelines
+- Use global css rules for different field types, not specific overrides for specific cells unless specifically told to do so
+
+## Best Practices
+- Add comments to changed rows when making changes to explain why

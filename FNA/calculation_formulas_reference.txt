@@ -1,0 +1,556 @@
+FINANCIAL NEEDS ANALYSIS - CALCULATION FUNCTIONS AND FORMULAS WITH FIELD REFERENCES
+=====================================================================================
+
+FIELD REFERENCE NUMBERS:
+========================
+1. Family > Partner 1 Name (spouse1Name)
+2. Family > Partner 1 Date of Birth (spouse1DOB)
+3. Family > Partner 1 Retirement Age (spouse1RetireAge)
+4. Family > Partner 1 Life Expectancy (spouse1LifeExpectancy)
+5. Family > Partner 2 Name (spouse2Name)
+6. Family > Partner 2 Date of Birth (spouse2DOB)
+7. Family > Partner 2 Retirement Age (spouse2RetireAge)
+8. Family > Partner 2 Life Expectancy (spouse2LifeExpectancy)
+9. Dependent > Child Name (dependent-name)
+10. Dependent > Child Date of Birth (dependent-dob)
+11. Dependent > Child Education Start Age (dependent-edu-age)
+12. Dependent > Child Study Years (dependent-study-years)
+13. Dependent > Child Annual Education Cost (dependent-edu-cost)
+14. Income > Partner 1 Pay Rate (income1Rate)
+15. Income > Partner 1 Pay Frequency (income1Frequency)
+16. Income > Partner 1 Hours/Week (income1Hours)
+17. Income > Partner 2 Pay Rate (income2Rate)
+18. Income > Partner 2 Pay Frequency (income2Frequency)
+19. Income > Partner 2 Hours/Week (income2Hours)
+20. Other Income > Monthly Amount (income-amount)
+21. Other Income > Description (income-description)
+22. Assumptions > Inflation Rate (inflationRate)
+23. Assumptions > Pre-Retirement Investment Rate (preRetireRate)
+24. Assumptions > Post-Retirement Investment Rate (postRetireRate)
+25. Assumptions > Retirement Income Needed % (retirementIncomePercent)
+26. Assumptions > Reduction for Widow(er) % (widowReduction)
+27. Assumptions > Registered Tax Rate (registeredTaxRate)
+28. Assumptions > Blended Tax Rate (blendedTaxRate)
+29. Assumptions > Current Housing (currentHousing)
+30. Assumptions > Retirement Housing (retirementHousing)
+31. Assumptions > Downsize Intent (downsizeIntent)
+32. Assumptions > Downsize Home Value (downsizeValue)
+33. Assumptions > Retirement Monthly Rent (retirementRent)
+34. Assumptions > Partner 1 CPP Monthly (cpp1Monthly)
+35. Assumptions > Partner 1 OAS Monthly (oas1Monthly)
+36. Assumptions > Partner 2 CPP Monthly (cpp2Monthly)
+37. Assumptions > Partner 2 OAS Monthly (oas2Monthly)
+38. Goals > Goal Type (goal-type)
+39. Goals > Goal Description (goal-description)
+40. Goals > Goal Years Away (goal-years)
+41. Goals > Goal Amount (goal-amount)
+42. Goals > Goal Frequency (goal-frequency)
+43. Liquid Assets > Asset Type (asset-type)
+44. Liquid Assets > Asset Value (asset-value)
+45. Liquid Assets > Asset Growth Rate (asset-growth)
+46. Liquid Assets > Asset Notes (asset-notes)
+47. Fixed Assets > Asset Type (asset-type)
+48. Fixed Assets > Asset Value (asset-value)
+49. Fixed Assets > Asset Growth Rate (asset-growth)
+50. Fixed Assets > Asset Notes (asset-notes)
+51. Mortgages > Property Type (mortgage-property)
+52. Mortgages > Original Amount (mortgage-original)
+53. Mortgages > Current Balance (mortgage-balance)
+54. Mortgages > Interest Rate (mortgage-rate)
+55. Mortgages > Term Years (mortgage-term)
+56. Mortgages > Monthly Payment (mortgage-payment)
+57. Mortgages > Maturity Date (mortgage-maturity)
+58. Secured Debts > Debt Type (liability-type)
+59. Secured Debts > Current Balance (liability-balance)
+60. Secured Debts > Interest Rate (liability-rate)
+61. Secured Debts > Monthly Payment (liability-payment)
+62. Unsecured Debts > Debt Type (liability-type)
+63. Unsecured Debts > Current Balance (liability-balance)
+64. Unsecured Debts > Interest Rate (liability-rate)
+65. Unsecured Debts > Monthly Payment (liability-payment)
+66. Insurance > Coverage Amount (insurance-amount)
+67. Insurance > Annual Premium (insurance-premium)
+68. Insurance > Term Years (insurance-term)
+69. Insurance > Beneficiary (insurance-beneficiary)
+70. Insurance > Insurance Company (insurance-company)
+71. Insurance > Expiry Date (insurance-expiry)
+72. Insurance > Partner 1 Final Expenses (finalExpenses1)
+73. Insurance > Partner 1 Income Replacement Years (incomeReplacement1)
+74. Insurance > Partner 1 Mortgage Debt (mortgageDebt1)
+75. Insurance > Partner 1 Education Fund (educationFund1)
+76. Insurance > Partner 2 Final Expenses (finalExpenses2)
+77. Insurance > Partner 2 Income Replacement Years (incomeReplacement2)
+78. Insurance > Partner 2 Mortgage Debt (mortgageDebt2)
+79. Insurance > Partner 2 Education Fund (educationFund2)
+
+CALCULATION FUNCTIONS AND FORMULAS:
+===================================
+
+1. BASIC INCOME CALCULATIONS
+============================
+
+Function: calculateAnnualIncome(rate, frequency, hours)
+Fields Used:
+14. Income > Partner 1 Pay Rate (income1Rate)
+15. Income > Partner 1 Pay Frequency (income1Frequency)
+16. Income > Partner 1 Hours/Week (income1Hours)
+OR
+17. Income > Partner 2 Pay Rate (income2Rate)
+18. Income > Partner 2 Pay Frequency (income2Frequency)
+19. Income > Partner 2 Hours/Week (income2Hours)
+Purpose: Convert hourly/weekly/monthly rates to annual income
+Formula:
+- If (15) === 'hourly': (14) * (16) * 52
+- If (15) === 'weekly': (14) * 52  
+- If (15) === 'monthly': (14) * 12
+- If (15) === 'annual': (14)
+
+Function: calculateAge(dobString)
+Fields Used:
+2. Family > Partner 1 Date of Birth (spouse1DOB)
+OR
+6. Family > Partner 2 Date of Birth (spouse2DOB)
+OR
+10. Dependent > Child Date of Birth (dependent-dob)
+Purpose: Calculate current age from date of birth
+Formula: 
+- Parse YYYYMMDD format from (2), (6), or (10)
+- Age = (today - birthDate) / (365.25 * 24 * 60 * 60 * 1000)
+- Return Math.floor(age)
+
+Function: calculateLifeExpectancy(age, gender)
+Fields Used:
+2. Family > Partner 1 Date of Birth (spouse1DOB) - for age calculation
+OR
+6. Family > Partner 2 Date of Birth (spouse2DOB) - for age calculation
+Purpose: Estimate life expectancy based on current age and gender
+Formula (Canadian actuarial tables):
+- Male: 84.25 - (age - 25) * 0.1 (if age > 25)
+- Female: 87.32 - (age - 25) * 0.1 (if age > 25)
+- Minimum 70 years, Maximum 95 years
+PARTNER 1 LIFE EXPECTANCY (Result: Partner 1 Demographics):
+- Result stored in (4)
+
+PARTNER 2 LIFE EXPECTANCY (Result: Partner 2 Demographics):
+- Result stored in (8)
+
+2. EDUCATION FUNDING CALCULATIONS
+=================================
+
+Function: calculateSmartEducationFunding(dependent, inflationRate)
+Fields Used:
+10. Dependent > Child Date of Birth (dependent-dob)
+11. Dependent > Child Education Start Age (dependent-edu-age)
+12. Dependent > Child Study Years (dependent-study-years)
+13. Dependent > Child Annual Education Cost (dependent-edu-cost)
+22. Assumptions > Inflation Rate (inflationRate)
+Purpose: Calculate education funding needed considering current age vs education start age
+Formula:
+- currentAge = calculateAge((10))
+- educationStartAge = (11) || 18
+- studyYears = (12) || 4
+- annualCost = (13) || 25000
+- inflationRate = (22)
+
+If student already in education (currentAge >= (11)):
+  yearsRemaining = Math.max(0, ((11) + (12)) - currentAge)
+  totalCost = (13) * yearsRemaining * Math.pow(1 + (22), yearsRemaining/2)
+
+If student not yet in education (currentAge < (11)):
+  yearsUntilStart = (11) - currentAge
+  inflatedAnnualCost = (13) * Math.pow(1 + (22), yearsUntilStart)
+  totalCost = inflatedAnnualCost * (12) * Math.pow(1 + (22), (12)/2)
+
+3. INCOME REPLACEMENT CALCULATIONS
+==================================
+
+Function: calculateIncomeReplacementYears()
+Fields Used:
+2. Family > Partner 1 Date of Birth (spouse1DOB)
+3. Family > Partner 1 Retirement Age (spouse1RetireAge)
+6. Family > Partner 2 Date of Birth (spouse2DOB)
+7. Family > Partner 2 Retirement Age (spouse2RetireAge)
+Purpose: Auto-calculate years from current age to retirement for both partners
+Formula:
+- spouse1Age = calculateAge((2))
+- spouse2Age = calculateAge((6))
+- spouse1Years = Math.max(0, (3) - spouse1Age)
+- spouse2Years = Math.max(0, (7) - spouse2Age)
+- Update (73) and (77) with calculated values
+
+4. DIME ANALYSIS CALCULATIONS
+=============================
+
+Function: calculateDimeAnalysis(partner)
+Fields Used:
+14. Income > Partner 1 Pay Rate (income1Rate)
+15. Income > Partner 1 Pay Frequency (income1Frequency)
+16. Income > Partner 1 Hours/Week (income1Hours)
+17. Income > Partner 2 Pay Rate (income2Rate)
+18. Income > Partner 2 Pay Frequency (income2Frequency)
+19. Income > Partner 2 Hours/Week (income2Hours)
+22. Assumptions > Inflation Rate (inflationRate)
+24. Assumptions > Post-Retirement Investment Rate (postRetireRate)
+53. Mortgages > Current Balance (mortgage-balance)
+59. Secured Debts > Current Balance (liability-balance)
+63. Unsecured Debts > Current Balance (liability-balance)
+72. Insurance > Partner 1 Final Expenses (finalExpenses1)
+73. Insurance > Partner 1 Income Replacement Years (incomeReplacement1)
+75. Insurance > Partner 1 Education Fund (educationFund1)
+76. Insurance > Partner 2 Final Expenses (finalExpenses2)
+77. Insurance > Partner 2 Income Replacement Years (incomeReplacement2)
+79. Insurance > Partner 2 Education Fund (educationFund2)
+Purpose: Calculate insurance needs using DIME methodology
+Components:
+
+D - DEBT/FINAL EXPENSES:
+- finalExpenses = (72) for Partner 1 OR (76) for Partner 2 || 15000
+
+I - INCOME REPLACEMENT (Present Value of Inflating Annuity):
+- Partner 1: calculateAnnualIncome((14), (15), (16))
+- Partner 2: calculateAnnualIncome((17), (18), (19))
+- incomeReplacementYears = (73) for Partner 1 OR (77) for Partner 2
+- inflationRate = (22)
+- discountRate = (24)
+
+PARTNER 1 INCOME REPLACEMENT (Result: Partner 1 DIME Analysis "I" Component):
+If (22) ≈ (24):
+  I₁ = partner1Income * (73) * (1 + (22))^((73)/2)
+Else:
+  growthFactor = 1 + (22)
+  discountFactor = 1 + (24)
+  I₁ = partner1Income * (1 - (growthFactor/discountFactor)^(73)) / ((24) - (22))
+
+PARTNER 2 INCOME REPLACEMENT (Result: Partner 2 DIME Analysis "I" Component):
+If (22) ≈ (24):
+  I₂ = partner2Income * (77) * (1 + (22))^((77)/2)
+Else:
+  growthFactor = 1 + (22)
+  discountFactor = 1 + (24)
+  I₂ = partner2Income * (1 - (growthFactor/discountFactor)^(77)) / ((24) - (22))
+
+M - MORTGAGE/DEBT:
+
+PARTNER 1 MORTGAGE/DEBT (Result: Partner 1 DIME Analysis "M" Component):
+M₁ = Sum of all (53) + (59) + (63) values
+- Result stored in (74)
+
+PARTNER 2 MORTGAGE/DEBT (Result: Partner 2 DIME Analysis "M" Component):
+M₂ = Sum of all (53) + (59) + (63) values
+- Result stored in (78)
+
+E - EDUCATION:
+
+PARTNER 1 EDUCATION FUND (Result: Partner 1 DIME Analysis "E" Component):
+E₁ = Sum of calculateSmartEducationFunding() for all dependents using (10-13, 22)
+- Result stored in (75)
+
+PARTNER 2 EDUCATION FUND (Result: Partner 2 DIME Analysis "E" Component):
+E₂ = Sum of calculateSmartEducationFunding() for all dependents using (10-13, 22)
+- Result stored in (79)
+
+TOTAL DIME ANALYSIS RESULTS:
+
+PARTNER 1 TOTAL DIME (Result: Partner 1 Insurance Needs Summary):
+DIME₁ = (72) + I₁ + (74) + (75)
+
+PARTNER 2 TOTAL DIME (Result: Partner 2 Insurance Needs Summary):
+DIME₂ = (76) + I₂ + (78) + (79)
+
+5. FINANCIAL INDEPENDENCE NUMBER (FIN) CALCULATIONS
+===================================================
+
+Function: calculateFinancialScenarios(data)
+Fields Used:
+14. Income > Partner 1 Pay Rate (income1Rate)
+15. Income > Partner 1 Pay Frequency (income1Frequency)
+16. Income > Partner 1 Hours/Week (income1Hours)
+17. Income > Partner 2 Pay Rate (income2Rate)
+18. Income > Partner 2 Pay Frequency (income2Frequency)
+19. Income > Partner 2 Hours/Week (income2Hours)
+20. Other Income > Monthly Amount (income-amount)
+22. Assumptions > Inflation Rate (inflationRate)
+24. Assumptions > Post-Retirement Investment Rate (postRetireRate)
+25. Assumptions > Retirement Income Needed % (retirementIncomePercent)
+27. Assumptions > Registered Tax Rate (registeredTaxRate)
+28. Assumptions > Blended Tax Rate (blendedTaxRate)
+34. Assumptions > Partner 1 CPP Monthly (cpp1Monthly)
+36. Assumptions > Partner 2 CPP Monthly (cpp2Monthly)
+NOTE: OAS fields (35), (37) not used in FIN calculations - retained for reference only
+40. Goals > Goal Years Away (goal-years)
+41. Goals > Goal Amount (goal-amount)
+42. Goals > Goal Frequency (goal-frequency)
+53. Mortgages > Current Balance (mortgage-balance)
+59. Secured Debts > Current Balance (liability-balance)
+63. Unsecured Debts > Current Balance (liability-balance)
+Purpose: Calculate 3x3 matrix of FIN scenarios (3 tax situations × 3 drawdown approaches)
+
+Tax Situations:
+1. Registered (RRSP/401k fully taxed)
+2. Blended (mix of registered/non-registered)  
+3. Non-Taxable (TFSA/Roth IRA)
+
+Income Shortfall Calculations:
+- totalAnnualIncome = calculateAnnualIncome((14), (15), (16)) + calculateAnnualIncome((17), (18), (19)) + sum of all (20) * 12
+- requiredRetirementIncome = totalAnnualIncome * (25)
+- govBenefits = ((34) + (36)) * 12
+  NOTE: OAS benefits (35), (37) excluded from FIN calculations - assumption is sufficient wealth negates OAS eligibility
+- baseShortfall = Math.max(0, requiredRetirementIncome - govBenefits)
+
+Registered Income Shortfall:
+registeredShortfall = baseShortfall / (1 - (27))
+
+Blended Income Shortfall: 
+blendedShortfall = baseShortfall / (1 - (28))
+
+Non-Taxable Income Shortfall:
+nonTaxShortfall = baseShortfall
+
+Drawdown Approaches:
+
+1. PRINCIPAL MAINTENANCE (Conservative 3.5% withdrawal):
+FIN = (incomeShortfall + educationCosts/20 + goalCosts/20) / 0.035
+
+2. DRAWDOWN + 10 YEARS BUFFER:
+bufferYears = retirementLength + 10
+FIN = Present Value of Annuity over bufferYears
+Formula: PV = PMT * (1 - (1 + (24))^-n) / (24)
+Where: PMT = monthly shortfall, n = months
+
+3. DRAWDOWN TO LIFESPAN (No Buffer):
+lifespanYears = retirementLength  
+FIN = Present Value of Annuity over lifespanYears
+
+Function: calculatePresentValueAnnuity(payment, rate, periods)
+Fields Used:
+24. Assumptions > Post-Retirement Investment Rate (postRetireRate)
+Purpose: Calculate present value of ordinary annuity
+Formula: PV = payment * (1 - (1 + (24))^(-periods)) / (24)
+
+6. MORTGAGE CALCULATIONS
+========================
+
+Function: calculateMortgagePayment(principal, annualRate, termYears)
+Fields Used:
+52. Mortgages > Original Amount (mortgage-original)
+54. Mortgages > Interest Rate (mortgage-rate)
+55. Mortgages > Term Years (mortgage-term)
+Purpose: Calculate monthly mortgage payment
+Formula (standard amortization):
+- principal = (52)
+- annualRate = (54)
+- termYears = (55)
+- monthlyRate = (54) / 12
+- numPayments = (55) * 12
+- payment = (52) * (monthlyRate * (1 + monthlyRate)^numPayments) / 
+           ((1 + monthlyRate)^numPayments - 1)
+- Result stored in (56)
+
+7. NET WORTH PROJECTION
+=======================
+
+Function: createNetWorthChart()
+Fields Used:
+44. Liquid Assets > Asset Value (asset-value)
+45. Liquid Assets > Asset Growth Rate (asset-growth)
+48. Fixed Assets > Asset Value (asset-value)
+49. Fixed Assets > Asset Growth Rate (asset-growth)
+53. Mortgages > Current Balance (mortgage-balance)
+59. Secured Debts > Current Balance (liability-balance)
+63. Unsecured Debts > Current Balance (liability-balance)
+Purpose: Project net worth over time considering asset growth and debt reduction
+Formula for each year:
+- liquidAssetValue = (44) * (1 + (45))^years
+- fixedAssetValue = (48) * (1 + (49))^years
+- debtBalance = ((53) + (59) + (63)) * Math.max(0, 1 - (years * 0.05))
+- netWorth = totalAssets - totalLiabilities
+
+8. DIME CHARTS OVER TIME
+========================
+
+Function: createDimeCharts()
+Fields Used:
+10. Dependent > Child Date of Birth (dependent-dob)
+11. Dependent > Child Education Start Age (dependent-edu-age)
+12. Dependent > Child Study Years (dependent-study-years)
+53. Mortgages > Current Balance (mortgage-balance)
+59. Secured Debts > Current Balance (liability-balance)
+63. Unsecured Debts > Current Balance (liability-balance)
+72. Insurance > Partner 1 Final Expenses (finalExpenses1)
+73. Insurance > Partner 1 Income Replacement Years (incomeReplacement1)
+75. Insurance > Partner 1 Education Fund (educationFund1)
+76. Insurance > Partner 2 Final Expenses (finalExpenses2)
+77. Insurance > Partner 2 Income Replacement Years (incomeReplacement2)
+79. Insurance > Partner 2 Education Fund (educationFund2)
+Purpose: Project insurance needs over time for different term options
+Components calculated for each age:
+
+PARTNER 1 FINAL EXPENSES (Result: Partner 1 DIME Chart "D" Component):
+D₁ = (72) - Constant value over time
+
+PARTNER 2 FINAL EXPENSES (Result: Partner 2 DIME Chart "D" Component):
+D₂ = (76) - Constant value over time
+I - Income (Present Value with Inflation):
+Same formula as DIME analysis but for remaining years to retirement
+
+M - Mortgage/Debt Reduction:
+remainingBalance = ((53) + (59) + (63)) * Math.max(0, 1 - (yearsFromNow * 0.05))
+
+E - Education (Age-Dependent):
+Only included if child hasn't finished education yet
+childAgeAtTime = calculateAge((10)) + yearsFromNow
+Include if: childAgeAtTime < ((11) + (12))
+
+Term Insurance Coverage:
+- If yearsFromStart < termYears: coverage = totalDime
+- If yearsFromStart >= termYears: coverage = 0 (term expired)
+
+9. FORMATTING FUNCTIONS
+=======================
+
+Function: formatCurrency(value)
+Purpose: Format numbers as currency with $ and commas
+Formula: '$' + value.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})
+
+Function: formatPercentage(value)
+Purpose: Format decimal as percentage
+Formula: (value * 100).toFixed(2) + '%'
+
+Function: parsePercentageValue(percentString)
+Purpose: Convert percentage string back to decimal
+Formula: parseFloat(percentString.replace(/[^0-9.-]/g, '')) || 0
+
+10. VALIDATION FUNCTIONS
+========================
+
+Function: validateFormData(data)
+Fields Used: All input fields (1-79) for validation
+2. Family > Partner 1 Date of Birth (spouse1DOB)
+3. Family > Partner 1 Retirement Age (spouse1RetireAge)
+6. Family > Partner 2 Date of Birth (spouse2DOB)
+7. Family > Partner 2 Retirement Age (spouse2RetireAge)
+14. Income > Partner 1 Pay Rate (income1Rate)
+17. Income > Partner 2 Pay Rate (income2Rate)
+22-28. All assumption percentage fields
+44. Liquid Assets > Asset Value (asset-value)
+45. Liquid Assets > Asset Growth Rate (asset-growth)
+48. Fixed Assets > Asset Value (asset-value)
+49. Fixed Assets > Asset Growth Rate (asset-growth)
+53. Mortgages > Current Balance (mortgage-balance)
+54. Mortgages > Interest Rate (mortgage-rate)
+59. Secured Debts > Current Balance (liability-balance)
+60. Secured Debts > Interest Rate (liability-rate)
+63. Unsecured Debts > Current Balance (liability-balance)
+64. Unsecured Debts > Interest Rate (liability-rate)
+Purpose: Ensure all required fields have valid values
+Checks:
+- Partner ages > 0 and < 100 (calculated from (2), (6))
+- Retirement ages between 50-80 ((3), (7))
+- Income rates >= 0 ((14), (17))
+- Asset values >= 0 ((44), (48))
+- Debt balances >= 0 ((53), (59), (63))
+- Percentages between 0-100 ((22-28), (45), (49), (54), (60), (64))
+
+11. SAVE/LOAD FUNCTIONS
+=======================
+
+Function: collectAllData()
+Fields Used: All 79 input fields (1-79)
+1-13. Family tab fields (names, dates, dependents)
+14-21. Income tab fields (rates, frequencies, other income)
+22-37. Assumptions tab fields (rates, taxes, benefits)
+38-42. Goals tab fields (types, amounts, timing)
+43-50. Assets tab fields (liquid and fixed assets)
+51-65. Liabilities tab fields (mortgages and debts)
+66-79. Insurance tab fields (policies and DIME analysis)
+Purpose: Gather all form data into structured JSON object
+Returns comprehensive data object with:
+- family: (1-13)
+- income: (14-21)
+- assumptions: (22-37)
+- goals: (38-42)
+- assets: (43-50)
+- liabilities: (51-65)
+- insurance: (66-79)
+
+Function: populateFormData(data)
+Fields Used: All 79 input fields (1-79)
+1-13. Family tab fields (names, dates, dependents)
+14-21. Income tab fields (rates, frequencies, other income)
+22-37. Assumptions tab fields (rates, taxes, benefits)
+38-42. Goals tab fields (types, amounts, timing)
+43-50. Assets tab fields (liquid and fixed assets)
+51-65. Liabilities tab fields (mortgages and debts)
+66-79. Insurance tab fields (policies and DIME analysis)
+Purpose: Restore all form fields from saved data
+Process:
+- Iterate through data structure
+- Find matching DOM elements by field numbers
+- Set values with proper formatting
+- Trigger update calculations
+
+SUMMARY FORMULAS BY CALCULATION TYPE:
+====================================
+
+Annual Income Calculation:
+Partner 1: If (15)=='hourly': (14)*(16)*52 | If (15)=='weekly': (14)*52 | If (15)=='monthly': (14)*12 | If (15)=='annual': (14)
+Partner 2: If (18)=='hourly': (17)*(19)*52 | If (18)=='weekly': (17)*52 | If (18)=='monthly': (17)*12 | If (18)=='annual': (17)
+Total Household Income: Partner1Income + Partner2Income + sum((20)*12)
+
+Age Calculations:
+Partner 1 Age: calculateAge((2))
+Partner 2 Age: calculateAge((6))
+Dependent Ages: calculateAge((10)) for each dependent
+
+PARTNER 1 INCOME REPLACEMENT YEARS (Result: Partner 1 Insurance Years Field):
+incomeReplacementYears₁ = (3) - calculateAge((2))
+- Stored in field (73)
+
+PARTNER 2 INCOME REPLACEMENT YEARS (Result: Partner 2 Insurance Years Field):
+incomeReplacementYears₂ = (7) - calculateAge((6))
+- Stored in field (77)
+
+Education Funding:
+For each dependent: calculateSmartEducationFunding((10), (11), (12), (13), (22))
+
+DIME Analysis:
+PARTNER 1 DIME SUMMARY (Result: Partner 1 Summary Display):
+D₁: (72) - Final Expenses
+I₁: Present Value of Income Stream using partner1Income, (73), (22), (24)
+
+PARTNER 2 DIME SUMMARY (Result: Partner 2 Summary Display):
+D₂: (76) - Final Expenses  
+I₂: Present Value of Income Stream using partner2Income, (77), (22), (24)
+M: sum((53)) + sum((59)) + sum((63))
+E: sum of education funding calculations
+Total: D + I + M + E
+
+FIN Calculations:
+Required Retirement Income: (Total Household Income) * (25)
+Government Benefits: ((34)+(36)) * 12
+NOTE: OAS benefits (35), (37) excluded - assumes sufficient wealth negates OAS eligibility
+Income Shortfall: Required - Government Benefits
+REGISTERED TAX-ADJUSTED SHORTFALL (Result: FIN Matrix - Registered Column):
+registeredShortfall = baseShortfall / (1 - (27))
+
+BLENDED TAX-ADJUSTED SHORTFALL (Result: FIN Matrix - Blended Column):
+blendedShortfall = baseShortfall / (1 - (28))
+
+NON-TAXABLE SHORTFALL (Result: FIN Matrix - Non-Taxable Column):
+nonTaxShortfall = baseShortfall
+FIN Scenarios: Various present value calculations using (24)
+
+NOTES:
+======
+- All currency values stored internally without formatting
+- Percentages stored as decimals (0.05 = 5%)
+- Dates stored as YYYYMMDD strings
+- Growth rates compounded annually using (22), (45), (49)
+- Present value calculations use (24) for discounting
+- Canadian tax and benefit assumptions in (27), (28), (34), (36)
+- OAS benefits (35), (37) excluded from FIN calculations but retained for reference
+- Life expectancy based on Statistics Canada data, stored in (4), (8)
+- Education costs inflate at (22) rate
+- Mortgage payments calculated using (52), (54), (55) with result in (56)
+- DIME analysis inflates income replacement at (22) rate
+- FIN calculations account for sequence of returns risk using (24)

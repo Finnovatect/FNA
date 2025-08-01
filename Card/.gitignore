@@ -9,6 +9,7 @@ config.js
 # Personal data
 secrets/
 personal/
+_Archive
 
 # System files
 .DS_Store
