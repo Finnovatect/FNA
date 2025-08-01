@@ -14,22 +14,22 @@
 const CARD_CONFIG = {
     // ===== PERSONAL INFORMATION =====
     personal: {
-        firstName: "Dana",
-        lastName: "Ellison", 
-        title: "Financial Services Professional",
-        company: "DJE Financial Services",
-        email: "dana@dje.ca", // Used for display and contact info generation
-        phone: "(403) 617-8305",
-        website: "https://linktr.ee/danaellison",
-        linkedin: "https://www.linkedin.com/in/danaellison/",
+        firstName: "YOUR_FIRST_NAME",
+        lastName: "YOUR_LAST_NAME", 
+        title: "YOUR_PROFESSIONAL_TITLE",
+        company: "YOUR_COMPANY_NAME",
+        email: "YOUR_EMAIL_ADDRESS", // Used for display and contact info generation
+        phone: "YOUR_PHONE_NUMBER",
+        website: "YOUR_WEBSITE_URL",
+        linkedin: "YOUR_LINKEDIN_URL",
         address: {
-            street: "123 Main Street",
-            city: "Calgary", 
-            province: "AB",
-            postalCode: "T2P 1A1",
-            country: "Canada"
+            street: "YOUR_STREET_ADDRESS",
+            city: "YOUR_CITY", 
+            province: "YOUR_PROVINCE",
+            postalCode: "YOUR_POSTAL_CODE",
+            country: "YOUR_COUNTRY"
         },
-        serviceAreas: ["Calgary", "Edmonton", "Red Deer", "Virtual Consultations"]
+        serviceAreas: ["YOUR_SERVICE_AREAS"]
     },
 
     // ===== BRANDING & CONTENT =====
