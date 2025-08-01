@@ -30,10 +30,10 @@ Before making any changes, check what's already exposed:
 1.2 CHECK ALL FILES FOR EXPOSED DATA
    Search all files for sensitive information:
    
-   grep -r "dana@dje.ca" .
-   grep -r "403.*617.*8305" .
-   grep -r "Rqgd3ar53ZPk9z4Nf" .
-   grep -r "6LeoG4srAAAAAL" .
+   grep -r "youremail@domain.com" .
+   grep -r "your.*phone.*number" .
+   grep -r "your_emailjs_key" .
+   grep -r "your_recaptcha_key" .
    
    Replace with your actual email, phone, and any known API keys.
 
@@ -105,10 +105,10 @@ STEP 3: CLEAN UP PERSONAL INFORMATION
 
 3.1 IDENTIFY PERSONAL DATA TO PROTECT
 
-   Current exposed personal information:
-   - Email: dana@dje.ca (Base64 encoded - acceptable)
-   - Phone: (403) 617-8305 (if in plain text - needs protection)
-   - Company: DJE Financial Services (public business info - OK)
+   Personal information to check for:
+   - Email addresses (if in plain text - needs protection)
+   - Phone numbers (if in plain text - needs protection)
+   - Company information (public business info - generally OK)
    - Address: Any personal addresses (needs protection)
    - LinkedIn: Public profile links (OK)
 
@@ -130,8 +130,8 @@ STEP 3: CLEAN UP PERSONAL INFORMATION
    Instead of real personal info, use placeholders in config.js:
    
    ❌ BAD:
-   email: "dana@dje.ca"
-   phone: "(403) 617-8305"
+   email: "youremail@domain.com"
+   phone: "(555) 123-4567"
    
    ✅ GOOD:
    email: "YOUR_EMAIL_HERE"
@@ -210,9 +210,9 @@ STEP 5: CLEAN GIT HISTORY (IF NEEDED)
    git filter-repo --replace-text replacements.txt
    
    Where replacements.txt contains:
-   dana@dje.ca==>YOUR_EMAIL_HERE
-   (403) 617-8305==>YOUR_PHONE_HERE
-   Rqgd3ar53ZPk9z4Nf==>YOUR_EMAILJS_KEY
+   youremail@domain.com==>YOUR_EMAIL_HERE
+   (555) 123-4567==>YOUR_PHONE_HERE
+   your_emailjs_key==>YOUR_EMAILJS_KEY
 
    Option B: Use BFG Repo-Cleaner
    
