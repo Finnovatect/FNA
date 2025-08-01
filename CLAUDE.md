@@ -75,7 +75,7 @@ This is a Jekyll-based GitHub Pages website for "Financial Needs Analysis" - a f
 ## Security Requirements
 
 ### Email Obfuscation
-- **CRITICAL**: Admin email (dana@dje.ca) must NEVER appear in plain text in any code files
+- **CRITICAL**: Admin email must NEVER appear in plain text in any code files
 - Always use Base64 obfuscation: `const ADMIN_EMAIL = atob('ZGFuYUBkamUuY2E=')`
 - Check all files for plain text email exposure before commits
 - Test files should also use obfuscated email, never plain text
