@@ -1,1 +1,6 @@
 _Archive/
+
+# Configuration files containing secrets
+Card/config.js
+Card/config_backup.js
+Card/BusinessCard/config.js

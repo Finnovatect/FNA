@@ -7,7 +7,17 @@
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
     <script id="recaptcha-script" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="config.js"></script>
+    <script>
+        // Try to load config.js, but don't fail if it's not available
+        (function() {
+            const script = document.createElement('script');
+            script.src = 'config.js';
+            script.onerror = function() {
+                console.warn('config.js not found - will use template configuration');
+            };
+            document.head.appendChild(script);
+        })();
+    </script>
     <style>
         * {
             margin: 0;
@@ -472,29 +482,145 @@
         // Edit config.js to update your settings
         // 
         
-        // Validate configuration on page load
-        if (typeof CARD_CONFIG === 'undefined') {
-            console.error('CONFIGURATION ERROR: config.js not loaded or CARD_CONFIG not defined');
-            alert('Configuration file missing. Please ensure config.js is loaded.');
-        }
-        
-        // Extract commonly used values from config for easier access
+        // Initialize configuration with secure loading
         let CONFIG, ADMIN_EMAIL, RECAPTCHA_SITE_KEY;
+        let configurationValid = false;
         
-        try {
-            CONFIG = CARD_CONFIG;
-            ADMIN_EMAIL = getAdminEmail();
-            RECAPTCHA_SITE_KEY = getRecaptchaSiteKey();
-            
-            // Validate critical configuration
-            const configIssues = validateConfig();
-            if (configIssues.length > 0) {
-                console.warn('Please update config.js with your actual service credentials');
+        function initializeConfiguration() {
+            // Check if config is loaded
+            if (typeof CARD_CONFIG === 'undefined') {
+                console.warn('Configuration file not found. Using template configuration.');
+                // Load template config to prevent errors
+                try {
+                    loadTemplateConfig();
+                } catch (error) {
+                    console.error('Failed to load template configuration:', error);
+                    showConfigurationError('Configuration system failed to initialize.');
+                    return;
+                }
             }
-        } catch (error) {
-            console.error('Configuration error:', error);
-            alert('Configuration error. Please check config.js file.');
+            
+            try {
+                CONFIG = CARD_CONFIG;
+                ADMIN_EMAIL = getAdminEmail();
+                RECAPTCHA_SITE_KEY = getRecaptchaSiteKey();
+                
+                // Validate critical configuration
+                const configIssues = validateConfig();
+                if (configIssues.length > 0) {
+                    console.warn('Service credentials not configured. Some features will be disabled.');
+                    // Still allow the app to run, just with reduced functionality
+                }
+                
+                configurationValid = true;
+                
+            } catch (error) {
+                console.error('Configuration error:', error);
+                showConfigurationError('Configuration validation failed.');
+            }
         }
+        
+        function loadTemplateConfig() {
+            // Minimal template config to prevent crashes
+            window.CARD_CONFIG = {
+                personal: {
+                    firstName: "Demo",
+                    lastName: "User"
+                },
+                branding: {
+                    pageTitle: "Business Card Demo",
+                    headline: "Business Card Landing Page",
+                    subtitle: "Please configure your settings in config.js",
+                    successMessage: "Configuration required to send emails.",
+                    privacyText: "Configure your privacy policy in config.js",
+                    headshotUrl: ""
+                },
+                email: {
+                    emailjs: {
+                        serviceId: "YOUR_EMAILJS_SERVICE_ID",
+                        publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
+                        templates: { visitor: "template_visitor", admin: "template_admin" }
+                    },
+                    adminEmailEncoded: "YWRtaW5AZXhhbXBsZS5jb20=", // admin@example.com
+                    automation: {
+                        sendBrochureToVisitor: false,
+                        sendLeadNotificationToAdmin: false
+                    }
+                },
+                security: {
+                    recaptcha: {
+                        testSiteKey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+                        productionSiteKey: "YOUR_RECAPTCHA_SITE_KEY",
+                        minScore: 0.3
+                    }
+                },
+                marketing: {
+                    mailchimp: {
+                        actionUrl: "YOUR_MAILCHIMP_ACTION_URL",
+                        enabled: false,
+                        defaultOptIn: false
+                    },
+                    analytics: { source: "Demo Page" }
+                },
+                resources: {
+                    brochureUrl: "#",
+                    bookingUrl: "#",
+                    redirectUrl: "#",
+                    redirectDelay: 5
+                },
+                form: {
+                    validation: {
+                        emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                    }
+                },
+                advanced: {
+                    debug: { enableConsoleLog: true }
+                }
+            };
+            
+            // Add helper functions
+            window.getAdminEmail = function() {
+                try {
+                    return atob(CARD_CONFIG.email.adminEmailEncoded);
+                } catch (e) {
+                    return 'admin@example.com';
+                }
+            };
+            
+            window.getRecaptchaSiteKey = function() {
+                const isLocalhost = window.location.hostname === 'localhost' || 
+                                   window.location.hostname === '127.0.0.1';
+                const isGitHubPages = window.location.hostname.includes('github.io');
+                
+                // Use test key for localhost and development
+                if (isLocalhost || !isGitHubPages) {
+                    return CARD_CONFIG.security.recaptcha.testSiteKey;
+                }
+                
+                // Use production key for GitHub Pages
+                return CARD_CONFIG.security.recaptcha.productionSiteKey;
+            };
+            
+            window.validateConfig = function() {
+                return ['Demo mode - Please configure config.js with your actual credentials'];
+            };
+        }
+        
+        function showConfigurationError(message) {
+            const container = document.querySelector('.container');
+            if (container) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: #c9a96e;">
+                        <h2>⚠️ Configuration Required</h2>
+                        <p style="margin: 20px 0; color: #cccccc;">${message}</p>
+                        <p style="font-size: 14px; color: #888;">Please copy config.template.js to config.js and add your service credentials.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Initialize configuration immediately
+        initializeConfiguration();
         
         // =====================================
         // Phone number formatting
@@ -529,6 +655,12 @@
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Check if configuration is valid
+            if (!configurationValid) {
+                alert('Application not properly configured. Please check the console for details.');
+                return;
+            }
+            
             // Execute reCAPTCHA v3 if properly configured
             try {
                 if (RECAPTCHA_SITE_KEY && RECAPTCHA_SITE_KEY !== 'YOUR_RECAPTCHA_SITE_KEY') {
@@ -541,8 +673,8 @@
                 }
             } catch (error) {
                 console.error('reCAPTCHA failed:', error);
-                alert('Security verification failed. Please try again.');
-                return;
+                console.warn('reCAPTCHA verification failed, but continuing with form submission');
+                // Don't block form submission if reCAPTCHA fails
             }
             
             // Get and validate form data
