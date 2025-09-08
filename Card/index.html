@@ -582,6 +582,9 @@
         // Initialize immediately
         initializeConfiguration();
         
+        // Force GitHub Pages cache refresh
+        console.log('Card system loaded at', new Date().toISOString());
+        
         // =====================================
         // Phone number formatting
         function formatPhoneNumber(input) {

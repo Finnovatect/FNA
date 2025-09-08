@@ -1,2 +1,0 @@
-# card
-Business Landing Page
