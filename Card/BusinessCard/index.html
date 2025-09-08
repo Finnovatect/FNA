@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Financial Freedom Guide</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+    <script id="recaptcha-script" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="config.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23333" stroke-width="0.5" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid #c9a96e;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201, 169, 110, 0.2);
+            max-width: 400px;
+            width: 100%;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #c9a96e, #d4b876, #c9a96e);
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23c9a96e"/><text x="50" y="60" text-anchor="middle" fill="%23000" font-size="40" font-family="Arial">👤</text></svg>');
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #c9a96e;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            display: none;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            color: #cccccc;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #c9a96e;
+            font-weight: 400;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-weight: 300;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #c9a96e;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(201, 169, 110, 0.2);
+        }
+
+        input::placeholder {
+            color: #888;
+        }
+
+        .btn {
+            width: 100%;
+            background: linear-gradient(135deg, #c9a96e, #d4b876);
+            color: #1a1a1a;
+            padding: 18px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #d4b876, #e0c285);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(201, 169, 110, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .success-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #c9a96e, #d4b876);
+            border-radius: 8px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #1a1a1a;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #c9a96e, #d4b876);
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .data-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .data-title {
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #c9a96e;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-content {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            max-height: 120px;
+            overflow-y: auto;
+            color: #cccccc;
+        }
+
+        .copy-btn {
+            background: #444;
+            border: 1px solid #666;
+            color: #cccccc;
+            font-size: 12px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            width: auto;
+            display: inline-block;
+        }
+
+        .copy-btn:hover {
+            background: #555;
+            border-color: #c9a96e;
+        }
+
+        .privacy {
+            font-size: 12px;
+            color: #888;
+            margin-top: 20px;
+            line-height: 1.4;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            font-size: 14px;
+            color: #cccccc;
+            line-height: 1.5;
+            margin-bottom: 0;
+            text-align: left;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            height: 18px;
+            width: 18px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #c9a96e;
+            border-radius: 3px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-container:hover input ~ .checkmark {
+            background-color: rgba(201, 169, 110, 0.1);
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background: linear-gradient(135deg, #c9a96e, #d4b876);
+            border-color: #c9a96e;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 4px;
+            height: 9px;
+            border: solid #1a1a1a;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .captcha-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #c9a96e;
+            border-radius: 8px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: popupSlide 0.3s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes popupSlide {
+            from { 
+                opacity: 0; 
+                transform: scale(0.8) translateY(-20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1) translateY(0); 
+            }
+        }
+
+        .popup-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #c9a96e, #d4b876);
+            border-radius: 8px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #1a1a1a;
+        }
+
+        .popup h2 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 24px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .popup p {
+            color: #cccccc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .countdown {
+            font-size: 18px;
+            font-weight: bold;
+            color: #c9a96e;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Form Screen -->
+        <div id="formScreen">
+            <div class="logo"></div>
+            <h1 id="pageHeadline">Create Financial Freedom on Your Terms</h1>
+            <p class="subtitle" id="pageSubtitle">Download core financial principles that build wealth AND learn about a professional opportunity that offers schedule flexibility, comprehensive training, and the potential for significant additional income.</p>
+            
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="firstName">First Name *</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName">Last Name *</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="(403) 555-1234" maxlength="14">
+                </div>
+                
+                <div class="form-group">
+                    <label for="company">Company (Optional)</label>
+                    <input type="text" id="company" name="company">
+                </div>
+                
+                
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="newsletter" name="newsletter" checked>
+                        <span class="checkmark"></span>
+                        Add me to your email newsletter for financial tips and opportunities
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn">Download Your Financial Freedom Guide</button>
+            </form>
+            
+            <p class="privacy" id="privacyText">Your information is secure and will never be shared with third parties.</p>
+        </div>
+
+        <!-- Success Screen -->
+        <div id="successScreen" class="success-screen">
+            <div class="success-icon">📧</div>
+            <h1>Thank You!</h1>
+            <p class="subtitle" id="successMessage">Your Financial Freedom Guide has been sent to your email address. Check your inbox (and spam folder) for the download link.</p>
+            
+            <p class="privacy" style="margin-top: 20px; color: #c9a96e; font-weight: 500;">
+                Redirecting to my website in <span id="countdown" class="countdown">5</span> seconds...
+            </p>
+        </div>
+    </div>
+
+
+    <script>
+        // =====================================
+        // SECURE CONFIGURATION SYSTEM
+        // =====================================
+        
+        let CONFIG, ADMIN_EMAIL, RECAPTCHA_SITE_KEY;
+        let configurationValid = false;
+        let configLoadAttempted = false;
+        
+        // Default configuration that works on GitHub Pages
+        const DEFAULT_CONFIG = {
+            personal: {
+                firstName: "Dana",
+                lastName: "Ellison"
+            },
+            branding: {
+                pageTitle: "Financial Freedom Guide",
+                headline: "Create Financial Freedom on Your Terms",
+                subtitle: "Download core financial principles that build wealth AND learn about a professional opportunity that offers schedule flexibility, comprehensive training, and the potential for significant additional income.",
+                brochureTitle: "Your Financial Freedom Guide",
+                successMessage: "Thank you for your interest! I'll be in touch soon with your information.",
+                privacyText: "Your information is secure and will never be shared with third parties.",
+                headshotUrl: "https://lh3.googleusercontent.com/d/10RNlG16hhAme0C-JWTjJ6jH54i6Vgc4p=w200-h200"
+            },
+            email: {
+                emailjs: {
+                    serviceId: "YOUR_EMAILJS_SERVICE_ID",
+                    publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
+                    templates: { visitor: "template_visitor", admin: "template_admin" }
+                },
+                adminEmailEncoded: "ZGFuYUBkamUuY2E=", // dana@dje.ca
+                automation: {
+                    sendBrochureToVisitor: false, // Disabled on GitHub Pages
+                    sendLeadNotificationToAdmin: false
+                }
+            },
+            security: {
+                recaptcha: {
+                    testSiteKey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+                    productionSiteKey: "YOUR_RECAPTCHA_SITE_KEY",
+                    minScore: 0.3
+                }
+            },
+            marketing: {
+                mailchimp: {
+                    actionUrl: "YOUR_MAILCHIMP_ACTION_URL",
+                    enabled: false, // Disabled on GitHub Pages
+                    defaultOptIn: false
+                },
+                analytics: { source: "QR Code Landing Page" }
+            },
+            resources: {
+                brochureUrl: "https://drive.google.com/open?id=1FR1VKooynjPPeKBoYO-hFbtZwECtyYUP&usp=drive_fs",
+                bookingUrl: "https://calendly.com/danaellison",
+                redirectUrl: "https://linktr.ee/danaellison",
+                redirectDelay: 5
+            },
+            form: {
+                validation: {
+                    emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                }
+            },
+            advanced: {
+                debug: { enableConsoleLog: true }
+            }
+        };
+        
+        // Helper functions
+        function getAdminEmail() {
+            try {
+                return atob(CONFIG.email.adminEmailEncoded);
+            } catch (e) {
+                return 'dana@dje.ca';
+            }
+        }
+        
+        function getRecaptchaSiteKey() {
+            const isLocalhost = window.location.hostname === 'localhost' || 
+                               window.location.hostname === '127.0.0.1';
+            
+            return isLocalhost 
+                ? CONFIG.security.recaptcha.testSiteKey
+                : CONFIG.security.recaptcha.productionSiteKey;
+        }
+        
+        function validateConfig() {
+            const issues = [];
+            if (CONFIG.email.emailjs.serviceId === 'YOUR_EMAILJS_SERVICE_ID') {
+                issues.push('EmailJS not configured - form will collect data only');
+            }
+            return issues;
+        }
+        
+        // Initialize configuration
+        function initializeConfiguration() {
+            // Try to load custom config if available, otherwise use defaults
+            if (typeof CARD_CONFIG !== 'undefined') {
+                CONFIG = CARD_CONFIG;
+                console.log('Using custom configuration');
+            } else {
+                CONFIG = DEFAULT_CONFIG;
+                console.log('Using default configuration for GitHub Pages');
+            }
+            
+            ADMIN_EMAIL = getAdminEmail();
+            RECAPTCHA_SITE_KEY = getRecaptchaSiteKey();
+            
+            const issues = validateConfig();
+            if (issues.length > 0) {
+                console.warn('Configuration issues:', issues);
+            }
+            
+            configurationValid = true;
+            return true;
+        }
+        
+        // Initialize immediately
+        initializeConfiguration();
+        
+        // =====================================
+        // Phone number formatting
+        function formatPhoneNumber(input) {
+            // Remove all non-digits
+            let phoneNumber = input.replace(/\D/g, '');
+            
+            // Limit to 10 digits
+            if (phoneNumber.length > 10) {
+                phoneNumber = phoneNumber.substring(0, 10);
+            }
+            
+            // Format as (000)-000-0000
+            if (phoneNumber.length >= 6) {
+                return `(${phoneNumber.substring(0, 3)})-${phoneNumber.substring(3, 6)}-${phoneNumber.substring(6)}`;
+            } else if (phoneNumber.length >= 3) {
+                return `(${phoneNumber.substring(0, 3)})-${phoneNumber.substring(3)}`;
+            } else if (phoneNumber.length > 0) {
+                return `(${phoneNumber}`;
+            }
+            return phoneNumber;
+        }
+
+        // Initialize EmailJS with secure configuration
+        if (CONFIG && CONFIG.email.emailjs.publicKey !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+            emailjs.init(CONFIG.email.emailjs.publicKey);
+        } else {
+            console.warn('EmailJS not initialized: Please configure publicKey in config.js');
+        }
+
+        // Form submission handler
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Check if configuration is valid
+            if (!configurationValid) {
+                alert('Application not properly configured. Please check the console for details.');
+                return;
+            }
+            
+            // Execute reCAPTCHA v3 if properly configured
+            try {
+                if (RECAPTCHA_SITE_KEY && RECAPTCHA_SITE_KEY !== 'YOUR_RECAPTCHA_SITE_KEY') {
+                    const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'submit'});
+                    if (CONFIG.advanced.debug.enableConsoleLog) {
+                        console.log('reCAPTCHA v3 verification successful');
+                    }
+                } else {
+                    console.warn('reCAPTCHA not configured - skipping verification');
+                }
+            } catch (error) {
+                console.error('reCAPTCHA failed:', error);
+                console.warn('reCAPTCHA verification failed, but continuing with form submission');
+                // Don't block form submission if reCAPTCHA fails
+            }
+            
+            // Get and validate form data
+            const formData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim().toLowerCase(),
+                phone: document.getElementById('phone').value,
+                company: document.getElementById('company').value.trim(),
+                newsletter: document.getElementById('newsletter').checked,
+                timestamp: new Date().toISOString(),
+                source: CONFIG.marketing.analytics.source || 'QR Code Landing Page'
+            };
+            
+            // Enhanced form validation
+            if (!formData.firstName || !formData.lastName) {
+                alert('Please enter your first and last name.');
+                return;
+            }
+            
+            if (!CONFIG.form.validation.emailRegex.test(formData.email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            // Log the form data for now (since email services aren't configured on GitHub Pages)
+            console.log('Form submitted:', formData);
+            
+            // Subscribe to newsletter if enabled and configured
+            if (formData.newsletter && 
+                CONFIG.marketing.mailchimp.enabled && 
+                CONFIG.marketing.mailchimp.actionUrl !== 'YOUR_MAILCHIMP_ACTION_URL') {
+                subscribeToNewsletter(formData);
+            }
+            
+            // Send emails if EmailJS is properly configured
+            if (CONFIG.email.emailjs.serviceId !== 'YOUR_EMAILJS_SERVICE_ID' &&
+                CONFIG.email.automation.sendBrochureToVisitor) {
+                sendDualEmails(formData);
+            }
+            
+            // Switch to success screen (clean version)
+            document.getElementById('formScreen').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'block';
+            document.getElementById('successScreen').classList.add('fade-in');
+            
+            // Start countdown to redirect
+            startRedirectCountdown();
+        });
+
+        // Send dual emails: brochure to visitor, contact data to admin
+        async function sendDualEmails(formData) {
+            try {
+                // Email 1: Send brochure to visitor
+                const visitorEmailParams = {
+                    to_email: formData.email,
+                    email: formData.email,
+                    user_email: formData.email,
+                    to_name: `${formData.firstName} ${formData.lastName}`,
+                    name: `${formData.firstName} ${formData.lastName}`,
+                    user_name: `${formData.firstName} ${formData.lastName}`,
+                    brochure_url: CONFIG.resources.brochureUrl,
+                    calendly_url: CONFIG.resources.bookingUrl,
+                    subject: `Your ${CONFIG.branding.brochureTitle} is Ready!`
+                };
+
+                await emailjs.send(
+                    CONFIG.email.emailjs.serviceId, 
+                    CONFIG.email.emailjs.templates.visitor, 
+                    visitorEmailParams
+                );
+                console.log('Brochure email sent successfully');
+
+                // Email 2: Send contact data to admin
+                const vcard = generateVCard(formData);
+                const notionData = generateNotionData(formData);
+                
+                const adminEmailParams = {
+                    to_email: ADMIN_EMAIL,
+                    email: ADMIN_EMAIL,           // Try multiple parameter names  
+                    user_email: ADMIN_EMAIL,     // Common alternative
+                    contact_name: `${formData.firstName} ${formData.lastName}`,
+                    contact_email: formData.email,
+                    contact_phone: formData.phone,
+                    contact_company: formData.company || 'Not provided',
+                    newsletter_subscription: formData.newsletter ? 'Yes' : 'No',
+                    vcard_data: vcard,
+                    notion_data: JSON.stringify(notionData, null, 2),
+                    source: formData.source,
+                    timestamp: formData.timestamp,
+                    subject: `New Lead: ${formData.firstName} ${formData.lastName}`
+                };
+
+                await emailjs.send(
+                    CONFIG.email.emailjs.serviceId, 
+                    CONFIG.email.emailjs.templates.admin, 
+                    adminEmailParams
+                );
+                console.log('Admin notification email sent successfully');
+
+            } catch (error) {
+                console.error('Email sending failed:', error);
+                // Continue with the process even if emails fail
+            }
+        }
+
+        // Subscribe to newsletter via Mailchimp form submission
+        async function subscribeToNewsletter(formData) {
+            try {
+                console.log('🚀 [MAILCHIMP] Starting newsletter subscription process at', new Date().toISOString());
+                console.log('📧 [MAILCHIMP] Email:', formData.email);
+                console.log('👤 [MAILCHIMP] Name:', formData.firstName, formData.lastName);
+                
+                // Validate email before proceeding
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(formData.email)) {
+                    console.error('❌ [MAILCHIMP] Invalid email format:', formData.email);
+                    return;
+                }
+                
+                // Check and clean the Mailchimp URL
+                let cleanUrl = CONFIG.marketing.mailchimp.actionUrl;
+                if (cleanUrl.includes('&amp;')) {
+                    cleanUrl = cleanUrl.replace(/&amp;/g, '&');
+                    if (CONFIG.advanced.debug.logMailchimpSubmissions) {
+                        console.log('🔧 [MAILCHIMP] Cleaned HTML entities from URL');
+                    }
+                }
+                if (CONFIG.advanced.debug.logMailchimpSubmissions) {
+                    console.log('🌐 [MAILCHIMP] Target URL:', cleanUrl);
+                }
+                
+                // Create FormData using ONLY standard Mailchimp field names
+                const mailchimpData = new FormData();
+                
+                // Exact Mailchimp fields from your form HTML
+                mailchimpData.append('EMAIL', formData.email);
+                mailchimpData.append('FNAME', formData.firstName);
+                mailchimpData.append('LNAME', formData.lastName);
+                mailchimpData.append('PHONE', formData.phone || ''); // Always include, even if empty
+                
+                // Anti-spam honeypot (configured in config.js)
+                if (CONFIG.marketing.mailchimp.honeypotField) {
+                    mailchimpData.append(CONFIG.marketing.mailchimp.honeypotField, '');
+                }
+                
+                // Submit button (exact name and value from your form)
+                mailchimpData.append('subscribe', 'Subscribe');
+                
+                console.log('📞 [MAILCHIMP] Phone:', formData.phone || 'empty');
+                if (formData.company) {
+                    console.log('🏢 [MAILCHIMP] Company:', formData.company, '(NOTE: Not sent - not in Mailchimp form)');
+                }
+                
+                // Debug: log everything we're sending
+                console.log('📝 [MAILCHIMP] Complete form data being sent:');
+                let fieldCount = 0;
+                for (let [key, value] of mailchimpData.entries()) {
+                    console.log(`   ${++fieldCount}. ${key}: "${value}"`);
+                }
+                
+                console.log('⏳ [MAILCHIMP] Submitting request...');
+                const startTime = Date.now();
+                
+                // Submit to Mailchimp with detailed logging
+                const response = await fetch(cleanUrl, {
+                    method: 'POST',
+                    body: mailchimpData,
+                    mode: 'no-cors', // Required for Mailchimp
+                    credentials: 'omit'
+                });
+                
+                const endTime = Date.now();
+                console.log(`⚡ [MAILCHIMP] Request completed in ${endTime - startTime}ms`);
+                console.log('📊 [MAILCHIMP] Response type:', response.type);
+                console.log('📊 [MAILCHIMP] Response status:', response.status || 'unknown (no-cors)');
+                console.log('📊 [MAILCHIMP] Response URL:', response.url || 'unknown (no-cors)');
+                
+                // With no-cors mode, we can't read the response body, but we can check if it threw an error
+                console.log('✅ [MAILCHIMP] Form submission completed without errors');
+                console.log('📋 [MAILCHIMP] Check your Mailchimp audience for new subscriber');
+                console.log('🔍 [MAILCHIMP] If subscriber not found, the field names or URL might be incorrect');
+                
+            } catch (error) {
+                console.error('❌ [MAILCHIMP] Subscription failed with error:');
+                console.error('❌ [MAILCHIMP] Error type:', error.constructor.name);
+                console.error('❌ [MAILCHIMP] Error message:', error.message);
+                console.error('❌ [MAILCHIMP] Full error object:', error);
+                console.error('❌ [MAILCHIMP] Stack trace:', error.stack);
+                
+                // Try to provide helpful debugging info
+                if (error.message.includes('fetch')) {
+                    console.error('💡 [MAILCHIMP] This might be a network or CORS issue');
+                }
+                if (error.message.includes('URL')) {
+                    console.error('💡 [MAILCHIMP] Check if the Mailchimp action URL is correct');
+                }
+            }
+        }
+
+        // Start countdown and redirect
+        function startRedirectCountdown() {
+            let countdown = CONFIG.resources.redirectDelay || 5;
+            const countdownElement = document.getElementById('countdown');
+            if (!countdownElement) return;
+            
+            const countdownTimer = setInterval(() => {
+                countdown--;
+                countdownElement.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownTimer);
+                    window.location.href = CONFIG.resources.redirectUrl;
+                }
+            }, 1000);
+        }
+
+        // Generate vCard format for iOS
+        function generateVCard(data) {
+            let vcard = 'BEGIN:VCARD\n';
+            vcard += 'VERSION:3.0\n';
+            vcard += `FN:${data.firstName} ${data.lastName}\n`;
+            vcard += `N:${data.lastName};${data.firstName};;;\n`;
+            vcard += `EMAIL:${data.email}\n`;
+            if (data.phone) {
+                vcard += `TEL:${data.phone}\n`;
+            }
+            if (data.company) {
+                vcard += `ORG:${data.company}\n`;
+            }
+            vcard += `NOTE:Added from QR landing page on ${new Date().toLocaleDateString()}\n`;
+            vcard += 'END:VCARD';
+            return vcard;
+        }
+
+        // Generate JSON format for Notion
+        function generateNotionData(data) {
+            return {
+                "Name": `${data.firstName} ${data.lastName}`,
+                "First Name": data.firstName,
+                "Last Name": data.lastName,
+                "Email": data.email,
+                "Phone": data.phone || "",
+                "Company": data.company || "",
+                "Newsletter": data.newsletter ? "Yes" : "No",
+                "Source": data.source,
+                "Date Added": data.timestamp.split('T')[0],
+                "Status": "New Lead",
+                "Notes": `Contact submitted via QR code landing page on ${new Date().toLocaleDateString()}`
+            };
+        }
+
+
+
+        // Convert Google Drive sharing URL to direct download/view URL
+        function convertGoogleDriveUrl(shareUrl) {
+            // Extract file ID from sharing URL
+            const fileIdMatch = shareUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+            if (fileIdMatch) {
+                const fileId = fileIdMatch[1];
+                // Return direct download URL
+                return `https://drive.google.com/uc?export=download&id=${fileId}`;
+            }
+            // Fallback to original URL if pattern doesn't match
+            return shareUrl;
+        }
+
+        // Initialize page content from configuration
+        function initializePageContent() {
+            if (!CONFIG) return;
+            
+            // Update page title and content
+            const titleEl = document.getElementById('pageTitle');
+            if (titleEl) titleEl.textContent = CONFIG.branding.pageTitle;
+            
+            const headlineEl = document.getElementById('pageHeadline');
+            if (headlineEl) headlineEl.textContent = CONFIG.branding.headline;
+            
+            const subtitleEl = document.getElementById('pageSubtitle');
+            if (subtitleEl) subtitleEl.textContent = CONFIG.branding.subtitle;
+            
+            const successEl = document.getElementById('successMessage');
+            if (successEl) successEl.textContent = CONFIG.branding.successMessage;
+            
+            const privacyEl = document.getElementById('privacyText');
+            if (privacyEl) privacyEl.textContent = CONFIG.branding.privacyText;
+            
+            // Set newsletter checkbox default state
+            const newsletterCheckbox = document.getElementById('newsletter');
+            if (newsletterCheckbox && CONFIG.marketing.mailchimp) {
+                newsletterCheckbox.checked = CONFIG.marketing.mailchimp.defaultOptIn;
+            }
+        }
+        
+        // Initialize page elements when loaded
+        window.onload = function() {
+            // Ensure configuration is initialized
+            if (!configurationValid) {
+                initializeConfiguration();
+            }
+            
+            // Initialize page content first
+            initializePageContent();
+            // Load reCAPTCHA v3 script dynamically with secure configuration
+            const recaptchaScript = document.getElementById('recaptcha-script');
+            const recaptchaKey = getRecaptchaSiteKey();
+            
+            if (recaptchaKey && recaptchaKey !== 'YOUR_RECAPTCHA_SITE_KEY') {
+                recaptchaScript.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaKey}`;
+            } else {
+                console.warn('reCAPTCHA not configured - security verification disabled');
+            }
+            
+            // Wait for reCAPTCHA to load
+            recaptchaScript.onload = function() {
+                grecaptcha.ready(function() {
+                    console.log('reCAPTCHA v3 ready');
+                });
+            };
+            
+            // Set headshot image from secure configuration
+            const logoElement = document.querySelector('.logo');
+            const headshotUrl = CONFIG.branding.headshotUrl;
+            if (logoElement && headshotUrl && headshotUrl.startsWith('https://')) {
+                if (CONFIG.advanced.debug.enableConsoleLog) {
+                    console.log('Loading headshot from:', headshotUrl);
+                }
+                logoElement.style.backgroundImage = `url('${headshotUrl}')`;
+                
+                // Add error handling for image load
+                const testImg = new Image();
+                testImg.onload = function() {
+                    console.log('Headshot loaded successfully');
+                };
+                testImg.onerror = function() {
+                    console.error('Failed to load headshot image');
+                    // Fallback to user icon if image fails
+                    logoElement.style.backgroundImage = `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23c9a96e"/><text x="50" y="60" text-anchor="middle" fill="%23000" font-size="40" font-family="Arial">👤</text></svg>')`;
+                };
+                testImg.src = headshotUrl;
+            }
+            
+            // Add phone number formatting
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    const formatted = formatPhoneNumber(e.target.value);
+                    e.target.value = formatted;
+                });
+            }
+        };
+    </script>
+</body>
+</html>
