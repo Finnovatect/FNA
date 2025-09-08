@@ -7,17 +7,7 @@
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
     <script id="recaptcha-script" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script>
-        // Try to load config.js, but don't fail if it's not available
-        (function() {
-            const script = document.createElement('script');
-            script.src = 'config.js';
-            script.onerror = function() {
-                console.warn('config.js not found - will use template configuration');
-            };
-            document.head.appendChild(script);
-        })();
-    </script>
+    <!-- Config loading will be handled in the main script -->
     <style>
         * {
             margin: 0;
@@ -477,149 +467,119 @@
         // =====================================
         // SECURE CONFIGURATION SYSTEM
         // =====================================
-        // 
-        // Configuration is now loaded from config.js
-        // Edit config.js to update your settings
-        // 
         
-        // Initialize configuration with secure loading
         let CONFIG, ADMIN_EMAIL, RECAPTCHA_SITE_KEY;
         let configurationValid = false;
+        let configLoadAttempted = false;
         
-        function initializeConfiguration() {
-            // Check if config is loaded
-            if (typeof CARD_CONFIG === 'undefined') {
-                console.warn('Configuration file not found. Using template configuration.');
-                // Load template config to prevent errors
-                try {
-                    loadTemplateConfig();
-                } catch (error) {
-                    console.error('Failed to load template configuration:', error);
-                    showConfigurationError('Configuration system failed to initialize.');
-                    return;
+        // Default configuration that works on GitHub Pages
+        const DEFAULT_CONFIG = {
+            personal: {
+                firstName: "Dana",
+                lastName: "Ellison"
+            },
+            branding: {
+                pageTitle: "Financial Freedom Guide",
+                headline: "Create Financial Freedom on Your Terms",
+                subtitle: "Download core financial principles that build wealth AND learn about a professional opportunity that offers schedule flexibility, comprehensive training, and the potential for significant additional income.",
+                brochureTitle: "Your Financial Freedom Guide",
+                successMessage: "Thank you for your interest! I'll be in touch soon with your information.",
+                privacyText: "Your information is secure and will never be shared with third parties.",
+                headshotUrl: "https://lh3.googleusercontent.com/d/10RNlG16hhAme0C-JWTjJ6jH54i6Vgc4p=w200-h200"
+            },
+            email: {
+                emailjs: {
+                    serviceId: "YOUR_EMAILJS_SERVICE_ID",
+                    publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
+                    templates: { visitor: "template_visitor", admin: "template_admin" }
+                },
+                adminEmailEncoded: "ZGFuYUBkamUuY2E=", // dana@dje.ca
+                automation: {
+                    sendBrochureToVisitor: false, // Disabled on GitHub Pages
+                    sendLeadNotificationToAdmin: false
                 }
+            },
+            security: {
+                recaptcha: {
+                    testSiteKey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+                    productionSiteKey: "YOUR_RECAPTCHA_SITE_KEY",
+                    minScore: 0.3
+                }
+            },
+            marketing: {
+                mailchimp: {
+                    actionUrl: "YOUR_MAILCHIMP_ACTION_URL",
+                    enabled: false, // Disabled on GitHub Pages
+                    defaultOptIn: false
+                },
+                analytics: { source: "QR Code Landing Page" }
+            },
+            resources: {
+                brochureUrl: "https://drive.google.com/open?id=1FR1VKooynjPPeKBoYO-hFbtZwECtyYUP&usp=drive_fs",
+                bookingUrl: "https://calendly.com/danaellison",
+                redirectUrl: "https://linktr.ee/danaellison",
+                redirectDelay: 5
+            },
+            form: {
+                validation: {
+                    emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                }
+            },
+            advanced: {
+                debug: { enableConsoleLog: true }
             }
-            
+        };
+        
+        // Helper functions
+        function getAdminEmail() {
             try {
+                return atob(CONFIG.email.adminEmailEncoded);
+            } catch (e) {
+                return 'dana@dje.ca';
+            }
+        }
+        
+        function getRecaptchaSiteKey() {
+            const isLocalhost = window.location.hostname === 'localhost' || 
+                               window.location.hostname === '127.0.0.1';
+            
+            return isLocalhost 
+                ? CONFIG.security.recaptcha.testSiteKey
+                : CONFIG.security.recaptcha.productionSiteKey;
+        }
+        
+        function validateConfig() {
+            const issues = [];
+            if (CONFIG.email.emailjs.serviceId === 'YOUR_EMAILJS_SERVICE_ID') {
+                issues.push('EmailJS not configured - form will collect data only');
+            }
+            return issues;
+        }
+        
+        // Initialize configuration
+        function initializeConfiguration() {
+            // Try to load custom config if available, otherwise use defaults
+            if (typeof CARD_CONFIG !== 'undefined') {
                 CONFIG = CARD_CONFIG;
-                ADMIN_EMAIL = getAdminEmail();
-                RECAPTCHA_SITE_KEY = getRecaptchaSiteKey();
-                
-                // Validate critical configuration
-                const configIssues = validateConfig();
-                if (configIssues.length > 0) {
-                    console.warn('Service credentials not configured. Some features will be disabled.');
-                    // Still allow the app to run, just with reduced functionality
-                }
-                
-                configurationValid = true;
-                
-            } catch (error) {
-                console.error('Configuration error:', error);
-                showConfigurationError('Configuration validation failed.');
+                console.log('Using custom configuration');
+            } else {
+                CONFIG = DEFAULT_CONFIG;
+                console.log('Using default configuration for GitHub Pages');
             }
-        }
-        
-        function loadTemplateConfig() {
-            // Minimal template config to prevent crashes
-            window.CARD_CONFIG = {
-                personal: {
-                    firstName: "Demo",
-                    lastName: "User"
-                },
-                branding: {
-                    pageTitle: "Business Card Demo",
-                    headline: "Business Card Landing Page",
-                    subtitle: "Please configure your settings in config.js",
-                    successMessage: "Configuration required to send emails.",
-                    privacyText: "Configure your privacy policy in config.js",
-                    headshotUrl: ""
-                },
-                email: {
-                    emailjs: {
-                        serviceId: "YOUR_EMAILJS_SERVICE_ID",
-                        publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
-                        templates: { visitor: "template_visitor", admin: "template_admin" }
-                    },
-                    adminEmailEncoded: "YWRtaW5AZXhhbXBsZS5jb20=", // admin@example.com
-                    automation: {
-                        sendBrochureToVisitor: false,
-                        sendLeadNotificationToAdmin: false
-                    }
-                },
-                security: {
-                    recaptcha: {
-                        testSiteKey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
-                        productionSiteKey: "YOUR_RECAPTCHA_SITE_KEY",
-                        minScore: 0.3
-                    }
-                },
-                marketing: {
-                    mailchimp: {
-                        actionUrl: "YOUR_MAILCHIMP_ACTION_URL",
-                        enabled: false,
-                        defaultOptIn: false
-                    },
-                    analytics: { source: "Demo Page" }
-                },
-                resources: {
-                    brochureUrl: "#",
-                    bookingUrl: "#",
-                    redirectUrl: "#",
-                    redirectDelay: 5
-                },
-                form: {
-                    validation: {
-                        emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-                    }
-                },
-                advanced: {
-                    debug: { enableConsoleLog: true }
-                }
-            };
             
-            // Add helper functions
-            window.getAdminEmail = function() {
-                try {
-                    return atob(CARD_CONFIG.email.adminEmailEncoded);
-                } catch (e) {
-                    return 'admin@example.com';
-                }
-            };
+            ADMIN_EMAIL = getAdminEmail();
+            RECAPTCHA_SITE_KEY = getRecaptchaSiteKey();
             
-            window.getRecaptchaSiteKey = function() {
-                const isLocalhost = window.location.hostname === 'localhost' || 
-                                   window.location.hostname === '127.0.0.1';
-                const isGitHubPages = window.location.hostname.includes('github.io');
-                
-                // Use test key for localhost and development
-                if (isLocalhost || !isGitHubPages) {
-                    return CARD_CONFIG.security.recaptcha.testSiteKey;
-                }
-                
-                // Use production key for GitHub Pages
-                return CARD_CONFIG.security.recaptcha.productionSiteKey;
-            };
-            
-            window.validateConfig = function() {
-                return ['Demo mode - Please configure config.js with your actual credentials'];
-            };
-        }
-        
-        function showConfigurationError(message) {
-            const container = document.querySelector('.container');
-            if (container) {
-                container.innerHTML = `
-                    <div style="text-align: center; color: #c9a96e;">
-                        <h2>⚠️ Configuration Required</h2>
-                        <p style="margin: 20px 0; color: #cccccc;">${message}</p>
-                        <p style="font-size: 14px; color: #888;">Please copy config.template.js to config.js and add your service credentials.</p>
-                    </div>
-                `;
+            const issues = validateConfig();
+            if (issues.length > 0) {
+                console.warn('Configuration issues:', issues);
             }
+            
+            configurationValid = true;
+            return true;
         }
         
-        // Initialize configuration immediately
+        // Initialize immediately
         initializeConfiguration();
         
         // =====================================
@@ -699,6 +659,9 @@
                 alert('Please enter a valid email address.');
                 return;
             }
+            
+            // Log the form data for now (since email services aren't configured on GitHub Pages)
+            console.log('Form submitted:', formData);
             
             // Subscribe to newsletter if enabled and configured
             if (formData.newsletter && 
@@ -968,6 +931,11 @@
         
         // Initialize page elements when loaded
         window.onload = function() {
+            // Ensure configuration is initialized
+            if (!configurationValid) {
+                initializeConfiguration();
+            }
+            
             // Initialize page content first
             initializePageContent();
             // Load reCAPTCHA v3 script dynamically with secure configuration
