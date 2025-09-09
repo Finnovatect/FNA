@@ -72,7 +72,7 @@ const CARD_CONFIG = {
 
         // Admin email (Base64 encoded for basic obfuscation)
         // To encode your email: https://www.base64encode.org/
-        adminEmailEncoded: "ZGFuYUBkamUuY2E=", // This decodes to: dana@dje.ca
+        adminEmailEncoded: "YOUR_BASE64_ENCODED_EMAIL", // Encode your email at https://www.base64encode.org/
         
         // Email automation settings
         automation: {
