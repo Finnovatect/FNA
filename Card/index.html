@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">FIXED VERSION - Financial Freedom Guide</title>
+    <title id="pageTitle">Financial Freedom Guide</title>
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
     <script id="recaptcha-script" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <!-- Config loading will be handled in the main script -->
+    <script src="config.js"></script>
     <style>
         * {
             margin: 0;
@@ -470,13 +470,12 @@
         
         let CONFIG, ADMIN_EMAIL, RECAPTCHA_SITE_KEY;
         let configurationValid = false;
-        let configLoadAttempted = false;
         
         // Default configuration that works on GitHub Pages
         const DEFAULT_CONFIG = {
             personal: {
-                firstName: "Dana",
-                lastName: "Ellison"
+                firstName: "Professional",
+                lastName: "Advisor"
             },
             branding: {
                 pageTitle: "Financial Freedom Guide",
@@ -489,14 +488,16 @@
             },
             email: {
                 emailjs: {
-                    serviceId: "YOUR_EMAILJS_SERVICE_ID",
-                    publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
+                    serviceId: "buscard_service",
+                    publicKey: "Rqgd3ar53ZPk9z4Nf",
                     templates: { visitor: "template_visitor", admin: "template_admin" }
                 },
-                adminEmailEncoded: "ZGFuYUBkamUuY2E=", // dana@dje.ca
+                adminEmailEncoded: "YWRtaW5AZXhhbXBsZS5jb20=", // admin@example.com (secure placeholder)
                 automation: {
-                    sendBrochureToVisitor: false, // Disabled on GitHub Pages
-                    sendLeadNotificationToAdmin: false
+                    sendBrochureToVisitor: true,
+                    sendLeadNotificationToAdmin: true,
+                    includeVCardData: true,
+                    includeNotionData: true
                 }
             },
             security: {
@@ -508,9 +509,10 @@
             },
             marketing: {
                 mailchimp: {
-                    actionUrl: "YOUR_MAILCHIMP_ACTION_URL",
-                    enabled: false, // Disabled on GitHub Pages
-                    defaultOptIn: false
+                    actionUrl: "https://dje.us22.list-manage.com/subscribe/post?u=3e6ba3a42fbf295e7959c8475&id=218aff697b&f_id=0021dde1f0",
+                    honeypotField: "b_3e6ba3a42fbf295e7959c8475_218aff697b",
+                    enabled: true,
+                    defaultOptIn: true
                 },
                 analytics: { source: "QR Code Landing Page" }
             },
@@ -535,7 +537,7 @@
             try {
                 return atob(CONFIG.email.adminEmailEncoded);
             } catch (e) {
-                return 'dana@dje.ca';
+                return 'admin@example.com';
             }
         }
         
@@ -550,40 +552,70 @@
         
         function validateConfig() {
             const issues = [];
+            
+            // Check if CONFIG exists
+            if (!CONFIG || !CONFIG.email || !CONFIG.email.emailjs) {
+                issues.push('Configuration not initialized properly');
+                configurationValid = false;
+                return issues;
+            }
+            
+            // Check EmailJS configuration
             if (CONFIG.email.emailjs.serviceId === 'YOUR_EMAILJS_SERVICE_ID') {
                 issues.push('EmailJS not configured - form will collect data only');
+                configurationValid = false;
+            } else if (CONFIG.email.emailjs.serviceId === 'buscard_service') {
+                console.log('✅ EmailJS service configured and ready');
+                configurationValid = true;
+            } else {
+                configurationValid = true;
             }
             return issues;
         }
         
-        // Initialize configuration
+        // Configuration loading system
         function initializeConfiguration() {
-            // Try to load custom config if available, otherwise use defaults
-            if (typeof CARD_CONFIG !== 'undefined') {
-                CONFIG = CARD_CONFIG;
-                console.log('Using custom configuration');
+            // Try to use CARD_CONFIG from config.js if available
+            if (typeof window.CARD_CONFIG !== 'undefined' && window.CARD_CONFIG) {
+                CONFIG = window.CARD_CONFIG;
+                console.log('✅ Using credentials from config.js (local/secure mode)');
             } else {
                 CONFIG = DEFAULT_CONFIG;
-                console.log('Using default configuration for GitHub Pages');
+                console.log('⚠️  Using default template config (GitHub Pages mode)');
             }
             
+            // Set up global variables
             ADMIN_EMAIL = getAdminEmail();
             RECAPTCHA_SITE_KEY = getRecaptchaSiteKey();
             
+            // Validate and report
             const issues = validateConfig();
             if (issues.length > 0) {
                 console.warn('Configuration issues:', issues);
             }
             
-            configurationValid = true;
-            return true;
+            // Initialize EmailJS with the configured public key
+            if (CONFIG.email.emailjs.publicKey !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+                try {
+                    emailjs.init(CONFIG.email.emailjs.publicKey);
+                    console.log('✅ EmailJS initialized with public key');
+                } catch (error) {
+                    console.error('❌ EmailJS initialization failed:', error);
+                }
+            } else {
+                console.warn('⚠️ EmailJS not initialized: Using template public key');
+            }
+            
+            return CONFIG;
         }
         
-        // Initialize immediately
-        initializeConfiguration();
+        // Initialize immediately when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeConfiguration();
+        });
         
-        // Force GitHub Pages cache refresh - Version 2
-        console.log('Card system v2 loaded at', new Date().toISOString());
+        // Version check for deployment verification
+        console.log('✅ SECURE Card system loaded successfully at', new Date().toISOString());
         
         // =====================================
         // Phone number formatting
@@ -607,12 +639,7 @@
             return phoneNumber;
         }
 
-        // Initialize EmailJS with secure configuration
-        if (CONFIG && CONFIG.email.emailjs.publicKey !== 'YOUR_EMAILJS_PUBLIC_KEY') {
-            emailjs.init(CONFIG.email.emailjs.publicKey);
-        } else {
-            console.warn('EmailJS not initialized: Please configure publicKey in config.js');
-        }
+        // EmailJS initialization will be handled in initializeConfiguration()
 
         // Form submission handler
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
@@ -670,13 +697,21 @@
             if (formData.newsletter && 
                 CONFIG.marketing.mailchimp.enabled && 
                 CONFIG.marketing.mailchimp.actionUrl !== 'YOUR_MAILCHIMP_ACTION_URL') {
+                console.log('📬 Adding to newsletter via Mailchimp...');
                 subscribeToNewsletter(formData);
+            } else if (formData.newsletter) {
+                console.warn('📬 Mailchimp not configured. Add your action URL to config.js to enable newsletter signup.');
+                console.warn('   - Get Mailchimp action URL from: Audience > Signup forms > Embedded forms');
             }
             
             // Send emails if EmailJS is properly configured
             if (CONFIG.email.emailjs.serviceId !== 'YOUR_EMAILJS_SERVICE_ID' &&
                 CONFIG.email.automation.sendBrochureToVisitor) {
+                console.log('📧 Sending emails via EmailJS...');
                 sendDualEmails(formData);
+            } else {
+                console.warn('📧 EmailJS not configured. Add your credentials to config.js to enable email sending.');
+                console.warn('   - Get EmailJS credentials from: https://dashboard.emailjs.com/');
             }
             
             // Switch to success screen (clean version)
@@ -691,7 +726,11 @@
         // Send dual emails: brochure to visitor, contact data to admin
         async function sendDualEmails(formData) {
             try {
+                console.log('📧 Starting dual email process...');
+                console.log('📧 Using EmailJS Service ID:', CONFIG.email.emailjs.serviceId);
+                
                 // Email 1: Send brochure to visitor
+                console.log('📧 Step 1: Sending brochure to visitor:', formData.email);
                 const visitorEmailParams = {
                     to_email: formData.email,
                     email: formData.email,
@@ -699,29 +738,38 @@
                     to_name: `${formData.firstName} ${formData.lastName}`,
                     name: `${formData.firstName} ${formData.lastName}`,
                     user_name: `${formData.firstName} ${formData.lastName}`,
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
                     brochure_url: CONFIG.resources.brochureUrl,
                     calendly_url: CONFIG.resources.bookingUrl,
                     subject: `Your ${CONFIG.branding.brochureTitle} is Ready!`
                 };
 
-                await emailjs.send(
+                console.log('📧 Visitor email template:', CONFIG.email.emailjs.templates.visitor);
+                console.log('📧 Visitor email params:', visitorEmailParams);
+
+                const visitorResponse = await emailjs.send(
                     CONFIG.email.emailjs.serviceId, 
                     CONFIG.email.emailjs.templates.visitor, 
                     visitorEmailParams
                 );
-                console.log('Brochure email sent successfully');
+                console.log('✅ Brochure email sent successfully!', visitorResponse);
 
                 // Email 2: Send contact data to admin
+                console.log('📧 Step 2: Sending notification to admin:', ADMIN_EMAIL);
                 const vcard = generateVCard(formData);
                 const notionData = generateNotionData(formData);
                 
                 const adminEmailParams = {
                     to_email: ADMIN_EMAIL,
-                    email: ADMIN_EMAIL,           // Try multiple parameter names  
-                    user_email: ADMIN_EMAIL,     // Common alternative
+                    email: ADMIN_EMAIL,
+                    user_email: ADMIN_EMAIL,
+                    admin_email: ADMIN_EMAIL,
                     contact_name: `${formData.firstName} ${formData.lastName}`,
+                    contact_first_name: formData.firstName,
+                    contact_last_name: formData.lastName,
                     contact_email: formData.email,
-                    contact_phone: formData.phone,
+                    contact_phone: formData.phone || 'Not provided',
                     contact_company: formData.company || 'Not provided',
                     newsletter_subscription: formData.newsletter ? 'Yes' : 'No',
                     vcard_data: vcard,
@@ -731,15 +779,29 @@
                     subject: `New Lead: ${formData.firstName} ${formData.lastName}`
                 };
 
-                await emailjs.send(
+                console.log('📧 Admin email template:', CONFIG.email.emailjs.templates.admin);
+                console.log('📧 Admin email params:', adminEmailParams);
+
+                const adminResponse = await emailjs.send(
                     CONFIG.email.emailjs.serviceId, 
                     CONFIG.email.emailjs.templates.admin, 
                     adminEmailParams
                 );
-                console.log('Admin notification email sent successfully');
+                console.log('✅ Admin notification email sent successfully!', adminResponse);
 
             } catch (error) {
-                console.error('Email sending failed:', error);
+                console.error('❌ Email sending failed:', error);
+                console.error('❌ Error details:', error.message);
+                if (error.status) {
+                    console.error('❌ EmailJS Status:', error.status);
+                }
+                if (error.text) {
+                    console.error('❌ EmailJS Response:', error.text);
+                }
+                console.warn('📧 Check your EmailJS configuration:');
+                console.warn('   - Service ID:', CONFIG.email.emailjs.serviceId);
+                console.warn('   - Template IDs:', CONFIG.email.emailjs.templates);
+                console.warn('   - Admin Email:', ADMIN_EMAIL);
                 // Continue with the process even if emails fail
             }
         }

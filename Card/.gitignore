@@ -1,6 +1,7 @@
 # Real configuration files with personal information
 config.js
 *.local.js
+*backup.js
 
 # Environment files
 .env
